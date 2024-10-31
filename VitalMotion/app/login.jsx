@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
 import { auth } from './firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isSignUp, setIsSignUp] = useState(false);
 
     const handleLogin = async () => {
 	    setError('');
@@ -31,6 +32,7 @@ const LoginScreen = () => {
 
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
+	            alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
 		} else {
 		    console.log('Login Failed', data.error);
 		}
@@ -38,6 +40,18 @@ const LoginScreen = () => {
 		console.error('Error during login:', error);
 		handleFireBaseError(error);
 	    }
+    };
+
+    const handleSignUp = async () => {
+        setError('');
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log('User signed up:', userCredential.user);
+            alert('Sign-up successful! Please log in.');
+            setIsSignUp(false); // Switch to login mode after successful sign-up
+        } catch (error) {
+            handleFireBaseError(error);
+        }
     };
 
     const handleFireBaseError = (error) => {
@@ -56,6 +70,15 @@ const LoginScreen = () => {
 	      case "auth/wrong-password":
 		setError("Wrong password. Please check your password.");
 		break;
+	      case "auth/email-already-in-use":
+                setError("This email is already in use. Try logging in.");
+                break;
+	      case "auth/invalid-email":
+                setError("Invalid email address. Please provide a valid email.");
+                break;
+	      case "auth/weak-password":
+                setError("Password is too weak. Please use a stronger password.");
+                break;	
 	      // Add more cases for other Firebase error codes as needed
 	      default:
 		setError("An error occurred. Please try again later.");
@@ -67,8 +90,15 @@ const LoginScreen = () => {
         <View>
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
             <TextInput placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
-            <Button title="Login" onPress={handleLogin} />
-	    {(error != '') && <Text>{error}</Text>}
+            {isSignUp ? (
+                <Button title="Sign Up" onPress={handleSignUp} />
+            ) : (
+                <Button title="Login" onPress={handleLogin} />
+            )}
+            {(error !== '') && <Text>{error}</Text>}
+            <Text onPress={() => setIsSignUp(!isSignUp)}>
+                {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign up"}
+            </Text>
         </View>
     );
 };
