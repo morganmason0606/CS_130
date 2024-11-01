@@ -19,7 +19,7 @@ const LoginScreen = () => {
 		console.log('ID Token:', idToken);
 		
 		//Send the token to your Flask backend
-		const response = await fetch('http://localhost:5000/verify-token', {
+		const response = await fetch('http://localhost:5001/verify-token', {
 		    method: 'POST',
 		    headers: {
 			'Content-Type': 'application/json',
