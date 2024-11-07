@@ -1,0 +1,2 @@
+cd backend
+PYTHONPATH=. pytest
