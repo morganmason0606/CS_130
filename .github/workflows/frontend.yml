@@ -13,10 +13,11 @@ jobs:
             -   name: Set up Node
                 uses: actions/setup-node@v4
 
-            -   name: Setup Frontend and run tests
+            -   name: Setup Frontend
                 run: |
                     cd VitalMotion
                     npm install
+            
             -   name: create credentials
                 uses: 1arp/create-a-file-action@0.4.5
                 with: 
