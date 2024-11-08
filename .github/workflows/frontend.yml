@@ -1,0 +1,23 @@
+name: Frontend Tests
+on: 
+    push:
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v3
+
+            -   name: Set up Node
+                uses: actions/setup-node@v4
+
+            -   name: Setup backend
+                run: ./setupfront.sh
+
+            -   name: Run backend tests
+                run: |
+                    cd VitalMotion
+                    npm test 
+            

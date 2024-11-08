@@ -1,0 +1,2 @@
+cd ../VitalMotion
+npm install
