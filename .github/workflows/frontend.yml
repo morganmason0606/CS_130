@@ -13,11 +13,8 @@ jobs:
             -   name: Set up Node
                 uses: actions/setup-node@v4
 
-            -   name: Setup backend
-                run: ./setupfront.sh
-
-            -   name: Run backend tests
+            -   name: Setup Frontend and run tests
                 run: |
                     cd VitalMotion
-                    npm test 
-            
+                    npm install
+                    npm test
