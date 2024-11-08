@@ -30,5 +30,6 @@ jobs:
             -   name: Run backend tests
                 run: |
                     cd backend
+                    source venv/bin/activate
                     PYTHONPATH=. pytest
             
