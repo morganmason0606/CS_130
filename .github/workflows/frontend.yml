@@ -20,8 +20,11 @@ jobs:
             -   name: create credentials
                 uses: 1arp/create-a-file-action@0.4.5
                 with: 
+                    path: 'VitalMotion'
                     file: credentials.js
                     content: ${{secrets.CREDENTIALS_JS}}
 
             -   name: run test
-                run: npm run test-once
+                run: |
+                    cd VitalMotion
+                    npm run test-once
