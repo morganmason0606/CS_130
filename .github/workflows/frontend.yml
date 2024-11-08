@@ -17,4 +17,11 @@ jobs:
                 run: |
                     cd VitalMotion
                     npm install
-                    npm test
+            -   name: create credentials
+                uses: 1arp/create-a-file-action@0.4.5
+                with: 
+                    file: credentials.js
+                    content: ${{secrets.CREDENTIALS_JS}}
+
+            -   name: run test
+                run: npm run test-once
