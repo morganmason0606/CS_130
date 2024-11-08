@@ -1,0 +1,31 @@
+name: Frontend Tests
+on: 
+    push:
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v3
+
+            -   name: Set up Node
+                uses: actions/setup-node@v4
+
+            -   name: Setup Frontend
+                run: |
+                    cd VitalMotion
+                    npm install
+            
+            -   name: create credentials
+                uses: 1arp/create-a-file-action@0.4.5
+                with: 
+                    path: 'VitalMotion'
+                    file: credentials.js
+                    content: ${{secrets.CREDENTIALS_JS}}
+
+            -   name: run test
+                run: |
+                    cd VitalMotion
+                    npm run test-once
