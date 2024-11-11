@@ -33,6 +33,14 @@ const LoginScreen = () => {
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
 	            alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
+		    const setup_response = await fetch('http://localhost:5001/setup-user', {
+			    method: 'POST',
+			    headers: {
+				'Content-Type': 'application/json',
+			    },
+			    body: JSON.stringify({ uid: data.uid }),
+		    });
+		    console.log('Setup response:', setup_response);
 		} else {
 		    console.log('Login Failed', data.error);
 		}
