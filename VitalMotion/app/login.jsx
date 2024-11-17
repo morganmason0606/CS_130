@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import theme from './design_system.js';
+import styles from './login_styles.js';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
+
+	// Treat clicking on an element as a press
+	const [isPressed, setIsPressed] = useState(false);
+  	const [isHovered, setIsHovered] = useState(false);
+
+	// Get screen width initially
+	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
+
+	// Update width on screen resize
+	useEffect(() => {
+		const onChange = () => {
+			setScreenWidth(Dimensions.get('window').width);
+		};
+
+		Dimensions.addEventListener('change', onChange);
+
+		return () => {
+			Dimensions.removeEventListener('change', onChange);
+		};
+	}, []);
 
     const handleLogin = async () => {
 	    setError('');
@@ -95,18 +117,65 @@ const LoginScreen = () => {
 	  };
 	
     return (
-        <View>
-            <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-            <TextInput placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+        <View
+			style={[
+				styles.container,
+				{
+					marginLeft: screenWidth*0.3,
+					marginRight: screenWidth*0.3
+				}
+			]}
+		>
+			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>Login</Text>}
+			
+			<Text style={styles.label}>
+				Email
+				<Text style={theme.required}>*</Text>
+			</Text>
+            <TextInput
+				style={styles.input}
+				value={email}
+				onChangeText={setEmail}
+			/>
+			{(error !== '') && <Text style={theme.error}>{error}</Text>}
+
+			<Text style={styles.label}>
+				Password
+				<Text style={theme.required}>*</Text>
+			</Text>
+            <TextInput
+				style={styles.input}
+				secureTextEntry
+				value={password}
+				onChangeText={setPassword}
+			/>
+
             {isSignUp ? (
-                <Button title="Sign Up" onPress={handleSignUp} />
+				<TouchableOpacity>
+					<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
+				</TouchableOpacity>
             ) : (
-                <Button title="Login" onPress={handleLogin} />
+				<TouchableOpacity>
+                	<Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
+				</TouchableOpacity>
             )}
-            {(error !== '') && <Text>{error}</Text>}
-            <Text onPress={() => setIsSignUp(!isSignUp)}>
-                {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign up"}
-            </Text>
+
+			<TouchableOpacity
+				onPressIn={() => {setIsPressed(true); setIsSignUp(!isSignUp);}}  // TODO: Do we need this to handle :active clicks?
+				onPressOut={() => setIsPressed(false)}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
+			>
+				<Text
+					style={[
+						styles.pageSwapText,
+						isPressed && styles.pageSwapTextActive,
+						isHovered && styles.pageSwapTextHovered,
+					]}
+				>
+					{isSignUp ? "Already have an account? Log in here!" : "Don't have an account? Register for one here!"}
+				</Text>
+			</TouchableOpacity>
         </View>
     );
 };
