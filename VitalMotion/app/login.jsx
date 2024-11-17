@@ -134,6 +134,7 @@ const LoginScreen = () => {
 			</Text>
             <TextInput
 				style={styles.input}
+				testID="email"
 				value={email}
 				onChangeText={setEmail}
 			/>
@@ -145,6 +146,7 @@ const LoginScreen = () => {
 			</Text>
             <TextInput
 				style={styles.input}
+				testID="password"
 				secureTextEntry
 				value={password}
 				onChangeText={setPassword}
