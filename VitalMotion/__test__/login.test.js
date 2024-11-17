@@ -5,7 +5,7 @@ import LoginScreen from '../app/login';
 
 describe("Login Screen", ()=>{
     test("test correctly renders", ()=>{
-        const {getByPlaceholderText} = render(<LoginScreen/>);
+        const {getByTestId} = render(<LoginScreen/>);
 
         const email = getByTestId("email");
         expect(email).toBeTruthy();
