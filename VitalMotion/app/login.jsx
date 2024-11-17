@@ -6,6 +6,8 @@ import theme from './design_system.js';
 import styles from './login_styles.js';
 
 const LoginScreen = () => {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -127,6 +129,31 @@ const LoginScreen = () => {
 			]}
 		>
 			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>Login</Text>}
+
+			{isSignUp && (
+				<>
+					<Text style={styles.label}>
+						First Name
+						<Text style={theme.required}>*</Text>
+					</Text>
+					<TextInput
+						style={styles.input}
+						testID="firstName"
+						value={firstName}
+						onChangeText={setFirstName}
+					/>
+					<Text style={styles.label}>
+						Last Name
+						<Text style={theme.required}>*</Text>
+					</Text>
+					<TextInput
+						style={styles.input}
+						testID="lastName"
+						value={lastName}
+						onChangeText={setLastName}
+					/>
+				</>
+			)}
 			
 			<Text style={styles.label}>
 				Email
