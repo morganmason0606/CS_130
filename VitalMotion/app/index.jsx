@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import theme from './design_system.js';
+import styles from './index_styles.js';
 
 export default function Index() {
   const [isHoveredWorkout, setIsHoveredWorkout] = useState(false);
@@ -93,34 +93,3 @@ export default function Index() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  outerWrapper: {
-    flex: 1,
-  },
-  navbar: {                      // TODO: Make navbar sticky.
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 50,
-    padding: 50,
-
-    backgroundColor: theme.colors.aqua,
-  },
-  pageLink: {
-    color: theme.links.light.default,
-    fontSize: theme.fontSizes.regular,
-    fontWeight: theme.fontWeights.bold,
-  },
-  pageLinkHovered:{
-    color: theme.links.light.hover,
-  },
-  // TODO: Placeholder styles. Update when actual content is added.
-  innerWrapper: {
-    flex: 1,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
-    backgroundColor: theme.colors.grey,
-  },
-});
