@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
 
         color: theme.links.default,
         fontSize: theme.fontSizes.small,
+		textDecorationLine: 'underline',
     },
     pageSwapTextActive: {
         color: theme.links.active,
