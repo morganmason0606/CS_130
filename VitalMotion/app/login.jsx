@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import theme from './design_system.js';
+import styles from './login_styles.js';
 
 const LoginScreen = () => {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [error, setError] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
+
+  	const [isHovered, setIsHovered] = useState(false);
+
+	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
+
+	// Update width on screen resize
+	useEffect(() => {
+		const onChange = () => {
+			setScreenWidth(Dimensions.get('window').width);
+		};
+
+		Dimensions.addEventListener('change', onChange);
+
+		return () => {
+			Dimensions.removeEventListener('change', onChange);
+		};
+	}, []);
 
     const handleLogin = async () => {
 	    setError('');
@@ -95,18 +117,83 @@ const LoginScreen = () => {
 	  };
 	
     return (
-        <View>
-            <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-            <TextInput placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+        <View
+			style={[
+				styles.container,
+				{
+					marginLeft: screenWidth*0.3,
+					marginRight: screenWidth*0.3
+				}
+			]}
+		>
+			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>Login</Text>}
+
+			{isSignUp && (
+				<>
+					<Text style={styles.label}>
+						First Name
+						<Text style={theme.required}>*</Text>
+					</Text>
+					<TextInput
+						style={styles.input}
+						testID="firstName"
+						value={firstName}
+						onChangeText={setFirstName}
+					/>
+					<Text style={styles.label}>
+						Last Name
+						<Text style={theme.required}>*</Text>
+					</Text>
+					<TextInput
+						style={styles.input}
+						testID="lastName"
+						value={lastName}
+						onChangeText={setLastName}
+					/>
+				</>
+			)}
+			
+			<Text style={styles.label}>
+				Email
+				<Text style={theme.required}>*</Text>
+			</Text>
+            <TextInput
+				style={styles.input}
+				testID="email"
+				value={email}
+				onChangeText={setEmail}
+			/>
+			{(error !== '') && <Text style={theme.error}>{error}</Text>}
+
+			<Text style={styles.label}>
+				Password
+				<Text style={theme.required}>*</Text>
+			</Text>
+            <TextInput
+				style={styles.input}
+				testID="password"
+				secureTextEntry
+				value={password}
+				onChangeText={setPassword}
+			/>
+
             {isSignUp ? (
-                <Button title="Sign Up" onPress={handleSignUp} />
+				<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
             ) : (
-                <Button title="Login" onPress={handleLogin} />
+                <Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
             )}
-            {(error !== '') && <Text>{error}</Text>}
-            <Text onPress={() => setIsSignUp(!isSignUp)}>
-                {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign up"}
-            </Text>
+
+			<Text
+				style={[
+					styles.pageSwapText,
+					isHovered && styles.pageSwapTextHovered,
+				]}
+				onClick={() => setIsSignUp(!isSignUp)}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
+			>
+				{isSignUp ? "Already have an account? Log in here!" : "Don't have an account? Register for one here!"}
+			</Text>
         </View>
     );
 };
