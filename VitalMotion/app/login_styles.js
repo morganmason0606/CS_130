@@ -45,17 +45,17 @@ const styles = StyleSheet.create({
 		fontWeight: theme.fontWeights.bold,
 	},
     pageSwapText: {
+		cursor: 'pointer',
         textAlign: 'center',
 
-        color: theme.links.default,
+        // TODO: color: theme.links.dark.default,
+		color: theme.links.default,
         fontSize: theme.fontSizes.small,
 		textDecorationLine: 'underline',
     },
-    pageSwapTextActive: {
-        color: theme.links.active,
-    },
     pageSwapTextHovered: {
-        color: theme.links.hover,
+        // TODO: color: theme.links.dark.hover,
+		color: theme.links.hover,
     },
 });
 

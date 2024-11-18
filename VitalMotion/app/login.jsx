@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TextInput, Text, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import theme from './design_system.js';
@@ -10,14 +10,12 @@ const LoginScreen = () => {
 	const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [error, setError] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
 
-	// Treat clicking on an element as a press
-	const [isPressed, setIsPressed] = useState(false);
   	const [isHovered, setIsHovered] = useState(false);
 
-	// Get screen width initially
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 
 	// Update width on screen resize
@@ -180,31 +178,22 @@ const LoginScreen = () => {
 			/>
 
             {isSignUp ? (
-				<TouchableOpacity>
-					<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
-				</TouchableOpacity>
+				<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
             ) : (
-				<TouchableOpacity>
-                	<Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
-				</TouchableOpacity>
+                <Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
             )}
 
-			<TouchableOpacity
-				onPressIn={() => {setIsPressed(true); setIsSignUp(!isSignUp);}}  // TODO: Do we need this to handle :active clicks?
-				onPressOut={() => setIsPressed(false)}
+			<Text
+				style={[
+					styles.pageSwapText,
+					isHovered && styles.pageSwapTextHovered,
+				]}
+				onClick={() => setIsSignUp(!isSignUp)}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>
-				<Text
-					style={[
-						styles.pageSwapText,
-						isPressed && styles.pageSwapTextActive,
-						isHovered && styles.pageSwapTextHovered,
-					]}
-				>
-					{isSignUp ? "Already have an account? Log in here!" : "Don't have an account? Register for one here!"}
-				</Text>
-			</TouchableOpacity>
+				{isSignUp ? "Already have an account? Log in here!" : "Don't have an account? Register for one here!"}
+			</Text>
         </View>
     );
 };
