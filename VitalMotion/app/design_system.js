@@ -6,9 +6,16 @@ const theme = {
         white: '#FFFFFF',
     },
     links: {    // TODO: Are these the right colors for hover and active?
-        default: '#0E0E0E',
-        hover: '#0028FF',
-        active: '#FF0000',
+        dark: {
+            default: '#0E0E0E',
+            hover: '#0028FF',
+            // active: '#FF0000',
+        },
+        light: {
+            default: '#F8F8F8',
+            hover: '#6C848C',
+            // active: '#0E0E0E',
+        },
     },
     fontSizes: {
         smaller: 12,

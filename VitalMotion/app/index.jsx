@@ -108,12 +108,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.aqua,
   },
   pageLink: {
-    color: theme.links.default,
+    color: theme.links.light.default,
     fontSize: theme.fontSizes.regular,
     fontWeight: theme.fontWeights.bold,
   },
   pageLinkHovered:{
-    color: theme.links.hover,
+    color: theme.links.light.hover,
   },
   // TODO: Placeholder styles. Update when actual content is added.
   innerWrapper: {
