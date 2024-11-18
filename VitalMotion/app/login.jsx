@@ -33,6 +33,10 @@ const LoginScreen = () => {
 
     const handleLogin = async () => {
 	    setError('');
+        if (!password) {
+            setError('Password cannot be empty.');
+            return;
+        }
 	    console.log('Attempting login with:', email, password);
 	    try {
 		const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -74,6 +78,10 @@ const LoginScreen = () => {
 
     const handleSignUp = async () => {
         setError('');
+		if (!firstName | !lastName | !email | !password) {
+            setError('Please fill in all fields.');
+            return;
+        }
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up:', userCredential.user);
@@ -89,30 +97,27 @@ const LoginScreen = () => {
 	    // Credit for this code to google firebase documentation and my past self in CS35L
 	    switch (error.code) {
 	      case "auth/invalid-credential":
-		setError("Invalid username or password");
-		break;
+			setError("Invalid username or password");
+			break;
 	      case "auth/invalid-email":
-		setError("Invalid email address. Please provide a valid email.");
-		break;
+			setError("Invalid email address. Please provide a valid email.");
+			break;
 	      case "auth/user-not-found":
-		setError("User not found. Please sign up before logging in.");
-		break;
-	      case "auth/wrong-password":
-		setError("Wrong password. Please check your password.");
-		break;
+			setError("User not found. Please sign up before logging in.");
+			break;
 	      case "auth/email-already-in-use":
-                setError("This email is already in use. Try logging in.");
-                break;
+			setError("This email is already in use. Try logging in.");
+			break;
 	      case "auth/invalid-email":
-                setError("Invalid email address. Please provide a valid email.");
-                break;
+			setError("Invalid email address. Please provide a valid email.");
+			break;
 	      case "auth/weak-password":
-                setError("Password is too weak. Please use a stronger password.");
-                break;	
+			setError("Password is too weak. Please use a stronger password.");
+			break;	
 	      // Add more cases for other Firebase error codes as needed
 	      default:
-		setError("An error occurred. Please try again later.");
-		break;
+			setError("An error occurred. Please try again later.");
+			break;
 	    }
 	  };
 	
