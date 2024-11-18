@@ -48,14 +48,12 @@ const styles = StyleSheet.create({
 		cursor: 'pointer',
         textAlign: 'center',
 
-        // TODO: color: theme.links.dark.default,
-		color: theme.links.default,
+        color: theme.links.dark.default,
         fontSize: theme.fontSizes.small,
 		textDecorationLine: 'underline',
     },
     pageSwapTextHovered: {
-        // TODO: color: theme.links.dark.hover,
-		color: theme.links.hover,
+       	color: theme.links.dark.hover,
     },
 });
 
