@@ -105,3 +105,16 @@ def test_create_completed_workout(client):
     response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed", json={"notes": "Great session!"})
     assert response.status_code == 201
     assert "id" in response.json
+
+def test_read_completed_workout(client):
+    # First, create the template and completed workout
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts", json={"name": "Morning Routine"})
+    template_id = create_response.json["id"]
+
+    completed_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed", json={"notes": "Great session!"})
+    completed_id = completed_response.json["id"]
+
+    # Then, read the completed workout
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
+    assert response.status_code == 200
+    assert response.json["notes"] == "Great session!"
