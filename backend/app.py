@@ -156,5 +156,79 @@ def remove_pain():
         return jsonify({"error": str(e)}), 401
 
 
+### CRUD for Workouts
+@app.route('/users/<uid>/workouts', methods=['POST'])
+def create_template(uid):
+    try:
+        template_data = request.json
+        template_id = data_helper.create_template_workout(uid, template_data, db)
+        return jsonify({"message": "Template workout created successfully.", "id": template_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>', methods=['GET'])
+def read_template(uid, template_id):
+    try:
+        template = data_helper.get_template_workout(uid, template_id, db)
+        if template:
+            return jsonify(template), 200
+        return jsonify({"error": "Template workout not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>', methods=['PUT'])
+def update_template(uid, template_id):
+    try:
+        template_data = request.json
+        data_helper.update_template_workout(uid, template_id, template_data, db)
+        return jsonify({"message": "Template workout updated successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>', methods=['DELETE'])
+def delete_template(uid, template_id):
+    try:
+        data_helper.delete_template_workout(uid, template_id, db)
+        return jsonify({"message": "Template workout and its completed workouts deleted successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>/completed', methods=['POST'])
+def create_completed(uid, template_id):
+    try:
+        completed_data = request.json
+        completed_id = data_helper.create_completed_workout(uid, template_id, completed_data, db)
+        return jsonify({"message": "Completed workout created successfully.", "id": completed_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>/completed/<completed_id>', methods=['GET'])
+def read_completed(uid, template_id, completed_id):
+    try:
+        completed = data_helper.get_completed_workout(uid, template_id, completed_id, db)
+        if completed:
+            return jsonify(completed), 200
+        return jsonify({"error": "Completed workout not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>/completed/<completed_id>', methods=['PUT'])
+def update_completed(uid, template_id, completed_id):
+    try:
+        completed_data = request.json
+        data_helper.update_completed_workout(uid, template_id, completed_id, completed_data, db)
+        return jsonify({"message": "Completed workout updated successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>/completed/<completed_id>', methods=['DELETE'])
+def delete_completed(uid, template_id, completed_id):
+    try:
+        data_helper.delete_completed_workout(uid, template_id, completed_id, db)
+        return jsonify({"message": "Completed workout deleted successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
