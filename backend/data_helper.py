@@ -4,14 +4,46 @@ from firebase_admin import firestore
 from datetime import datetime
 import google.cloud.firestore
 
-def create_user_document(uid: str, db: google.cloud.firestore.Client):
+def create_user_document(uid: str, firstName:str, lastName:str, db: google.cloud.firestore.Client):
     users_ref = db.collection('users')
     user_doc_ref = users_ref.document(uid)
     user_data = {
         'created_at': datetime.now(),
+        'first_name':firstName,
+        'last_name':lastName
     }
     user_doc_ref.set(user_data)
-    print(f'Document for UID {uid} created successfully in users/{uid}.')
+    print(f'Document for UID {uid} created successfully in users/{uid}')
+
+    source_collection_path = "globals/exercises/premades"
+    source_collection_ref = db.collection(source_collection_path)
+
+    destination_collection_path = f"users/{uid}/exercises"
+    destination_collection_ref = db.collection(destination_collection_path)
+
+    print(f"\tCopying global files")
+
+    copy_collection_recursive(source_collection_ref, destination_collection_ref, db)
+
+def copy_collection_recursive(source_collection_ref, destination_collection_ref, db):
+    try:
+        for doc in source_collection_ref.stream():
+            doc_id = doc.id
+            doc_data = doc.to_dict()
+
+            destination_doc_ref = destination_collection_ref.document(doc_id)
+            destination_doc_ref.set(doc_data)
+
+            for subcollection_name, subcollection_data in doc_data.items():
+                if isinstance(subcollection_data, dict):
+                    source_subcollection_ref = source_collection_ref.document(doc_id).collection(subcollection_name)
+                    destination_subcollection_ref = destination_collection_ref.document(doc_id).collection(subcollection_name)
+                    copy_collection_recursive(source_subcollection_ref, destination_subcollection_ref, db)
+    except Exception as e:
+        print(f"Error copying collection: {e}")
+    
+
+
 
 def get_user_document(uid: str, db: google.cloud.firestore.Client):
     user_doc_ref = db.collection('users').document(uid)
