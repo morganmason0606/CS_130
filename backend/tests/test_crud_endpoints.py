@@ -80,3 +80,16 @@ def test_update_template(client):
     # Verify the update
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}")
     assert response.json["name"] == "Modified Routine"
+
+def test_delete_template(client):
+    # First, create the template
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts", json={"name": "Morning Routine"})
+    template_id = create_response.json["id"]
+
+    # Then, delete the template
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}")
+    assert response.status_code == 200
+
+    # Verify the deletion
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}")
+    assert response.status_code == 404
