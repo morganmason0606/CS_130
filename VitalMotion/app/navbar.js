@@ -101,7 +101,7 @@ export default function Navbar() {
         style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
         onMouseEnter={() => { handleMouseEnter('Login') }}
         onMouseLeave={() => { handleMouseLeave('Login') }}
-        onPress={handleLogout}
+        onClick={handleLogout}
       >
         Logout
       </Link>
