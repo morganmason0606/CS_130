@@ -24,15 +24,17 @@ def verify_token():
 @app.route('/setup-user', methods=['POST'])
 def setup_user():
     uid = request.json.get('uid')
+    fn = request.json.get('firstName')
+    ln = request.json.get('lastName')
     try:
         user_doc_ref = db.collection('users').document(uid)
-        if user_doc_ref.get().exists:
-            return jsonify({"message": "User document already exists."}), 200
-
-        data_helper.create_user_document(uid, db)
+        # if user_doc_ref.get().exists:
+        #     return jsonify({"message": "User document already exists."}), 200
+        data_helper.create_user_document(uid, fn, ln, db)
         return jsonify({"message": "User document created successfully."}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 401
+
 
 ### CRUD for Exercises
 @app.route('/users/<uid>/exercises', methods=['POST'])

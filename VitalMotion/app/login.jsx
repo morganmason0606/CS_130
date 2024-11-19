@@ -38,39 +38,31 @@ const LoginScreen = () => {
         }
 	    console.log('Attempting login with:', email, password);
 	    try {
-			const userCredential = await signInWithEmailAndPassword(auth, email, password);
-			console.log('User credential:', userCredential);
-			const idToken = await userCredential.user.getIdToken();
-			console.log('ID Token:', idToken);
+		const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		console.log('User credential:', userCredential);
+		const idToken = await userCredential.user.getIdToken();
+		console.log('ID Token:', idToken);
+		
+		//Send the token to your Flask backend
+		const response = await fetch('http://localhost:5001/verify-token', {
+		    method: 'POST',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify({ token: idToken }),
+		});
 
-			router.push('/workout');  // navigate to workout page upon login
-			
-			//Send the token to your Flask backend
-			const response = await fetch('http://localhost:5001/verify-token', {
-				method: 'POST',
-				headers: {
-				'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ token: idToken }),
-			});
+		console.log('Response from backend:', response);
+		const data = await response.json();
 
-			console.log('Response from backend:', response);
-			const data = await response.json();
-
-			if (response.ok) {
-				console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
-					alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
-				const setup_response = await fetch('http://localhost:5001/setup-user', {
-					method: 'POST',
-					headers: {
-					'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ uid: data.uid }),
-				});
-				console.log('Setup response:', setup_response);
-			} else {
-				console.log('Login Failed', data.error);
-			}
+		if (response.ok) {
+		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
+        alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
+			  router.push('/workout');  // navigate to workout page upon login
+      
+		} else {
+		    console.log('Login Failed', data.error);
+		}
 	    } catch (error) {
 		console.error('Error during login:', error);
 		handleFireBaseError(error);
@@ -86,8 +78,33 @@ const LoginScreen = () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up:', userCredential.user);
-            alert('Sign-up successful! Please log in.');
-            setIsSignUp(false); // Switch to login mode after successful sign-up
+			const idToken = await userCredential.user.getIdToken();
+			console.log('ID Token:', idToken);
+			
+			//Send the token to your Flask backend
+			const response = await fetch('http://localhost:5001/verify-token', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ token: idToken }),
+			});
+			const data = await response.json();
+
+			if (response.ok) {
+				const setup_response = await fetch('http://localhost:5001/setup-user', {
+					    method: 'POST',
+			    headers: {
+					'Content-Type': 'application/json',
+				    },
+				    body: JSON.stringify({ uid: data.uid, firstName:firstName, lastName:lastName}),
+				});
+				console.log('Setup response:', setup_response);	
+			}	
+			
+			alert('Sign-up successful! Please log in.');
+			setIsSignUp(false); // Switch to login mode after successful sign-up
+
         } catch (error) {
             handleFireBaseError(error);
         }
