@@ -15,15 +15,23 @@ def create_user_document(uid: str, firstName:str, lastName:str, db: google.cloud
     user_doc_ref.set(user_data)
     print(f'Document for UID {uid} created successfully in users/{uid}')
 
+    print(f"\tCopying global files")
     source_collection_path = "globals/exercises/premades"
     source_collection_ref = db.collection(source_collection_path)
 
     destination_collection_path = f"users/{uid}/exercises"
     destination_collection_ref = db.collection(destination_collection_path)
-
-    print(f"\tCopying global files")
-
     copy_collection_recursive(source_collection_ref, destination_collection_ref, db)
+    print('copied exercises')
+
+    source_collection_path = "globals/workouts/premades"
+    source_collection_ref = db.collection(source_collection_path)
+
+    destination_collection_path = f"users/{uid}/workouts"
+    destination_collection_ref = db.collection(destination_collection_path)
+    copy_collection_recursive(source_collection_ref, destination_collection_ref, db)
+    print('copied workouts')
+
 
 def copy_collection_recursive(source_collection_ref, destination_collection_ref, db):
     try:
