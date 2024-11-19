@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import Navbar from './navbar.js';
 import styles from './index_styles.js';
 
-export default function Index() {
+const Index = () => {
   return (
     <View style={styles.outerWrapper}>
       <Navbar />
@@ -12,4 +12,6 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
+
+export default Index;

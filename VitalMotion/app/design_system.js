@@ -2,6 +2,7 @@ const theme = {
     colors: {
         aqua: '#9ABFCA',
         black: '#0E0E0E',
+        lightGrey: '#F2F2F2',
         grey: '#EDEDED',
         white: '#FFFFFF',
     },
@@ -21,6 +22,7 @@ const theme = {
         smaller: 12,
         small: 14,
         regular: 18,
+        medium: 20,
         large: 24,
         larger: 40,
     },

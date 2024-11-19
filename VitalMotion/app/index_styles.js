@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     outerWrapper: {
       flex: 1,
       textAlign: 'left',
-      backgroundColor: theme.colors.grey,
+      backgroundColor: theme.colors.lightGrey,
     },
     navbar: {                      // TODO: Make navbar sticky.
       flexDirection: 'row',
@@ -37,6 +37,25 @@ const styles = StyleSheet.create({
       fontSize: theme.fontSizes.large,
       fontWeight: theme.fontWeights.bold,
     },
+    pageText: {
+      fontSize: theme.fontSizes.medium,
+    },
+    workoutPage: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'flex-start',
+    },
+    card: {
+      backgroundColor: theme.colors.grey,
+      width: '100%',
+      padding: 20,
+      marginTop: 20,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+  },
   });
   
 export default styles;
