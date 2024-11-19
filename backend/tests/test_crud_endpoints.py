@@ -93,3 +93,15 @@ def test_delete_template(client):
     # Verify the deletion
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}")
     assert response.status_code == 404
+
+### Workout template's completed workouts CRUD API tests
+
+def test_create_completed_workout(client):
+    # First, create the template
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts", json={"name": "Morning Routine"})
+    template_id = create_response.json["id"]
+
+    # Then, add a completed workout
+    response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed", json={"notes": "Great session!"})
+    assert response.status_code == 201
+    assert "id" in response.json
