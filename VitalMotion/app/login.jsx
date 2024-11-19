@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'expo-router';
 import theme from './design_system.js';
 import styles from './login_styles.js';
 
@@ -10,13 +11,11 @@ const LoginScreen = () => {
 	const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [error, setError] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
-
   	const [isHovered, setIsHovered] = useState(false);
-
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
+	const router = useRouter();
 
 	// Update width on screen resize
 	useEffect(() => {
@@ -58,15 +57,9 @@ const LoginScreen = () => {
 
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
-	            alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
-		    // const setup_response = await fetch('http://localhost:5001/setup-user', {
-			//     method: 'POST',
-			//     headers: {
-			// 	'Content-Type': 'application/json',
-			//     },
-			//     body: JSON.stringify({ uid: data.uid }),
-		    // });
-		    // console.log('Setup response:', setup_response);
+        alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
+			  router.push('/workout');  // navigate to workout page upon login
+      
 		} else {
 		    console.log('Login Failed', data.error);
 		}
