@@ -134,3 +134,19 @@ def test_update_completed_workout(client):
     # Verify the update
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
     assert response.json["notes"] == "Updated notes"
+
+def test_delete_completed_workout(client):
+    # First, create the template and completed workout
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts", json={"name": "Morning Routine"})
+    template_id = create_response.json["id"]
+
+    completed_response = client.post(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed", json={"notes": "Great session!"})
+    completed_id = completed_response.json["id"]
+
+    # Then, delete the completed workout
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
+    assert response.status_code == 200
+
+    # Verify the deletion
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
+    assert response.status_code == 404
