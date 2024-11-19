@@ -36,3 +36,16 @@ def test_update_exercise(client):
     # Verify the update
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/exercises/{exercise_id}")
     assert response.json["name"] == "Modified Push-Up"
+
+def test_delete_exercise(client):
+    # First, create the exercise
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/exercises", json={"name": "Push-Up", "muscle": "Chest"})
+    exercise_id = create_response.json["id"]
+
+    # Then, delete the exercise
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/exercises/{exercise_id}")
+    assert response.status_code == 200
+
+    # Verify the deletion
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/exercises/{exercise_id}")
+    assert response.status_code == 404
