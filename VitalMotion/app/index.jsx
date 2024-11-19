@@ -5,8 +5,11 @@ import styles from './index_styles.js';
 
 export default function Index() {
   return (
-    <Navbar>
-      <Text style={styles.innerWrapper}>Home screen (under construction :D) </Text>
-    </Navbar>
+    <View style={styles.outerWrapper}>
+      <Navbar />
+      <View style={styles.innerWrapper}>
+        <Text>Home screen (under construction :D) </Text>
+      </View>
+    </View>
   );
 }
