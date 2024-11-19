@@ -4,6 +4,8 @@ import theme from './design_system.js';
 const styles = StyleSheet.create({
     outerWrapper: {
       flex: 1,
+      textAlign: 'left',
+      backgroundColor: theme.colors.grey,
     },
     navbar: {                      // TODO: Make navbar sticky.
       flexDirection: 'row',
@@ -22,13 +24,18 @@ const styles = StyleSheet.create({
     pageLinkHovered:{
       color: theme.links.light.hover,
     },
-    // TODO: Placeholder styles. Update when actual content is added.
     innerWrapper: {
-      flex: 1,
-      textAlign: 'center',
-      justifyContent: 'center',
-      alignContent: 'center',
-      backgroundColor: theme.colors.grey,
+      paddingHorizontal: 70,
+      paddingTop: 50,
+    },
+    pageTitle: {
+      fontSize: theme.fontSizes.larger,
+      fontWeight: theme.fontWeights.bold,
+      marginVertical: 10,
+    },
+    pageSubtitle: {
+      fontSize: theme.fontSizes.large,
+      fontWeight: theme.fontWeights.bold,
     },
   });
   
