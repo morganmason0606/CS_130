@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebaseConfig';
 import styles from './index_styles.js';
 
 export default function Navbar() {
@@ -8,6 +10,23 @@ export default function Navbar() {
   const [isHoveredHistory, setIsHoveredHistory] = useState(false);
   const [isHoveredNotes, setIsHoveredNotes] = useState(false);
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error logging out: ", error.message);
+    }
+  };
   
   const handleMouseEnter = (page) => {
     switch (page){
@@ -75,15 +94,27 @@ export default function Navbar() {
         Notes 
     </Link>
 
-    {/** TODO: Should this change based on registering / logging in/out? */}
-    <Link
-        href="/login"
+    {/* Login/Logout option based on if user is signed in */}
+    {user ? (
+      <Link
+        href="#"
         style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
-        onMouseEnter={()=>{handleMouseEnter('Login')}}
-        onMouseLeave={()=>{handleMouseLeave('Login')}}
-    >
-        Login
-    </Link>
+        onMouseEnter={() => { handleMouseEnter('Login') }}
+        onMouseLeave={() => { handleMouseLeave('Login') }}
+        onPress={handleLogout}
+      >
+        Logout
+      </Link>
+    ) : (
+      <Link
+          href="/login"
+          style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
+          onMouseEnter={()=>{handleMouseEnter('Login')}}
+          onMouseLeave={()=>{handleMouseLeave('Login')}}
+      >
+          Login
+      </Link>
+    )}
     </View>
   );
 }
