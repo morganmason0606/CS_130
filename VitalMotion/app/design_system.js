@@ -22,7 +22,7 @@ const theme = {
         small: 14,
         regular: 18,
         large: 24,
-        larger: 36,
+        larger: 40,
     },
     fontWeights: {
         regular: '400',
