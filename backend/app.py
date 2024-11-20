@@ -225,7 +225,7 @@ def read_completed(uid, template_id, completed_id):
     try:
         completed = data_helper.get_completed_workout(uid, template_id, completed_id, db)
         if completed:
-     (0 , _expoRouter.useSearchParams) is not a function       return jsonify(completed), 200
+            return jsonify(completed), 200
         return jsonify({"error": "Completed workout not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 400
