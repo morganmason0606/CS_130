@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext();
 
@@ -20,11 +19,9 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         // User is logged in, set the UID
         setUid(user.uid);
-        await AsyncStorage.setItem('uid', user.uid);
       } else {
         // No user logged in, clear UID and redirect
         setUid(null);
-        await AsyncStorage.removeItem('uid');
       }
       setLoading(false); // Mark as loaded after checking auth state
     });
@@ -34,12 +31,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userUid) => {
     setUid(userUid);
-    AsyncStorage.setItem('uid', userUid);
   };
 
   const logout = () => {
     setUid(null);
-    AsyncStorage.removeItem('uid');
     router.push('/login');
   };
 
