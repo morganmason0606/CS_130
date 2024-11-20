@@ -7,6 +7,7 @@ import {
     Button,
     Alert,
     StyleSheet,
+    ScrollView,
 } from 'react-native';
 import Navbar from './navbar';
 import styles from './index_styles';
@@ -21,7 +22,6 @@ const Workout = () => {
     const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Fetch workouts from backend
     const fetchWorkouts = async () => {
         setLoading(true);
         try {
@@ -46,7 +46,6 @@ const Workout = () => {
         }
     };
 
-    // Parse workouts and their exercises
     const parseWorkouts = async (workoutsArray) => {
         return await Promise.all(
             workoutsArray.map(async (workout) => {
@@ -62,7 +61,6 @@ const Workout = () => {
         );
     };
 
-    // Fetch exercise name from eid
     const fetchExerciseName = async (eid) => {
         try {
             const response = await fetch(`http://localhost:5001/users/${uid}/exercises/${eid}`, {
@@ -95,7 +93,6 @@ const Workout = () => {
         }
     }, [uid]);
 
-    // Delete workout
     const deleteWorkout = async (workoutId) => {
         try {
             const response = await fetch(`http://localhost:5001/users/${uid}/workouts/${workoutId}`, {
@@ -107,7 +104,7 @@ const Workout = () => {
 
             if (response.ok) {
                 alert('Success', 'Workout deleted successfully.');
-                fetchWorkouts(); // Refresh the workouts list
+                fetchWorkouts();
             } else {
                 const error = await response.json();
                 alert('Error', error.error);
@@ -118,7 +115,6 @@ const Workout = () => {
         }
     };
 
-    // Render exercises for a single workout
     const renderExercises = ({ item, index }) => (
         <View style={[styles.workoutWrapper, localStyles.workoutContainer]}>
             <Text style={localStyles.workoutTitle}>Workout #{index + 1}</Text>
@@ -136,12 +132,8 @@ const Workout = () => {
                     onPress={() => {
                         alert(
                             'Delete Workout',
-                            'Are you sure you want to delete this workout?',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Delete', style: 'destructive', onPress: () => deleteWorkout(item.id) },
-                            ]
                         );
+			deleteWorkout(item.id);
                     }}
                 >
                     <Text style={localStyles.buttonText}>Delete</Text>
@@ -165,7 +157,7 @@ const Workout = () => {
     return (
         <View style={styles.outerWrapper}>
             <Navbar />
-            <View style={styles.innerWrapper}>
+            <ScrollView style={styles.innerWrapper}>
                 <Text style={styles.pageTitle}>Workouts</Text>
                 <Button
                     title="Create New Workout"
@@ -183,14 +175,14 @@ const Workout = () => {
                         }
                     />
                 )}
-            </View>
+            </ScrollView>
         </View>
     );
 };
 
 const localStyles = StyleSheet.create({
     workoutContainer: {
-        marginBottom: 20, // Add space between workouts
+        marginBottom: 20,
         padding: 15,
         borderRadius: 10,
         backgroundColor: '#f8f8f8',
