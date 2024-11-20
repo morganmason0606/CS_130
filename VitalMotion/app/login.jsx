@@ -17,13 +17,11 @@ const LoginScreen = () => {
   	const [isHovered, setIsHovered] = useState(false);
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 	const router = useRouter();
-        const { login, uid, loading } = useAuth(); // Use login method from context
+	// Get the login function from the AuthContext
+        const { login, uid } = useAuth(); 
 
 	// Update width on screen resize
 	useEffect(() => {
-		if (uid) {
-                    setTimeout(() => {router.push('/');}, 800);
-		}
 		const onChange = () => {
 			setScreenWidth(Dimensions.get('window').width);
 		};
@@ -34,6 +32,12 @@ const LoginScreen = () => {
 			Dimensions.removeEventListener('change', onChange);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (uid) {
+		    setTimeout(() => {router.push('/');}, 800);
+		}
+	}, [uid]);
 
     const handleLogin = async () => {
 	    setError('');
