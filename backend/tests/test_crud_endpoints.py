@@ -1,12 +1,48 @@
 import pytest
 from app import app
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 USER_DOCUMENT_NAME = "auto_test"
+
+if not firebase_admin._apps:
+    cred = credentials.Certificate("../admin_credentials.json")
+    firebase_admin.initialize_app(cred)
+    
+db = firestore.client()
 
 @pytest.fixture
 def client():
     with app.test_client() as client:
         yield client
+
+@pytest.fixture(autouse=True, scope="session")
+def setup_and_teardown_user():
+    # Setup: Create the user once at the start of the session
+    user_doc_ref = db.collection("users").document(USER_DOCUMENT_NAME)
+    user_doc_ref.set({"test_field": "test_value"})
+    print(f"Document '{USER_DOCUMENT_NAME}' created.")
+
+    yield
+
+    # Teardown: Delete the user once at the end of the session
+    try:
+        if user_doc_ref.get().exists:
+            print(f"Cleaning up user document: {USER_DOCUMENT_NAME}")
+            delete_document_and_subcollections(user_doc_ref)
+    except Exception as e:
+        print(f"Error during cleanup: {e}")
+
+def delete_document_and_subcollections(doc_ref):
+    # Helper function to recursively delete a document and its subcollections
+    print(f"Deleting document: {doc_ref.id}")
+    for collection in doc_ref.collections():
+        print(f"Deleting subcollection: {collection.id}")
+        for doc in collection.stream():
+            print(f"Deleting document in subcollection {collection.id}: {doc.id}")
+            delete_document_and_subcollections(doc.reference)  # Recursive call
+    doc_ref.delete()
+    print(f"Deleted document: {doc_ref.id}")
 
 ### Exercise CRUD API tests
 
