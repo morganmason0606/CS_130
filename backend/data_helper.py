@@ -99,6 +99,22 @@ def get_user_exercise(uid: str, exercise_id: str, db: google.cloud.firestore.Cli
         return exercise.to_dict()
     return None
 
+def get_all_user_exercises(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all exercises for a user.
+    :param uid: The unique identifier of the user.
+    :param db: Firestore client instance.
+    :return: A list of dictionaries containing the details of all exercises for the user.
+    """
+    exercises_ref = db.collection('users').document(uid).collection('exercises')
+    exercise_docs = exercises_ref.stream()
+    exercise_list = []
+    for doc in exercise_docs:
+        exercise_data = doc.to_dict()
+        exercise_data['id'] = doc.id
+        exercise_list.append(exercise_data)
+    return exercise_list
+
 def update_user_exercise(uid: str, exercise_id: str, exercise_data: dict, db: google.cloud.firestore.Client):
     """
     Update the details of an existing exercise for a specific user.
@@ -175,6 +191,21 @@ def delete_template_workout(uid: str, template_id: str, db: google.cloud.firesto
     workouts_ref.delete()
     print(f'Template workout {template_id} and its completed workouts deleted successfully for user {uid}.')
 
+def get_all_template_workouts(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all template workouts for a user.
+    :param uid: User ID
+    :param db: Firestore client
+    """
+    workouts_ref = db.collection('users').document(uid).collection('workouts')
+    template_docs = workouts_ref.stream()
+    template_list = []
+    for doc in template_docs:
+        template_data = doc.to_dict()
+        template_data['id'] = doc.id
+        template_list.append(template_data)
+    return template_list
+
 def create_completed_workout(uid: str, template_id: str, completed_data: dict, db: google.cloud.firestore.Client):
     """
     Create a new completed workout under a template.
@@ -201,6 +232,22 @@ def get_completed_workout(uid: str, template_id: str, completed_id: str, db: goo
     if completed.exists:
         return completed.to_dict()
     return None
+
+def get_all_completed_workouts(uid: str, template_id: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all completed workouts under a template.
+    :param uid: User ID
+    :param template_id: Template ID
+    :param db: Firestore client
+    """
+    completed_ref = db.collection('users').document(uid).collection('workouts').document(template_id).collection('completed')
+    completed_docs = completed_ref.stream()
+    completed_list = []
+    for doc in completed_docs:
+        completed_data = doc.to_dict()
+        completed_data['id'] = doc.id
+        completed_list.append(completed_data)
+    return completed_list
 
 def update_completed_workout(uid: str, template_id: str, completed_id: str, completed_data: dict, db: google.cloud.firestore.Client):
     """

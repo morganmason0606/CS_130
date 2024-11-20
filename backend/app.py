@@ -56,6 +56,14 @@ def read_user_exercise(uid, exercise_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/users/<uid>/exercises', methods=['GET'])
+def read_all_user_exercises(uid):
+    try:
+        exercises = data_helper.get_all_user_exercises(uid, db)
+        return jsonify(exercises), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 @app.route('/users/<uid>/exercises/<exercise_id>', methods=['PUT'])
 def update_user_exercise(uid, exercise_id):
     try:
@@ -168,6 +176,14 @@ def create_template(uid):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/users/<uid>/workouts', methods=['GET'])
+def read_all_templates(uid):
+    try:
+        templates = data_helper.get_all_template_workouts(uid, db)
+        return jsonify(templates), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 @app.route('/users/<uid>/workouts/<template_id>', methods=['GET'])
 def read_template(uid, template_id):
     try:
@@ -211,6 +227,14 @@ def read_completed(uid, template_id, completed_id):
         if completed:
             return jsonify(completed), 200
         return jsonify({"error": "Completed workout not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/workouts/<template_id>/completed', methods=['GET'])
+def read_all_completed(uid, template_id):
+    try:
+        completed_workouts = data_helper.get_all_completed_workouts(uid, template_id, db)
+        return jsonify(completed_workouts), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
