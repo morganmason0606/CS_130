@@ -238,6 +238,15 @@ def read_all_completed(uid, template_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/users/<uid>/workouts/ALL/completed', methods=['GET'])
+def read_all_completed_all(uid):
+    # Get all completed workouts for all templates
+    try:
+        completed_workouts = data_helper.get_all_completed_workouts_all(uid, db)
+        return jsonify(completed_workouts), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 @app.route('/users/<uid>/workouts/<template_id>/completed/<completed_id>', methods=['PUT'])
 def update_completed(uid, template_id, completed_id):
     try:

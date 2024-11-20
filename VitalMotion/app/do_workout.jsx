@@ -22,6 +22,7 @@ const DoWorkout = () => {
     const [loading, setLoading] = useState(false);
     const [notes, setNotes] = useState('');
     const [difficulty, setDifficulty] = useState(5); // Default difficulty
+    const [dateCompleted, setDateCompleted] = useState(''); // Date Completed
 
     // Fetch workout template
     const fetchWorkoutTemplate = async () => {
@@ -103,6 +104,7 @@ const DoWorkout = () => {
                 exercises: formattedExercises,
                 notes,
                 difficulty,
+                dateCompleted,
             };
 
             const response = await fetch(
@@ -177,6 +179,17 @@ const DoWorkout = () => {
                         onChangeText={(value) => setDifficulty(Number(value))}
                     />
                     <Text style={styles.difficultyValue}>Difficulty: {difficulty}</Text>
+                </View>
+
+                {/* Date Completed Section */}
+                <View style={styles.dateContainer}>
+                    <Text style={styles.sectionTitle}>Date Completed:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter date (YYYY-MM-DD)"
+                        value={dateCompleted}
+                        onChangeText={setDateCompleted}
+                    />
                 </View>
 
                 {/* Exercises List */}
@@ -256,6 +269,9 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
     },
     difficultyContainer: {
+        marginBottom: 20,
+    },
+    dateContainer: {
         marginBottom: 20,
     },
     input: {
