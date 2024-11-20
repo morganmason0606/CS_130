@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebaseConfig';
+import { useAuth } from './auth_context';
 import styles from './index_styles.js';
 
 export default function Navbar() {
@@ -21,13 +22,19 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Error logging out: ", error.message);
-    }
-  };
-  
+   try {
+    // Sign out from Firebase
+    console.log('Logging out...');
+    await signOut(auth);
+    console.log('hi');
+    // Call logout from the AuthContext to update the context state
+     const { logout } = useAuth();
+     logout();  // This will clear the uid in context and redirect the user
+   } catch (error) {
+     console.error("Error logging out: ", error.message);
+   }
+   }; 
+
   const handleMouseEnter = (page) => {
     switch (page){
       case 'Workout':
@@ -96,15 +103,14 @@ export default function Navbar() {
 
     {/* Login/Logout option based on if user is signed in */}
     {user ? (
-      <Link
-        href="#"
-        style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
-        onMouseEnter={() => { handleMouseEnter('Login') }}
+      <Pressable
+                onMouseEnter={() => { handleMouseEnter('Login') }}
         onMouseLeave={() => { handleMouseLeave('Login') }}
-        onClick={handleLogout}
+        onPress={handleLogout}
       >
-        Logout
-      </Link>
+        <Text style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
+>Logout</Text>
+      </Pressable>
     ) : (
       <Link
           href="/login"

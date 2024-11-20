@@ -5,20 +5,25 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'fire
 import { useRouter } from 'expo-router';
 import theme from './design_system.js';
 import styles from './login_styles.js';
+import { useAuth } from './auth_context';
 
 const LoginScreen = () => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false);
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
+        const [error, setError] = useState('');
+        const [isSignUp, setIsSignUp] = useState(false);
   	const [isHovered, setIsHovered] = useState(false);
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 	const router = useRouter();
+        const { login, uid, loading } = useAuth(); // Use login method from context
 
 	// Update width on screen resize
 	useEffect(() => {
+		if (uid) {
+                    setTimeout(() => {router.push('/');}, 800);
+		}
 		const onChange = () => {
 			setScreenWidth(Dimensions.get('window').width);
 		};
@@ -57,8 +62,9 @@ const LoginScreen = () => {
 
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
-        alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
-			  router.push('/workout');  // navigate to workout page upon login
+                    alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
+                    login(data.uid); // Set uid in global context
+		    router.push('/workout');  // navigate to workout page upon login
       
 		} else {
 		    console.log('Login Failed', data.error);
