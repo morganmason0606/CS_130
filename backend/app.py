@@ -56,6 +56,14 @@ def read_user_exercise(uid, exercise_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/users/<uid>/exercises', methods=['GET'])
+def read_all_user_exercises(uid):
+    try:
+        exercises = data_helper.get_all_user_exercises(uid, db)
+        return jsonify(exercises), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 @app.route('/users/<uid>/exercises/<exercise_id>', methods=['PUT'])
 def update_user_exercise(uid, exercise_id):
     try:
@@ -217,7 +225,7 @@ def read_completed(uid, template_id, completed_id):
     try:
         completed = data_helper.get_completed_workout(uid, template_id, completed_id, db)
         if completed:
-            return jsonify(completed), 200
+     (0 , _expoRouter.useSearchParams) is not a function       return jsonify(completed), 200
         return jsonify({"error": "Completed workout not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 400

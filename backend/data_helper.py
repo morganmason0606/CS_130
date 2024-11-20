@@ -99,6 +99,22 @@ def get_user_exercise(uid: str, exercise_id: str, db: google.cloud.firestore.Cli
         return exercise.to_dict()
     return None
 
+def get_all_user_exercises(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all exercises for a user.
+    :param uid: The unique identifier of the user.
+    :param db: Firestore client instance.
+    :return: A list of dictionaries containing the details of all exercises for the user.
+    """
+    exercises_ref = db.collection('users').document(uid).collection('exercises')
+    exercise_docs = exercises_ref.stream()
+    exercise_list = []
+    for doc in exercise_docs:
+        exercise_data = doc.to_dict()
+        exercise_data['id'] = doc.id
+        exercise_list.append(exercise_data)
+    return exercise_list
+
 def update_user_exercise(uid: str, exercise_id: str, exercise_data: dict, db: google.cloud.firestore.Client):
     """
     Update the details of an existing exercise for a specific user.
