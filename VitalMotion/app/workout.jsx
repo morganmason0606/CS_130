@@ -5,7 +5,6 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     Button,
-    Alert,
     StyleSheet,
     ScrollView,
 } from 'react-native';
@@ -84,13 +83,13 @@ const Workout = () => {
     };
 
     useEffect(() => {
-        if (uid === null) {
-            setTimeout(() => {
-                router.push('/login');
-            }, 800);
-        } else {
-            fetchWorkouts();
-        }
+	if (uid === null) {
+	    setTimeout(() => {
+		router.push('/login');
+	    }, 800);
+	} else {
+	    fetchWorkouts();
+	}
     }, [uid]);
 
     const deleteWorkout = async (workoutId) => {
@@ -128,8 +127,16 @@ const Workout = () => {
                     <Text style={localStyles.buttonText}>Edit Workout</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    style={localStyles.startButton}
+                    onPress={() =>
+                        router.push({ pathname: '/do_workout', params: { templateId: item.id } })
+                    }
+                >
+                    <Text style={localStyles.buttonText}>Start Workout</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                     style={localStyles.deleteButton}
-                    onPress={() => {
+		    onPress={() => {
                         alert(
                             'Delete Workout',
                         );
@@ -202,6 +209,11 @@ const localStyles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginRight: 5,
+    },
+    startButton: {
+        backgroundColor: '#2196F3',
+        padding: 10,
+        borderRadius: 5,
     },
     deleteButton: {
         backgroundColor: '#FF5722',

@@ -249,6 +249,26 @@ def get_all_completed_workouts(uid: str, template_id: str, db: google.cloud.fire
         completed_list.append(completed_data)
     return completed_list
 
+def get_all_completed_workouts_all(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all completed workouts for all templates.
+    :param uid: User ID
+    :param db: Firestore client
+    """
+    workouts_ref = db.collection('users').document(uid).collection('workouts')
+    template_docs = workouts_ref.stream()
+    completed_list = []
+    for doc in template_docs:
+        template_data = doc.to_dict()
+        template_data['id'] = doc.id
+        completed_ref = workouts_ref.document(doc.id).collection('completed')
+        completed_docs = completed_ref.stream()
+        for completed_doc in completed_docs:
+            completed_data = completed_doc.to_dict()
+            completed_data['id'] = completed_doc.id
+            completed_list.append(completed_data)
+    return completed_list
+
 def update_completed_workout(uid: str, template_id: str, completed_id: str, completed_data: dict, db: google.cloud.firestore.Client):
     """
     Update a completed workout.
