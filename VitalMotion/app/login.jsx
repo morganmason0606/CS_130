@@ -69,10 +69,10 @@ const LoginScreen = () => {
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
                     alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
-                    login(data.uid); // Set uid in global context
+		    setTimeout(() => {login(data.uid)}, 1500);
+		    setTimeout(() => {}, 1000);
 		    setNeedsToLogin(false);
 		    router.push('/');
-      
 		} else {
 		    console.log('Login Failed', data.error);
 		}
@@ -91,6 +91,7 @@ const LoginScreen = () => {
         try {
 	    setNeedsToLogin(true);
 	    setIsLoading(true);
+	    setTimeout(() => {}, 2000);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up:', userCredential.user);
 			const idToken = await userCredential.user.getIdToken();
