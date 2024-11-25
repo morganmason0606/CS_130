@@ -17,6 +17,8 @@ const LoginScreen = () => {
   	const [isHovered, setIsHovered] = useState(false);
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 	const router = useRouter();
+	const [needsToLogin, setNeedsToLogin] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	// Get the login function from the AuthContext
         const { login, uid } = useAuth(); 
 
@@ -34,10 +36,10 @@ const LoginScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		if (uid) {
+		if (uid && !needsToLogin && !isSignUp && !isLoading) {
 		    setTimeout(() => {router.push('/');}, 800);
 		}
-	}, [uid]);
+	}, [uid, needsToLogin, isSignUp]);
 
     const handleLogin = async () => {
 	    setError('');
@@ -68,7 +70,8 @@ const LoginScreen = () => {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
                     alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
                     login(data.uid); // Set uid in global context
-		    router.push('/workout');  // navigate to workout page upon login
+		    setNeedsToLogin(false);
+		    router.push('/');
       
 		} else {
 		    console.log('Login Failed', data.error);
@@ -86,6 +89,8 @@ const LoginScreen = () => {
             return;
         }
         try {
+	    setNeedsToLogin(true);
+	    setIsLoading(true);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up:', userCredential.user);
 			const idToken = await userCredential.user.getIdToken();
@@ -113,8 +118,9 @@ const LoginScreen = () => {
 			}	
 			
 			alert('Sign-up successful! Please log in.');
+			setNeedsToLogin(true);
 			setIsSignUp(false); // Switch to login mode after successful sign-up
-
+			setIsLoading(false);
         } catch (error) {
             handleFireBaseError(error);
         }
@@ -211,7 +217,7 @@ const LoginScreen = () => {
 			/>
 
             {isSignUp ? (
-				<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
+				<Text style={styles.submitButton} onPress={handleSignUp}>{isLoading ? 'Loading...' : 'Register'}</Text>
             ) : (
                 <Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
             )}
@@ -232,4 +238,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-
