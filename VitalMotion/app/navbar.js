@@ -12,6 +12,7 @@ export default function Navbar() {
   const [isHoveredNotes, setIsHoveredNotes] = useState(false);
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -26,10 +27,7 @@ export default function Navbar() {
     // Sign out from Firebase
     console.log('Logging out...');
     await signOut(auth);
-    console.log('hi');
-    // Call logout from the AuthContext to update the context state
-     const { logout } = useAuth();
-     logout();  // This will clear the uid in context and redirect the user
+    logout();  // This will clear the uid in context and redirect the user
    } catch (error) {
      console.error("Error logging out: ", error.message);
    }

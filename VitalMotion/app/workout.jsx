@@ -14,7 +14,7 @@ import styles from './index_styles';
 import CustomButton from './components/button.js';
 import { useAuth } from './auth_context';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, usePathname } from 'expo-router';
 import theme from './design_system.js';
 import Feather from '@expo/vector-icons/Feather';
 import WeightImage from './images/Weight.png';
@@ -22,6 +22,7 @@ import WeightImage from './images/Weight.png';
 const Workout = () => {
     const { uid } = useAuth();
     const router = useRouter();
+    const pathname = usePathname();
 
     const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ const Workout = () => {
 
             if (response.ok) {
                 const data = await response.json();
+	        console.log('Data:', data);
                 setWorkouts(await parseWorkouts(data));
             } else {
                 const error = await response.json();
@@ -92,10 +94,10 @@ const Workout = () => {
 	    setTimeout(() => {
 		router.push('/login');
 	    }, 800);
-	} else {
+	} else if (pathname == '/workout') {
 	    fetchWorkouts();
 	}
-    }, [uid]);
+    }, [uid, pathname]);
 
     const deleteWorkout = async (workoutId) => {
         try {

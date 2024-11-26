@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -17,6 +17,8 @@ const LoginScreen = () => {
   	const [isHovered, setIsHovered] = useState(false);
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 	const router = useRouter();
+	const needsToLogin = useRef(false);
+	const [isLoading, setIsLoading] = useState(false);
 	// Get the login function from the AuthContext
         const { login, uid } = useAuth(); 
 
@@ -34,10 +36,11 @@ const LoginScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		if (uid) {
+		if ((uid !== null)  && !needsToLogin && !isSignUp && !isLoading) {
+		    console.log(uid, needsToLogin);
 		    setTimeout(() => {router.push('/');}, 800);
 		}
-	}, [uid]);
+	}, [uid, needsToLogin, isSignUp]);
 
     const handleLogin = async () => {
 	    setError('');
@@ -48,9 +51,7 @@ const LoginScreen = () => {
 	    console.log('Attempting login with:', email, password);
 	    try {
 		const userCredential = await signInWithEmailAndPassword(auth, email, password);
-		console.log('User credential:', userCredential);
 		const idToken = await userCredential.user.getIdToken();
-		console.log('ID Token:', idToken);
 		
 		//Send the token to your Flask backend
 		const response = await fetch('http://localhost:5001/verify-token', {
@@ -61,15 +62,14 @@ const LoginScreen = () => {
 		    body: JSON.stringify({ token: idToken }),
 		});
 
-		console.log('Response from backend:', response);
 		const data = await response.json();
 
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
                     alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
-                    login(data.uid); // Set uid in global context
-		    router.push('/workout');  // navigate to workout page upon login
-      
+		    login(data.uid);
+		    needsToLogin.current = false;
+		    router.push('/');
 		} else {
 		    console.log('Login Failed', data.error);
 		}
@@ -86,6 +86,8 @@ const LoginScreen = () => {
             return;
         }
         try {
+	    needsToLogin.current = true;
+	    setIsLoading(true);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up:', userCredential.user);
 			const idToken = await userCredential.user.getIdToken();
@@ -114,9 +116,10 @@ const LoginScreen = () => {
 			
 			alert('Sign-up successful! Please log in.');
 			setIsSignUp(false); // Switch to login mode after successful sign-up
-
+			setIsLoading(false);
         } catch (error) {
             handleFireBaseError(error);
+	    setIsLoading(false);
         }
     };
 
@@ -159,8 +162,7 @@ const LoginScreen = () => {
 				}
 			]}
 		>
-			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>Login</Text>}
-
+			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>{isLoading ? 'Loading...' : 'Login'}</Text>}
 			{isSignUp && (
 				<>
 					<Text style={styles.label}>
@@ -211,7 +213,7 @@ const LoginScreen = () => {
 			/>
 
             {isSignUp ? (
-				<Text style={styles.submitButton} onPress={handleSignUp}>Register</Text>
+				<Text style={styles.submitButton} onPress={handleSignUp}>{isLoading ? 'Loading...' : 'Register'}</Text>
             ) : (
                 <Text style={styles.submitButton} onPress={handleLogin}>Login</Text>
             )}
@@ -221,7 +223,7 @@ const LoginScreen = () => {
 					styles.pageSwapText,
 					isHovered && styles.pageSwapTextHovered,
 				]}
-				onClick={() => setIsSignUp(!isSignUp)}
+				onClick={() => setIsSignUp(!isSignUp)} 
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>
@@ -232,4 +234,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-
