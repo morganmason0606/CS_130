@@ -7,7 +7,7 @@ const CustomButton = ({ title, onPress, style }) => {
 
     return (
         <TouchableOpacity
-            style={[styles.button, style, hovered && styles.buttonHovered]}
+            style={[style, styles.button, hovered && styles.buttonHovered]}
             onPress={onPress}
             onPressIn={() => setHovered(true)}
             onPressOut={() => setHovered(false)}

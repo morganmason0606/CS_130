@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Pressable,
     View,
     Text,
-    TextInput,
     TouchableOpacity,
-    Picker,
     ActivityIndicator,
-    Alert,
     StyleSheet,
     ScrollView,
     KeyboardAvoidingView,
@@ -161,7 +157,7 @@ const EditWorkout = () => {
                 return;
             }
             if (isNaN(sets) || isNaN(reps) || isNaN(weight) || sets <= 0 || reps <= 0 || weight < 0) {
-                alert('Sets, reps, and weight must be valid numbers.');
+                alert('Sets, reps, and weight must be non-negative numbers.');
                 return;
             }
         }
@@ -332,10 +328,6 @@ const localStyles = StyleSheet.create({
         fontWeight: theme.fontWeights.bold,
     },
     exerciseCardsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignContent: 'flex-start',
-        gap: 30,
         marginBottom: 30,
     },
     exerciseCard: {
@@ -343,14 +335,12 @@ const localStyles = StyleSheet.create({
         padding: 30,
         marginTop: 20,
         borderRadius: 30,
-        width: '31%',
-        minWidth: 350,
-        maxWidth: 500,
+        width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
     },
     picker: {
-        width: '50%',
+        width: '100%',
     },
     row: {
         flexDirection: 'row',
@@ -366,6 +356,7 @@ const localStyles = StyleSheet.create({
     },
     deleteButton: {
         marginBottom: 10,
+        marginLeft: 10,
     },
     saveButton: {
         marginBottom: 10,

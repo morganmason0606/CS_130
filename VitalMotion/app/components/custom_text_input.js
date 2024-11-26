@@ -5,7 +5,7 @@ import theme from '../design_system';
 const CustomTextInput = ({ style, placeholder, keyboardType, value, onChangeText, ...rest }) => {
   return (
     <TextInput
-        style={[styles.textInput, style]}
+        style={[style, styles.textInput]}
         placeholder={placeholder}
         keyboardType={keyboardType}
         value={value}
