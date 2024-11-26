@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 10,
         height: 50,
-        flex: 'auto',
-        // TODO: align button text vertically
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
     buttonText: {
         color: theme.colors.white,

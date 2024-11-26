@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Navbar from './navbar';
 import styles from './index_styles';
-import CustomButton from './components/button.js';
+import CustomButton from './components/custom_button.js';
 import { useAuth } from './auth_context';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'expo-router';
@@ -90,13 +90,13 @@ const Workout = () => {
     };
 
     useEffect(() => {
-	if (uid === null) {
-	    setTimeout(() => {
-		router.push('/login');
-	    }, 800);
-	} else if (pathname == '/workout') {
-	    fetchWorkouts();
-	}
+        if (uid === null) {
+            setTimeout(() => {
+            router.push('/login');
+            }, 800);
+        } else if (pathname == '/workout') {
+            fetchWorkouts();
+        }
     }, [uid, pathname]);
 
     const deleteWorkout = async (workoutId) => {
@@ -124,7 +124,7 @@ const Workout = () => {
     const renderExercises = ({ item, index }) => (
         <View style={localStyles.card}>
             <View style={localStyles.row}>
-                    <Text style={localStyles.cardTitle}>Workout #{index + 1}</Text>
+                <Text style={localStyles.cardTitle}>Workout #{index + 1}</Text>
                 <View style={localStyles.actionButtons}>
                     <TouchableOpacity
                         onPress={() =>
@@ -140,7 +140,7 @@ const Workout = () => {
                                     );
                         deleteWorkout(item.id);
                                 }}
-                            >
+                    >
                         <Feather name="trash-2" size={26} style={styles.iconButton} />
                     </TouchableOpacity>
                 </View>
@@ -209,7 +209,6 @@ const localStyles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     row: {
-        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
