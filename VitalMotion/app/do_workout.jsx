@@ -210,36 +210,6 @@ const DoWorkout = () => {
                 <Text style={styles.pageTitle}>Log Workout</Text>
 
                 <View style={localStyles.logContainer}>
-                    {/* Difficulty Input */}
-                    <View style={[localStyles.inputContainer, localStyles.row, localStyles.sliderRow]}>
-                        <Text style={[localStyles.textInputLabel, localStyles.sectionTitle]}>Difficulty: {difficulty} </Text>
-                        <View style={localStyles.sliderContainer}>
-                            <Text> 1 (Easy) </Text>
-                            <Slider
-                                style={localStyles.slider}
-                                minimumValue={1}
-                                maximumValue={10}
-                                step={1}
-                                value={1}
-                                onValueChange={handleSliding}
-                                minimumTrackTintColor={theme.colors.aqua}
-                                maximumTrackTintColor={theme.colors.darkGrey}
-                                // renderStepNumber
-                            />
-                            <Text> 10 (Difficult) </Text>
-                        </View>
-                    </View>
-
-                    {/* Date Completed Section */}
-                    <View style={[localStyles.inputContainer, localStyles.row]}>
-                        <Text style={[localStyles.sectionTitle, localStyles.dateTitle]}>Date Completed (YYYY-MM-DD):</Text>
-                        <CustomTextInput
-                            placeholder="Enter date"
-                            value={dateCompleted}
-                            onChangeText={setDateCompleted}
-                        />
-                    </View>
-
                     {/* Exercises List */}
                     <Text style={localStyles.sectionTitle}>Exercises:</Text>
                     {workout?.exercises?.map((item, index) => (
@@ -287,6 +257,36 @@ const DoWorkout = () => {
                         </View>
                     ))}
 
+                    {/* Difficulty Input */}
+                    <View style={[localStyles.inputContainer, localStyles.row, localStyles.sliderRow]}>
+                        <Text style={[localStyles.textInputLabel, localStyles.sectionTitle]}>Difficulty: {difficulty} </Text>
+                        <View style={localStyles.sliderContainer}>
+                            <Text> 1 (Easy) </Text>
+                            <Slider
+                                style={localStyles.slider}
+                                minimumValue={1}
+                                maximumValue={10}
+                                step={1}
+                                value={1}
+                                onValueChange={handleSliding}
+                                minimumTrackTintColor={theme.colors.aqua}
+                                maximumTrackTintColor={theme.colors.darkGrey}
+                                // renderStepNumber
+                            />
+                            <Text> 10 (Difficult) </Text>
+                        </View>
+                    </View>
+
+                    {/* Date Completed Section */}
+                    <View style={[localStyles.inputContainer, localStyles.row]}>
+                        <Text style={[localStyles.sectionTitle, localStyles.dateTitle]}>Date Completed (YYYY-MM-DD):</Text>
+                        <CustomTextInput
+                            placeholder="Enter date"
+                            value={dateCompleted}
+                            onChangeText={setDateCompleted}
+                        />
+                    </View>
+
                     {/* Notes Section */}
                     <View style={localStyles.inputContainer}>
                         <Text style={localStyles.sectionTitle}>Notes:</Text>
@@ -319,7 +319,7 @@ const localStyles = StyleSheet.create({
     logContainer: {
         backgroundColor: theme.colors.grey,
         width: '100%',
-        padding: 25,
+        padding: 35,
         marginVertical: 20,
         borderRadius: 30,
     },
@@ -328,7 +328,7 @@ const localStyles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: theme.fontSizes.regular,
-        marginBottom: 15,
+        marginVertical: 10,
     },
     dateTitle: {
         width: 360,
