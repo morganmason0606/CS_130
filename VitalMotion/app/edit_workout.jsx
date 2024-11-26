@@ -27,6 +27,8 @@ const EditWorkout = () => {
     const [allExercises, setAllExercises] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const [recommendation, setRecommendation] = useState(null);
+
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
         try {
@@ -130,6 +132,32 @@ const EditWorkout = () => {
             { eid: '', name: '', sets: '', reps: '', weight: '' },
         ]);
     };
+
+    // recommend an exercise based on current created workout and user's past pain notes
+    const recommendExercise = () =>{
+        const recommend_endpoint = `http://localhost:5001/recommend/${uid}/exercise`
+        console.log(exercises)    
+        fetch(recommend_endpoint, {
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(exercises),
+        }).then(response =>{
+            if(!response.ok){
+                throw new Error(`HTTP error getting recommendation: ${response.status}`);
+            }
+            return response.json()
+
+        }).then(responseData=>{
+            console.log(responseData)
+            setRecommendation(responseData)
+        }).catch(err =>{
+        console.error('Error saving workout:', err);
+
+            alert("Error getting recommendation")
+        })
+    }
 
     // Remove an exercise from the workout
     const removeExercise = (index) => {
@@ -269,6 +297,16 @@ const EditWorkout = () => {
                     <TouchableOpacity style={localStyles.addButton} onPress={addExercise}>
                         <Text style={localStyles.addButtonText}>Add Exercise</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={localStyles.addButton} onPress={recommendExercise}>
+                        <Text style={localStyles.addButtonText}>Recommend Exercise</Text>
+                    </TouchableOpacity>
+                    {recommendation ? <View styles={{borderColor:"red"}}>
+                        CHANGE ME&nbsp;
+                        recommendations&nbsp;
+                        {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}&nbsp;
+                        {recommendation['recommended']}&nbsp;
+                        {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
+                    </View>:null}
                     <TouchableOpacity style={localStyles.saveButton} onPress={saveWorkout}>
                         <Text style={localStyles.saveButtonText}>Save Workout</Text>
                     </TouchableOpacity>
