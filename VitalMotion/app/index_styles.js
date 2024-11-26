@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     innerWrapper: {
       paddingHorizontal: 70,
       paddingTop: 50,
+      paddingBottom: 30,
     },
     pageTitle: {
       fontSize: theme.fontSizes.larger,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
       fontWeight: theme.fontWeights.bold,
     },
     emptyMessage: {
-
+      marginTop: 10,
     },
     iconButton: {
       color: theme.colors.aqua,
