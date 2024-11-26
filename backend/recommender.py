@@ -106,8 +106,10 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
 
     # if legs
     legs = worked[GLUTES] + worked[HAMSTRINGS] + worked[QUADRICEPS]
+    # print(worked, legs, (len(curr_workout)//2+1), flush=True)
 
-    maj_needed = len(curr_workout) / 2 + 1
+
+    maj_needed = len(curr_workout) // 2 + 1
 
     to_recommend = ""
     intensity = ""
@@ -141,7 +143,7 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
         to_recommend = legs_muscles[min_ind]
 
     else:
-        to_recommend = "full"
+        # to_recommend = "full"
         # get the minimum of unseen
         to_recommend = min(worked, key=lambda k: float("inf") if k not in worked else worked[k])
 
