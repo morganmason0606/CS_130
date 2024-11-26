@@ -116,6 +116,26 @@ const DoWorkout = () => {
                 alert('Please input date workout was completed.');
                 return;
             }
+            // Use regex to validate YYYY-MM-DD format
+            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+            if (!datePattern.test(dateCompleted)) {
+                alert('Date must be in YYYY-MM-DD format.');
+                return;
+            }
+
+            // Another check to ensure date is valid
+            const dateObject = new Date(dateCompleted);
+            const isValidDate = dateObject instanceof Date && !isNaN(dateObject);
+            try {
+                dateObject.toISOString().split('T')[0]; // ensure no extra time info
+            } catch {
+                alert('Please provide a valid date in YYYY-MM-DD format.');
+                return;
+            }
+            if (!isValidDate) {
+                alert('Please provide a valid date in YYYY-MM-DD format.');
+                return;
+            }
         }
 
         try {
