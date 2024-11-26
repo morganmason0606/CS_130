@@ -98,7 +98,7 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
 
     # if mid body
     midbody = (
-        worked[ABS] + worked[BACK] + worked[CHEST] + worked[SHOULDERS] + worked[TRAPS]
+        worked[ABS] + worked[BACK] + worked[CHEST] + worked[TRAPS]
     )
 
     # if upper body
