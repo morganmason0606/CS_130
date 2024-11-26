@@ -7,12 +7,17 @@ import {
     Button,
     StyleSheet,
     ScrollView,
+    Image,
 } from 'react-native';
 import Navbar from './navbar';
 import styles from './index_styles';
+import CustomButton from './components/custom_button.js';
 import { useAuth } from './auth_context';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'expo-router';
+import theme from './design_system.js';
+import Feather from '@expo/vector-icons/Feather';
+import WeightImage from './images/Weight.png';
 
 const Workout = () => {
     const { uid } = useAuth();
@@ -85,13 +90,13 @@ const Workout = () => {
     };
 
     useEffect(() => {
-	if (uid === null) {
-	    setTimeout(() => {
-		router.push('/login');
-	    }, 800);
-	} else if (pathname == '/workout') {
-	    fetchWorkouts();
-	}
+        if (uid === null) {
+            setTimeout(() => {
+            router.push('/login');
+            }, 800);
+        } else if (pathname == '/workout') {
+            fetchWorkouts();
+        }
     }, [uid, pathname]);
 
     const deleteWorkout = async (workoutId) => {
@@ -117,49 +122,50 @@ const Workout = () => {
     };
 
     const renderExercises = ({ item, index }) => (
-        <View style={[styles.workoutWrapper, localStyles.workoutContainer]}>
-            <Text style={localStyles.workoutTitle}>Workout #{index + 1}</Text>
-            <View style={localStyles.actionButtons}>
-                <TouchableOpacity
-                    style={localStyles.editButton}
-                    onPress={() =>
-                        router.push({ pathname: '/edit_workout', params: { workoutId: item.id } })
-                    }
-                >
-                    <Text style={localStyles.buttonText}>Edit Workout</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={localStyles.startButton}
-                    onPress={() =>
-                        router.push({ pathname: '/do_workout', params: { templateId: item.id } })
-                    }
-                >
-                    <Text style={localStyles.buttonText}>Start Workout</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={localStyles.deleteButton}
-		    onPress={() => {
-                        alert(
-                            'Delete Workout',
-                        );
-			deleteWorkout(item.id);
-                    }}
-                >
-                    <Text style={localStyles.buttonText}>Delete</Text>
-                </TouchableOpacity>
+        <View style={localStyles.card}>
+            <View style={localStyles.row}>
+                <Text style={localStyles.cardTitle}>Workout #{index + 1}</Text>
+                <View style={localStyles.actionButtons}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            router.push({ pathname: '/edit_workout', params: { workoutId: item.id } })
+                        }
+                    >
+                        <Feather name="edit" size={26} style={styles.iconButton} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                                    alert(
+                                        'Delete Workout',
+                                    );
+                        deleteWorkout(item.id);
+                                }}
+                    >
+                        <Feather name="trash-2" size={26} style={styles.iconButton} />
+                    </TouchableOpacity>
+                </View>
             </View>
-            <FlatList
-                data={item.exercises}
-                keyExtractor={(exercise) => exercise.eid}
-                renderItem={({ item: exercise }) => (
-                    <View style={styles.exerciseItem}>
-                        <Text style={styles.exerciseName}>{exercise.name}</Text>
-                        <Text style={styles.exerciseDetails}>
-                            {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
-                        </Text>
-                    </View>
-                )}
-            />
+            <View style={localStyles.row}>
+                <Image alt="Image of barbell" source={WeightImage} style={localStyles.cardImage} />
+                <View style={localStyles.exerciseContainer}>
+                    <FlatList
+                        data={item.exercises}
+                        keyExtractor={(exercise) => exercise.eid}
+                        renderItem={({ item: exercise }) => (
+                            <View>
+                                <Text style={localStyles.cardDetail}>{`\u2022 ${exercise.name}`} : {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs</Text>
+                            </View>
+                        )}
+                        style={localStyles.exerciseInfo}
+                    />
+                    <CustomButton
+                        title="Start Workout"
+                        onPress={() =>
+                            router.push({ pathname: '/do_workout', params: { templateId: item.id } })
+                        }
+                    />
+                </View>
+            </View>
         </View>
     );
 
@@ -167,11 +173,18 @@ const Workout = () => {
         <View style={styles.outerWrapper}>
             <Navbar />
             <ScrollView style={styles.innerWrapper}>
-                <Text style={styles.pageTitle}>Workouts</Text>
-                <Button
-                    title="Create New Workout"
-                    onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
-                />
+                <View style={localStyles.row}>
+                    <View>
+                        <Text style={styles.pageTitle}>Workouts</Text>
+                        <Text style={styles.pageSubtitle}>Your Workouts</Text>
+                    </View>
+                    <View>
+                        <CustomButton
+                            title="+ Create New Workout"
+                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
+                        />
+                    </View>
+                </View>
                 {loading ? (
                     <ActivityIndicator size="large" color="#0000ff" />
                 ) : (
@@ -190,42 +203,52 @@ const Workout = () => {
 };
 
 const localStyles = StyleSheet.create({
-    workoutContainer: {
-        marginBottom: 20,
-        padding: 15,
-        borderRadius: 10,
-        backgroundColor: '#f8f8f8',
+    workoutPage: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
     },
-    workoutTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginBottom: 10,
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    card: {
+        backgroundColor: theme.colors.grey,
+        width: '100%',
+        padding: 25,
+        marginTop: 20,
+        borderRadius: 30,
+    },
+    cardTitle: {
+        fontSize: theme.fontSizes.large,
+        fontWeight: theme.fontWeights.bold,
+        marginBottom: 5,
+    },
+    cardDetail: {
+        fontSize: theme.fontSizes.regular,
+        marginTop: 5,
+    },
+    cardImage: {
+        color: theme.colors.black,
+        flexGrow: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        resizeMode: 'contain',
+        height: 150,
+    },
+    exerciseContainer: {
+        flexGrow: 3,
+        justifyContent: 'flex-start',
+    },
+    exerciseInfo: {
+        marginTop: 5,
+        marginBottom: 15,
     },
     actionButtons: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    editButton: {
-        backgroundColor: '#4CAF50',
-        padding: 10,
-        borderRadius: 5,
-        marginRight: 5,
-    },
-    startButton: {
-        backgroundColor: '#2196F3',
-        padding: 10,
-        borderRadius: 5,
-    },
-    deleteButton: {
-        backgroundColor: '#FF5722',
-        padding: 10,
-        borderRadius: 5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        textAlign: 'center',
+        gap: 5,
     },
 });
 

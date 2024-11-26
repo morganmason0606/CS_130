@@ -17,6 +17,7 @@ import Navbar from './navbar';
 import { useAuth } from './auth_context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import styles from './index_styles';
+import theme from './design_system';
 
 const EditWorkout = () => {
     const { uid } = useAuth();
@@ -195,14 +196,15 @@ const EditWorkout = () => {
             style={styles.outerWrapper}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-            <ScrollView contentContainerStyle={localStyles.scrollContent}>
+            <ScrollView>
                 <Navbar />
                 <View style={styles.innerWrapper}>
-                    <Text style={localStyles.pageTitle}>
+                    <Text style={styles.pageTitle}>
                         {workoutId === 'new' ? 'Create Workout' : 'Edit Workout'}
                     </Text>
+                    <Text style={styles.pageSubtitle}> Exercises: </Text>
                     {exercises.map((item, index) => (
-                        <View key={index} style={localStyles.exerciseEditItem}>
+                        <View key={index} style={localStyles.exerciseCard}>
                             <Picker
                                 selectedValue={item.eid}
                                 style={localStyles.picker}
@@ -279,69 +281,66 @@ const EditWorkout = () => {
 };
 
 const localStyles = StyleSheet.create({
-    scrollContent: {
-        flexGrow: 1,
-        padding: 10,
-    },
     pageTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 15,
+        fontSize: theme.fontSizes.large,
+        fontWeight: theme.fontWeights.bold,
     },
-    exerciseEditItem: {
-        marginBottom: 15,
-        backgroundColor: '#f0f0f0',
-        padding: 10,
-        borderRadius: 5,
+    exerciseCard: {
+        backgroundColor: theme.colors.grey,
+        width: '100%',
+        padding: 25,
+        marginTop: 20,
+        borderRadius: 30,
     },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-    },
+    // input: {
+    //     height: 40,
+    //     borderColor: 'gray',
+    //     borderWidth: 1,
+    //     marginBottom: 10,
+    //     paddingHorizontal: 10,
+    //     borderRadius: 5,
+    // },
     picker: {
         height: 50,
         width: '100%',
         marginBottom: 10,
+        borderRadius: 15,
+        color: theme.colors.offwhite,
     },
-    deleteButton: {
-        backgroundColor: '#FF5722',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-    deleteButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    addButton: {
-        backgroundColor: '#4CAF50',
-        padding: 15,
-        borderRadius: 5,
-        marginTop: 10,
-        alignItems: 'center',
-    },
-    addButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    saveButton: {
-        backgroundColor: '#2196F3',
-        padding: 15,
-        borderRadius: 5,
-        marginTop: 10,
-        alignItems: 'center',
-    },
-    saveButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
+    // deleteButton: {
+    //     backgroundColor: '#FF5722',
+    //     padding: 10,
+    //     borderRadius: 5,
+    //     alignItems: 'center',
+    // },
+    // deleteButtonText: {
+    //     color: '#fff',
+    //     fontWeight: 'bold',
+    // },
+    // addButton: {
+    //     backgroundColor: '#4CAF50',
+    //     padding: 15,
+    //     borderRadius: 5,
+    //     marginTop: 10,
+    //     alignItems: 'center',
+    // },
+    // addButtonText: {
+    //     color: '#fff',
+    //     fontWeight: 'bold',
+    //     fontSize: 16,
+    // },
+    // saveButton: {
+    //     backgroundColor: '#2196F3',
+    //     padding: 15,
+    //     borderRadius: 5,
+    //     marginTop: 10,
+    //     alignItems: 'center',
+    // },
+    // saveButtonText: {
+    //     color: '#fff',
+    //     fontWeight: 'bold',
+    //     fontSize: 16,
+    // },
 });
 
 export default EditWorkout;
