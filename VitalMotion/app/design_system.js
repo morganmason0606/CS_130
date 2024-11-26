@@ -1,5 +1,6 @@
 const theme = {
     colors: {
+        lightAqua: '#D6E3E7',
         aqua: '#9ABFCA',
         black: '#0E0E0E',
         grey: '#EDEDED',
