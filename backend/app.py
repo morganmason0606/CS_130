@@ -12,7 +12,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route('/verify-token', methods=['POST'])
 def verify_token():
@@ -269,17 +269,19 @@ def delete_completed(uid, template_id, completed_id):
 # Recommender system
 @app.route('/recommend/<uid>/exercise', methods=['POST'])
 def get_recommended_exercise(uid):
-
-    curr_workout = request.get_json()
-    curr_workout = [c for c in curr_workout if ('eid' in c and c['eid'])]
-   
-    print(curr_workout, flush=True)
-    recommendation = recommender.recommend_exercise(uid, curr_workout, db)
-    return jsonify({"status":'success', **recommendation})
+    try:
+        curr_workout = request.get_json()
+        curr_workout = [c for c in curr_workout if ('eid' in c and c['eid'])]
+       
+        print(curr_workout, flush=True)
+        recommendation = recommender.recommend_exercise(uid, curr_workout, db)
+        return jsonify({"status":'success', **recommendation}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 @app.route('/recommend/<uid>/workout', methods=['POST'])
 def get_recommended_workout(uid):
-    return
+    return jsonify({"error": "Not implemented yet."}), 501
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
