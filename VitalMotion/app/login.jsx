@@ -119,6 +119,7 @@ const LoginScreen = () => {
 			setIsLoading(false);
         } catch (error) {
             handleFireBaseError(error);
+	    setIsLoading(false);
         }
     };
 
