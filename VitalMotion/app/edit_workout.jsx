@@ -225,18 +225,13 @@ const EditWorkout = () => {
                 <Navbar />
                 <View style={styles.innerWrapper}>
                     <View style={localStyles.row}>
-                        <View>
+                        <View>  
                             <Text style={styles.pageTitle}>
                                 {workoutId === 'new' ? 'Create New Workout' : 'Edit Workout'}
                             </Text>
                             <Text style={styles.pageSubtitle}> Exercises: </Text>
                         </View>
-                        <View>
-                            <CustomButton
-                                title="+ Add New Exercise"
-                                onPress={addExercise}
-                            />
-                        </View>
+                        
                     </View>
                     <View style={localStyles.exerciseCardsContainer}>
                         {exercises.map((item, index) => (
@@ -308,9 +303,14 @@ const EditWorkout = () => {
                         ))}
                     </View>
                     <CustomButton
+                        title="+ Add New Exercise"
+                        onPress={addExercise}
+                        style={localStyles.Button}
+                    />
+                    <CustomButton
                         title="Save Workout"
                         onPress={saveWorkout}
-                        style={localStyles.saveButton}
+                        style={localStyles.Button}
                     />
                     <CustomButton
                         title="Cancel"
@@ -358,7 +358,7 @@ const localStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 10,
     },
-    saveButton: {
+    Button: {
         marginBottom: 10,
     },
 });
