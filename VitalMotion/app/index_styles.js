@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
       fontWeight: theme.fontWeights.bold,
     },
     emptyMessage: {
-
+      marginTop: 10,
     },
     iconButton: {
       color: theme.colors.aqua,

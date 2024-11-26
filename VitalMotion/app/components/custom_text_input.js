@@ -2,14 +2,15 @@ import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import theme from '../design_system';
 
-const CustomTextInput = ({ style, placeholder, keyboardType, value, onChangeText, ...rest }) => {
+const CustomTextInput = ({ style, placeholder, keyboardType, value, onChangeText, label, ...rest }) => {
   return (
     <TextInput
-        style={[style, styles.textInput]}
+        style={[styles.textInput, style]}
         placeholder={placeholder}
         keyboardType={keyboardType}
         value={value}
         onChangeText={onChangeText}
+        label={label}
         {...rest} 
     />
   );
