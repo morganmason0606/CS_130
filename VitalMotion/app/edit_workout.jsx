@@ -336,19 +336,18 @@ const EditWorkout = () => {
                             </View>
                         ))}
                     </View>
+                    
+                    {/*MORGAN:TODO FIX ME*/}
+                    {recommendation ? 
+                    <View style={localStyles.row}>
+                        <Text style={styles.pageSubtitle}> Recommendations: </Text>
+                        <Text>{recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}</Text>
+                        <Text>{recommendation['recommended']}</Text>
+                            {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
+                    </View>
+                    :null
+                    }
 
-
-{/*MORGAN:TODO FIX ME*/}
-
-{recommendation ? 
-<Text styles={{borderColor:"red"}}>
-    CHANGE ME&nbsp;
-    recommendations&nbsp;
-    {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}&nbsp;
-    {recommendation['recommended']}&nbsp;
-    {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
-</Text>
-:null}
                     <CustomButton
                         title="+ Add New Exercise"
                         onPress={addExercise}

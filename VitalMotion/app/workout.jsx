@@ -180,7 +180,7 @@ const Workout = () => {
                         <Text style={styles.pageTitle}>Workouts</Text>
                         <Text style={styles.pageSubtitle}>Your Workouts</Text>
                     </View>
-                    <View>
+                    <View style={localStyles.actionButtons}>
                         <CustomButton
                             title="+ Create New Workout"
                             onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
@@ -188,10 +188,6 @@ const Workout = () => {
                         <CustomButton
                             title="+ Get Workout Recommendation"
                             onPress={() => router.push({ pathname: '/rec_workout'})}
-                            style={{
-                                "marginBottom": 10,
-                                "marginTop": 10,
-                            }}
                         />
                     </View>
                 </View>

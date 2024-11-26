@@ -11,6 +11,7 @@ import Navbar from './navbar';
 import styles from './index_styles';
 import { useAuth } from './auth_context';
 import { useRouter } from 'expo-router';
+import theme from './design_system';
 
 const History = () => {
     const { uid } = useAuth();
@@ -118,6 +119,13 @@ const History = () => {
         }
     };
 
+    const getWorkoutMessage = (numWorkouts) => {
+        if (numWorkouts === 0) return "Start your first workout!";
+        if (numWorkouts <= 5) return "Keep it up!";
+        if (numWorkouts <= 10) return "Nice job!";
+        return "You're on fire!";
+      };
+
     useEffect(() => {
         if (uid === null) {
             setTimeout(() => {
@@ -170,7 +178,20 @@ const History = () => {
         <ScrollView contentContainerStyle={styles.scrollContent}>
             <Navbar />
             <View style={styles.innerWrapper}>
-                <Text style={styles.pageTitle}>History</Text>
+                <View style={localStyles.row}>
+                    <View>
+                        <Text style={styles.pageTitle}>History</Text>
+                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>
+                    </View>
+                    <View style={localStyles.workoutsCompletedContainer}>
+                        <Text style={localStyles.workoutsCompletedText}>
+                            Workouts Completed: {workouts.length}
+                        </Text>
+                        <Text style={localStyles.motivationText}>
+                            {getWorkoutMessage(workouts.length)}
+                        </Text>
+                    </View>
+                </View>
                 {workouts.length === 0 ? (
                     <Text style={styles.emptyMessage}>No history found.</Text>
                 ) : (
@@ -191,6 +212,30 @@ const localStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    workoutsCompletedContainer: {
+        backgroundColor: theme.colors.aqua,
+        padding: 15,
+        borderRadius: 10,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    workoutsCompletedText: {
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+        color: theme.colors.white,
+    },
+    motivationText: {
+        color: theme.colors.white,
+        fontStyle: 'italic',
+        marginTop: 5,
     },
     date: {
         fontSize: 16,
