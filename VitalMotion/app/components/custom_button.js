@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import theme from '../design_system';
 
-const CustomButton = ({ title, onPress, style }) => (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-        <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-);
+const CustomButton = ({ title, onPress, style }) => {
+    const [hovered, setHovered] = useState(false);
+
+    return (
+        <TouchableOpacity
+            style={[styles.button, style, hovered && styles.buttonHovered]}
+            onPress={onPress}
+            onPressIn={() => setHovered(true)}
+            onPressOut={() => setHovered(false)}
+        >
+            <Text style={styles.buttonText}>{title}</Text>
+        </TouchableOpacity>
+    );
+}
 
 const styles = StyleSheet.create({
     button: {
@@ -24,6 +33,9 @@ const styles = StyleSheet.create({
         color: theme.colors.white,
         fontSize: theme.fontSizes.regular,
         fontWeight: theme.fontWeights.bold,
+    },
+    buttonHovered: {
+        backgroundColor: theme.links.light.hover,
     },
 });
 
