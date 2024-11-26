@@ -181,7 +181,15 @@ const Workout = () => {
                     <View>
                         <CustomButton
                             title="+ Create New Workout"
-                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
+                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
+                        />
+                        <CustomButton
+                            title="+ Get Workout Recommendation"
+                            onPress={() => router.push({ pathname: '/rec_workout'})}
+                            style={{
+                                "marginBottom": 10,
+                                "marginTop": 10,
+                            }}
                         />
                     </View>
                 </View>

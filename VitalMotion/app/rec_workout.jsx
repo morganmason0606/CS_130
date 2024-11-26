@@ -8,6 +8,7 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Platform,
+    Picker
 } from 'react-native';
 import { useAuth } from './auth_context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -19,16 +20,24 @@ import CustomTextInput from './components/custom_text_input';
 import styles from './index_styles';
 import theme from './design_system';
 
-const EditWorkout = () => {
+const default_workouts = {
+    "arms": "uM8w8iAJtyjVqWrUkjaC",
+    "midbody": "lPDRBghRVrJI9PgFcInZ",
+    'legs': 'KKfAn5zJ88HxV7mHk0y1'
+}
+
+
+const RecWorkout = () => {
     const { uid } = useAuth();
     const router = useRouter();
-    const { workoutId } = useLocalSearchParams();
+    // const { workoutId } = useLocalSearchParams();
 
     const [exercises, setExercises] = useState([]);
     const [allExercises, setAllExercises] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const [recommendation, setRecommendation] = useState(null);
+    const [workoutId, setWorkoutId] = useState(Object.values(default_workouts)[Math.floor(Math.random()*Object.keys(default_workouts).length)]);
 
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
@@ -198,12 +207,10 @@ const EditWorkout = () => {
 
         const workoutData = { exercises: exerciseStrings };
 
+//MORGAN : TODO, check this logic doesn't break anything
         try {
-            const method = workoutId === 'new' ? 'POST' : 'PUT';
-            const url =
-                workoutId === 'new'
-                    ? `http://localhost:5001/users/${uid}/workouts`
-                    : `http://localhost:5001/users/${uid}/workouts/${workoutId}`;
+            const method = 'POST';
+            const url =`http://localhost:5001/users/${uid}/workouts`
 
             const response = await fetch(url, {
                 method,
@@ -234,6 +241,10 @@ const EditWorkout = () => {
         router.push('/workout');
     }
 
+    const retrieveRec = () =>{
+        fetchWorkoutDetails();
+    }
+
     if (loading) {
         return (
             <View style={styles.outerWrapper}>
@@ -260,7 +271,32 @@ const EditWorkout = () => {
                             </Text>
                             <Text style={styles.pageSubtitle}> Exercises: </Text>
                         </View>
-                        
+
+
+{/*MORGAN:TODO FIX ME*/}
+<View>
+<Text >Choose a focus</Text>
+<Picker
+    selectedValue={workoutId}
+    onValueChange={(itemValue) => {
+        console.log(itemValue); 
+        itemValue =="random"? setWorkoutId(Object.values(default_workouts)[Math.floor(Math.random()*Object.keys(default_workouts).length)]) : setWorkoutId(itemValue) }}
+    placeholder={"Select a focus"}
+    style={localStyles.picker}
+>
+    <Picker.Item key={"random"} label={'random'} value={'random'}/>
+    {Object.entries(default_workouts).map(([part, wid], ind) => {
+        return <Picker.Item key={ind} label={part} value={wid}/>
+    })}
+</Picker>
+<CustomButton 
+    title = "Generate from focus"
+    onPress={retrieveRec}
+    style={localStyles.Button}
+/>
+
+</View>
+
                     </View>
                     <View style={localStyles.exerciseCardsContainer}>
                         {exercises.map((item, index) => (
@@ -332,18 +368,19 @@ const EditWorkout = () => {
                         ))}
                     </View>
 
-
 {/*MORGAN:TODO FIX ME*/}
+<View>
 
-{recommendation ? 
-<Text styles={{borderColor:"red"}}>
-    CHANGE ME&nbsp;
-    recommendations&nbsp;
-    {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}&nbsp;
-    {recommendation['recommended']}&nbsp;
-    {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
-</Text>
-:null}
+                    {recommendation ? 
+                    <Text styles={{borderColor:"red"}}>
+                        CHANGE ME&nbsp;
+                        recommendations&nbsp;
+                        {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}&nbsp;
+                        {recommendation['recommended']}&nbsp;
+                        {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
+                    </Text>
+                    :null}
+</View>
                     <CustomButton
                         title="+ Add New Exercise"
                         onPress={addExercise}
@@ -410,4 +447,4 @@ const localStyles = StyleSheet.create({
     },
 });
 
-export default EditWorkout;
+export default RecWorkout;
