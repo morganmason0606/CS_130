@@ -222,105 +222,107 @@ const EditWorkout = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <Navbar />
-            <ScrollView style={styles.innerWrapper}>
-                <View style={localStyles.row}>
-                    <View>
-                        <Text style={styles.pageTitle}>
-                            {workoutId === 'new' ? 'Create New Workout' : 'Edit Workout'}
-                        </Text>
-                        <Text style={styles.pageSubtitle}> Exercises: </Text>
-                    </View>
-                    <View>
-                        <CustomButton
-                            title="+ Add New Exercise"
-                            onPress={addExercise}
-                        />
-                    </View>
-                </View>
-                <ScrollView style={localStyles.exerciseCardsContainer}>
-                    {exercises.map((item, index) => (
-                        <View key={index} style={localStyles.exerciseCard}>
-                            <View style={localStyles.row}>
-                                <CustomPicker
-                                    selectedValue={item.eid}
-                                    style={localStyles.picker}
-                                    onValueChange={(value) => {
-                                        const selectedExercise = allExercises.find(
-                                            (exercise) => exercise.id === value
-                                        );
-                                        const updatedExercises = [...exercises];
-                                        updatedExercises[index].eid = value;
-                                        updatedExercises[index].name = selectedExercise.name;
-                                        setExercises(updatedExercises);
-                                    }}
-                                    placeholder="Select Exercise"
-                                    data={allExercises}
-                                />
-                                <TouchableOpacity
-                                    style={localStyles.deleteButton}
-                                    onPress={() => removeExercise(index)}
-                                >
-                                    <Feather name="trash-2" size={26} style={styles.iconButton} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> # of Sets: </Text>
-                                <CustomTextInput
-                                    placeholder="Sets"
-                                    keyboardType="numeric"
-                                    value={item.sets}
-                                    onChangeText={(text) => {
-                                        const updatedExercises = [...exercises];
-                                        updatedExercises[index].sets = text;
-                                        setExercises(updatedExercises);
-                                    }}
-                                />
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> # of Reps: </Text>
-                                <CustomTextInput
-                                
-                                    placeholder="Reps"
-                                    keyboardType="numeric"
-                                    value={item.reps}
-                                    onChangeText={(text) => {
-                                        const updatedExercises = [...exercises];
-                                        updatedExercises[index].reps = text;
-                                        setExercises(updatedExercises);
-                                    }}
-                                />
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> Weight (lb): </Text>
-                                <CustomTextInput
-                                    placeholder="Weight"
-                                    keyboardType="numeric"
-                                    value={item.weight}
-                                    onChangeText={(text) => {
-                                        const updatedExercises = [...exercises];
-                                        updatedExercises[index].weight = text;
-                                        setExercises(updatedExercises);
-                                    }}
-                                />
-                            </View>
+            <ScrollView>
+                <View style={styles.innerWrapper}>
+                    <View style={localStyles.row}>
+                        <View>
+                            <Text style={styles.pageTitle}>
+                                {workoutId === 'new' ? 'Create New Workout' : 'Edit Workout'}
+                            </Text>
+                            <Text style={styles.pageSubtitle}> Exercises: </Text>
                         </View>
-                    ))}
-                <CustomButton
-                    title="+ Add New Exercise"
-                    onPress={addExercise}
-                    style={localStyles.addExerciseButton}
-                />
-                <CustomButton
-                    title="Save Workout"
-                    onPress={saveWorkout}
-                    style={localStyles.saveButton}
-                />
-                <CustomButton
-                    title="Cancel"
-                    onPress={handleCancel}
-                    style={localStyles.cancelButton}
-                />
-                </ScrollView>
+                        <View>
+                            <CustomButton
+                                title="+ Add New Exercise"
+                                onPress={addExercise}
+                            />
+                        </View>
+                    </View>
+                    <View style={localStyles.exerciseCardsContainer}>
+                        {exercises.map((item, index) => (
+                            <View key={index} style={localStyles.exerciseCard}>
+                                <View style={localStyles.row}>
+                                    <CustomPicker
+                                        selectedValue={item.eid}
+                                        style={localStyles.picker}
+                                        onValueChange={(value) => {
+                                            const selectedExercise = allExercises.find(
+                                                (exercise) => exercise.id === value
+                                            );
+                                            const updatedExercises = [...exercises];
+                                            updatedExercises[index].eid = value;
+                                            updatedExercises[index].name = selectedExercise.name;
+                                            setExercises(updatedExercises);
+                                        }}
+                                        placeholder="Select Exercise"
+                                        data={allExercises}
+                                    />
+                                    <TouchableOpacity
+                                        style={localStyles.deleteButton}
+                                        onPress={() => removeExercise(index)}
+                                    >
+                                        <Feather name="trash-2" size={26} style={styles.iconButton} />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={localStyles.row}>
+                                    <Text style={localStyles.textInputLabel}> # of Sets: </Text>
+                                    <CustomTextInput
+                                        placeholder="Sets"
+                                        keyboardType="numeric"
+                                        value={item.sets}
+                                        onChangeText={(text) => {
+                                            const updatedExercises = [...exercises];
+                                            updatedExercises[index].sets = text;
+                                            setExercises(updatedExercises);
+                                        }}
+                                    />
+                                </View>
+                                <View style={localStyles.row}>
+                                    <Text style={localStyles.textInputLabel}> # of Reps: </Text>
+                                    <CustomTextInput
+                                    
+                                        placeholder="Reps"
+                                        keyboardType="numeric"
+                                        value={item.reps}
+                                        onChangeText={(text) => {
+                                            const updatedExercises = [...exercises];
+                                            updatedExercises[index].reps = text;
+                                            setExercises(updatedExercises);
+                                        }}
+                                    />
+                                </View>
+                                <View style={localStyles.row}>
+                                    <Text style={localStyles.textInputLabel}> Weight (lb): </Text>
+                                    <CustomTextInput
+                                        placeholder="Weight"
+                                        keyboardType="numeric"
+                                        value={item.weight}
+                                        onChangeText={(text) => {
+                                            const updatedExercises = [...exercises];
+                                            updatedExercises[index].weight = text;
+                                            setExercises(updatedExercises);
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        ))}
+                    </View>
+                    <CustomButton
+                        title="+ Add New Exercise"
+                        onPress={addExercise}
+                        style={localStyles.addExerciseButton}
+                    />
+                    <CustomButton
+                        title="Save Workout"
+                        onPress={saveWorkout}
+                        style={localStyles.saveButton}
+                    />
+                    <CustomButton
+                        title="Cancel"
+                        onPress={handleCancel}
+                        style={localStyles.cancelButton}
+                    />
+                </View>
             </ScrollView>
         </KeyboardAvoidingView>
     );
