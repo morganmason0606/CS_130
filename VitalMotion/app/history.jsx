@@ -119,12 +119,44 @@ const History = () => {
         }
     };
 
+    // Function to get a random message from messages array
+    const getRandomMessage = (messages) => {
+        const randomIndex = Math.floor(Math.random() * messages.length);
+        return messages[randomIndex];
+    };
+  
     const getWorkoutMessage = (numWorkouts) => {
-        if (numWorkouts === 0) return "Start your first workout!";
-        if (numWorkouts <= 5) return "Keep it up!";
-        if (numWorkouts <= 10) return "Nice job!";
-        return "You're on fire!";
-      };
+        if (numWorkouts === 0) {
+        const messages = [
+            "Start your first workout!",
+            "Let's get moving!",
+            "Log a workout!",
+        ];
+        return getRandomMessage(messages);
+        }
+        if (numWorkouts <= 5) {
+        const messages = [
+            "Keep it up!",
+            "You're doing great!",
+            "Let's reach 10 workouts!",
+        ];
+        return getRandomMessage(messages);
+        }
+        if (numWorkouts <= 10) {
+        const messages = [
+            "Nice job!",
+            "You're crushing it!",
+            "Way to go!",
+        ];
+        return getRandomMessage(messages);
+        }
+        const messages = [
+        "You're on fire!",
+        "Keep pushing!",
+        "Amazing progress!",
+        ];
+        return getRandomMessage(messages);
+    };
 
     useEffect(() => {
         if (uid === null) {
