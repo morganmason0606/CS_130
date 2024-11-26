@@ -4,6 +4,7 @@ const theme = {
         black: '#0E0E0E',
         grey: '#EDEDED',
         white: '#FFFFFF',
+        offWhite: '#F2F2F2'
     },
     links: {    // TODO: Are these the right colors for hover and active?
         dark: {

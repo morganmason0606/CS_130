@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     outerWrapper: {
       flex: 1,
       textAlign: 'left',
-      backgroundColor: theme.colors.grey,
+      backgroundColor: theme.colors.offWhite,
     },
     navbar: {                      // TODO: Make navbar sticky.
       flexDirection: 'row',
@@ -36,6 +36,12 @@ const styles = StyleSheet.create({
     pageSubtitle: {
       fontSize: theme.fontSizes.large,
       fontWeight: theme.fontWeights.bold,
+    },
+    emptyMessage: {
+
+    },
+    iconButton: {
+      color: theme.colors.aqua,
     },
   });
   
