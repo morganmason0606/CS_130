@@ -153,7 +153,9 @@ const Workout = () => {
                         keyExtractor={(exercise) => exercise.eid}
                         renderItem={({ item: exercise }) => (
                             <View>
-                                <Text style={localStyles.cardDetail}>{`\u2022 ${exercise.name}`} : {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs</Text>
+                                <Text style={localStyles.cardDetail}>
+                                    <Text style={localStyles.bold}> {`\u2022 ${exercise.name}`}</Text>: {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
+                                </Text>
                             </View>
                         )}
                         style={localStyles.exerciseInfo}
@@ -250,6 +252,9 @@ const localStyles = StyleSheet.create({
         flexDirection: 'row',
         gap: 5,
     },
+    bold: {
+        fontWeight: theme.fontWeights.bold,
+    }
 });
 
 export default Workout;
