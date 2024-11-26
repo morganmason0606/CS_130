@@ -371,15 +371,16 @@ const RecWorkout = () => {
 {/*MORGAN:TODO FIX ME*/}
 <View>
 
+                    {/*MORGAN:TODO FIX ME*/}
                     {recommendation ? 
-                    <Text styles={{borderColor:"red"}}>
-                        CHANGE ME&nbsp;
-                        recommendations&nbsp;
-                        {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}&nbsp;
-                        {recommendation['recommended']}&nbsp;
-                        {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
-                    </Text>
-                    :null}
+                    <View>
+                        <Text style={styles.pageSubtitle}> Recommendations: </Text>
+                        <Text> Muscle: {recommendation['recommended']}</Text>
+                        <Text> Intensity: {recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}</Text>
+                            {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
+                    </View>
+                    :null
+                    }
 </View>
                     <CustomButton
                         title="+ Add New Exercise"
