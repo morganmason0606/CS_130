@@ -107,7 +107,7 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     # if legs
     legs = worked[GLUTES] + worked[HAMSTRINGS] + worked[QUADRICEPS]
 
-    maj_needed = len(curr_workout) / 2 + 1
+    maj_needed = len(curr_workout) // 2 + 1
 
     to_recommend = ""
     intensity = ""
