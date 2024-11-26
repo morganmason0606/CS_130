@@ -271,6 +271,8 @@ def delete_completed(uid, template_id, completed_id):
 def get_recommended_exercise(uid):
 
     curr_workout = request.get_json()
+    curr_workout = [c for c in curr_workout if ('eid' in c and c['eid'])]
+   
     print(curr_workout, flush=True)
     recommendation = recommender.recommend_exercise(uid, curr_workout, db)
     return jsonify({"status":'success', **recommendation})

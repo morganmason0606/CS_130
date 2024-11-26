@@ -53,6 +53,8 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     exercise_info = dict()
 
     for exer in curr_workout:
+        if not('eid' in exer and exer['eid']):
+            continue
         doc = collection_ref.document(exer["eid"]).get()
         if doc.exists:
             exercise_info[exer["eid"]] = doc.to_dict()
@@ -118,14 +120,14 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
 
     elif midbody >= maj_needed:
         to_recommend = "mid"
-        mid_muscles = [ABS, BACK, CHEST, TRAPS]
+        mid_muscles = [ BACK, CHEST, TRAPS, ABS]
         curr_counts = [worked[m] for m in mid_muscles]
         min_ind = curr_counts.index(min(curr_counts))
         to_recommend = mid_muscles[min_ind]
 
     elif upper_body >= maj_needed:
         # to_recommend = "upper"
-        upper_body_muscles = [ABS,BICEPS,TRICEPS,SHOULDERS,BACK,CHEST,TRAPS,SHOULDERS,FOREARMS,]
+        upper_body_muscles = [BICEPS,TRICEPS,SHOULDERS,BACK,CHEST,TRAPS,SHOULDERS,ABS,FOREARMS,]
         curr_counts = [worked[m] for m in upper_body_muscles]
         min_ind = curr_counts.index(min(curr_counts))
         to_recommend = upper_body_muscles[min_ind]
@@ -133,7 +135,7 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     elif legs >= maj_needed:
         
         # to_recommend = "legs"
-        legs_muscles = ["Glutes", "Hamstrings", "Quadriceps"]
+        legs_muscles = [GLUTES, HAMSTRINGS, QUADRICEPS]
         curr_counts = [worked[m] for m in legs_muscles]
         min_ind = curr_counts.index(min(curr_counts))
         to_recommend = legs_muscles[min_ind]
