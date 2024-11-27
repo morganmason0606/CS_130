@@ -370,7 +370,7 @@ const localStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: '1rem',
+        marginTop: '1rem',
         padding: '1rem',
 
         borderRadius: '0.5rem',
