@@ -249,7 +249,7 @@ const MedicationNoteForm = () => {
     // TODO: Implement medication note form.
     return(
         <ScrollView>
-            <Text style={formStyles.modalTitle}>Medication Notes</Text>
+            <Text style={formStyles.modalTitle}>New Medication Note</Text>
         </ScrollView>
     );
 };
@@ -273,7 +273,6 @@ const Notes = () => {
     
     // TODO: Fetch journals from backend.
     const fetchJournals = async () => {
-        setJournals([]);
         return;
     };
 
@@ -351,6 +350,7 @@ const Notes = () => {
         } else {
             fetchPainNotes();
             fetchJournals();    // TODO: Check if this should be called here.
+            fetchMedNotes();    // TODO: Check if this should be called here.
         }
     }, [uid]);
 
