@@ -148,7 +148,7 @@ const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
         <View style={formStyles.container}>
             {/* Open Button */}
             <TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
-                <Text style={formStyles.textButtonText}>New Pain Note</Text>
+                <Text style={formStyles.textButtonText}>+ New Pain Note</Text>
             </TouchableOpacity>
 
             {/* Modal Popup */}
@@ -276,7 +276,10 @@ const Notes = () => {
             <Navbar />
 
             <View style={styles.innerWrapper}>
-                <Text style={styles.pageTitle}>Notes</Text>
+                <View style={localStyles.headerContainer}>
+                    <Text style={styles.pageTitle}>Notes</Text>
+                    <PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes}/>  {/** TODO: Dynamically switch component based on active tab. */}
+                </View>
                 
                 <View style={localStyles.tabContainer}>
                     <TouchableOpacity
@@ -301,10 +304,8 @@ const Notes = () => {
 
                 {activeTab === 'Pain' && (
                     <ScrollView>
-                        <PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes}/>
-
                         {loading ? (
-                            <Text>Loading...</Text>
+                            <Text style={localStyles.loading}>Loading...</Text>
                         ) : (
                             <FlatList
                                 data={painNotes}
@@ -340,6 +341,12 @@ const Notes = () => {
 };
 
 const localStyles = StyleSheet.create({
+    headerContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     tabContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -387,7 +394,7 @@ const formStyles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     openButton: {
-        padding: '0.5rem',
+        padding: '1rem',
         borderRadius: '0.5rem',
         backgroundColor: theme.colors.aqua,
     },
