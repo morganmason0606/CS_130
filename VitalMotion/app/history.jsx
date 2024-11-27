@@ -236,11 +236,11 @@ const History = () => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContent}>
             <Navbar />
-            <View style={styles.innerWrapper}>
+            <ScrollView style={styles.innerWrapper}>
                 <View style={localStyles.row}>
                     <View>
                         <Text style={styles.pageTitle}>History</Text>
-                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>
+                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>  {/** TODO: Make subheading more general since we display non-workout info. */}
                     </View>
                     <View style={localStyles.workoutsCompletedContainer}>
                         <Text style={localStyles.workoutsCompletedText}>
@@ -256,11 +256,11 @@ const History = () => {
                 ) : (
                     <FlatList
                         data={workouts}
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(_, index) => index.toString()}
                         renderItem={renderHistoryItem}
                     />
                 )}
-            </View>
+            </ScrollView>
         </ScrollView>
     );
 };
