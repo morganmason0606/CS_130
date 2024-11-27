@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
 		fontSize: theme.fontSizes.large,
 		fontWeight: theme.fontWeights.bold,
 	},
+	disabledButton: {
+		backgroundColor: theme.colors.darkGrey,
+	},
     pageSwapText: {
 		cursor: 'pointer',
         textAlign: 'center',
