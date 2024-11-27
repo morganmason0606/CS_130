@@ -66,7 +66,7 @@ const ModalForm = ({ type, form }) => {
                         ]}
                     >
                         <View style={{width: '100%'}}>
-                            {form}
+                            {React.cloneElement(form, { toggleModal })}
                         </View>
 
                         {/* Cancel Button */}
@@ -80,7 +80,7 @@ const ModalForm = ({ type, form }) => {
     );
 };
 
-const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
+const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
     const [newBodyPart, setNewBodyPart] = useState('');
     const [newPainLevel, setNewPainLevel] = useState(5);            // Default pain level = 5
     const [hoveredPainLevel, setHoveredPainLevel] = useState(0);
@@ -211,7 +211,7 @@ const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
     );
 };
 
-const JournalNoteForm = () => {
+const JournalNoteForm = ({ toggleModal }) => {
     const [content, setContent] = useState('');
     const onChangeText = (text) => setContent(text);
     
@@ -245,7 +245,7 @@ const JournalNoteForm = () => {
     );
 };
 
-const MedicationNoteForm = () => {    
+const MedicationNoteForm = ({ toggleModal }) => {    
     // TODO: Implement medication note form.
     return(
         <ScrollView>
@@ -367,7 +367,7 @@ const Notes = () => {
                 <View style={localStyles.headerContainer}>
                     <Text style={styles.pageTitle}>Notes</Text>
                     {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
-                    {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm />}/>} {/** TODO: Modify as needed. */}
+                    {/* {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm />}/>} {/** TODO: Modify as needed. Given unexpected text node error. */} 
                     {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm />}/>}
                 </View>
                 
