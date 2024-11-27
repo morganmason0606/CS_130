@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import {
     View,
     Text,
+    TextInput,
     Animated,
     Modal,
     TouchableOpacity,
@@ -17,9 +18,69 @@ import CustomPicker from './components/custom_picker.js';
 import styles from './index_styles.js';
 import theme from './design_system.js';
 
-const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
+const ModalForm = ({ type, form }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    // Animated value for the vertical slide
+    const slideValue = useRef(new Animated.Value(-500)).current;
+
+    const toggleModal = () => {
+        // Close modal if it's already open: slide out and hide modal
+        if (isModalVisible) {
+            Animated.timing(slideValue, {
+                toValue: -500, // Slide out off-screen
+                duration: 300,
+                useNativeDriver: true,
+            }).start(() => setIsModalVisible(false));
+        }
+        // Open modal: slide in and show modal
+        else {
+            setIsModalVisible(true);
+            Animated.timing(slideValue, {
+                toValue: 0, // Slide to the center
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+    
+    return (
+        <View style={formStyles.container}>
+            {/* Open Button */}
+            <TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
+                <Text style={formStyles.textButtonText}>+ New {type}</Text>
+            </TouchableOpacity>
+
+            {/* Modal Popup */}
+            <Modal
+                transparent={true}
+                animationType="none"
+                visible={isModalVisible}
+            >
+                <View style={formStyles.modalOverlay}>
+                    {/* Animated Modal Content */}
+                    <Animated.View
+                        style={[
+                            formStyles.modalContent,
+                            { transform: [{ translateY: slideValue }] }, // Slide animation
+                        ]}
+                    >
+                        <View style={{width: '100%'}}>
+                            {form}
+                        </View>
+
+                        {/* Cancel Button */}
+                        <TouchableOpacity style={[formStyles.textButton, formStyles.cancelButton]} onPress={toggleModal}>
+                            <Text style={formStyles.textButtonText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </View>
+            </Modal>
+        </View>
+    );
+};
+
+const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
     const [newBodyPart, setNewBodyPart] = useState('');
     const [newPainLevel, setNewPainLevel] = useState(5);            // Default pain level = 5
     const [hoveredPainLevel, setHoveredPainLevel] = useState(0);
@@ -50,29 +111,6 @@ const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
         TRICEPS,
     ];
     const musclesMap = muscles.map((muscle, i) => ({ id: i+1, name: muscle }));    
-    
-    // Animated value for the vertical slide
-    const slideValue = useRef(new Animated.Value(-500)).current;
-
-    const toggleModal = () => {
-        // Close modal if it's already open: slide out and hide modal
-        if (isModalVisible) {
-            Animated.timing(slideValue, {
-                toValue: -500, // Slide out off-screen
-                duration: 300,
-                useNativeDriver: true,
-            }).start(() => setIsModalVisible(false));
-        }
-        // Open modal: slide in and show modal
-        else {
-            setIsModalVisible(true);
-            Animated.timing(slideValue, {
-                toValue: 0, // Slide to the center
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
-        }
-    };
 
     const renderPainLevelRadio = () => (
         <View style={formStyles.radioContainer}>
@@ -145,56 +183,64 @@ const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
     }
 
     return (
-        <View style={formStyles.container}>
-            {/* Open Button */}
-            <TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
-                <Text style={formStyles.textButtonText}>+ New Pain Note</Text>
+        <ScrollView>
+            <Text style={formStyles.modalTitle}>New Pain Note</Text>
+
+            <Text style={formStyles.label}>Body Part<Text style={theme.required}>*</Text></Text>
+
+            <CustomPicker
+                data={musclesMap}
+                style={formStyles.picker}
+                value={newBodyPart}
+                onValueChange={(value) => handlePickerSelection(value)}
+                placeholder="Select body part"
+            />
+
+            <Text style={formStyles.label}>Pain Level<Text style={theme.required}>*</Text></Text>
+            {renderPainLevelRadio()}
+
+            {/* Add Button */}
+            <TouchableOpacity
+                style={[formStyles.textButton, formStyles.addButton]}
+                onPress={addPainNote}
+            >
+                <Text style={formStyles.textButtonText}>Add Pain Note</Text>
             </TouchableOpacity>
 
-            {/* Modal Popup */}
-            <Modal
-                transparent={true}
-                animationType="none"
-                visible={isModalVisible}
+        </ScrollView>
+    );
+};
+
+const JournalNoteForm = () => {
+    const [content, setContent] = useState('');
+    const onChangeText = (text) => setContent(text);
+    
+    const addJournalEntry = async () => {
+        if (content === '') {
+            alert('Please enter some content.');
+            return;
+        }
+        // TODO: Add journal entry to backend.
+    };
+
+    return (
+        <View>
+            <Text style={formStyles.modalTitle}>Journal Entry</Text>
+            <Text style={formStyles.label}>Content<Text style={theme.required}>*</Text></Text>
+            <TextInput
+                style={formStyles.journalInput}
+                multiline={true}
+                numberOfLines={4}
+                onChangeText={onChangeText}
+                value={content}
+                placeholder="Enter your text here..."
+            />
+            <TouchableOpacity
+                style={[formStyles.textButton, formStyles.addButton]}
+                onPress={addJournalEntry}
             >
-                <View style={formStyles.modalOverlay}>
-                    {/* Animated Modal Content */}
-                    <Animated.View
-                        style={[
-                            formStyles.modalContent,
-                            { transform: [{ translateY: slideValue }] }, // Slide animation
-                        ]}
-                    >
-                        <Text style={formStyles.modalTitle}>New Pain Note</Text>
-
-                        <Text style={formStyles.label}>Body Part<Text style={theme.required}>*</Text></Text>
-
-                        <CustomPicker
-                            data={musclesMap}
-                            style={formStyles.picker}
-                            value={newBodyPart}
-                            onValueChange={(value) => handlePickerSelection(value)}
-                            placeholder="Select body part"
-                        />
-
-                        <Text style={formStyles.label}>Pain Level<Text style={theme.required}>*</Text></Text>
-                        {renderPainLevelRadio()}
-
-                        {/* Add Button */}
-                        <TouchableOpacity
-                            style={[formStyles.textButton, formStyles.addButton]}
-                            onPress={addPainNote}
-                        >
-                            <Text style={formStyles.textButtonText}>Add Pain Note</Text>
-                        </TouchableOpacity>
-
-                        {/* Cancel Button */}
-                        <TouchableOpacity style={[formStyles.textButton, formStyles.cancelButton]} onPress={toggleModal}>
-                            <Text style={formStyles.textButtonText}>Cancel</Text>
-                        </TouchableOpacity>
-                    </Animated.View>
-                </View>
-            </Modal>
+                <Text style={formStyles.textButtonText}>Add Journal Entry</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -207,12 +253,16 @@ const Notes = () => {
     const [loading, setLoading] = useState(false);
 
     const [journals, setJournals] = useState([
-        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },
-    ]);  // TODO: Fetch journals from backend.
+        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },  // TODO: Remove placeholder when fetching from backend is implemented.
+    ]);
+    
+    // TODO: Fetch journals from backend.
+    const fetchJournals = async () => {
+        return;
+    };
 
     // TODO: Delete journals from backend.
-    const deleteJournal = (id) => {
-        // setJournals(journals.filter((journal) => journal.id !== id));
+    const deleteJournal = async (id) => {
         return;
     };
 
@@ -273,6 +323,7 @@ const Notes = () => {
             }, 800);
         } else {
             fetchPainNotes();
+            fetchJournals();    // TODO: Check if this should be called here.
         }
     }, [uid]);
 
@@ -288,7 +339,9 @@ const Notes = () => {
             <View style={styles.innerWrapper}>
                 <View style={localStyles.headerContainer}>
                     <Text style={styles.pageTitle}>Notes</Text>
-                    <PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes}/>  {/** TODO: Dynamically switch component based on active tab. */}
+                    {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
+                    {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm />}/>}
+                    {/** TODO: Medication Notes Tab */}
                 </View>
                 
                 <View style={localStyles.tabContainer}>
@@ -540,6 +593,14 @@ const formStyles = StyleSheet.create({
     cancelButton: {
         backgroundColor: theme.colors.darkGrey,
     },
+    journalInput: {
+        width: '100%',
+        padding: '0.5rem',
+        marginBottom: '1rem',
+        borderWidth: 2,
+        borderColor: theme.colors.aqua,
+        borderRadius: '0.5rem',
+    }, // TODO: Add styles for focused and/or active states.
 });
 
 export default Notes;
