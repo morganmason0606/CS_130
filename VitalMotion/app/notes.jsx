@@ -311,7 +311,7 @@ const localStyles = StyleSheet.create({
     },
     noteLabel: {
         fontSize: theme.fontSizes.regular,
-        fontWeight: theme.fontWeights.bold,
+        fontWeight: theme.fontWeights.bolder,
         marginBottom: 5,
     },
     noteValue: {
