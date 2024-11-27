@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
       textAlign: 'left',
       backgroundColor: theme.colors.offWhite,
     },
+    innerWrapper: {
+      paddingHorizontal: 70,
+      paddingTop: 50,
+    },
     navbar: {                      // TODO: Make navbar sticky.
       flexDirection: 'row',
       alignItems: 'center',
@@ -23,11 +27,6 @@ const styles = StyleSheet.create({
     },
     pageLinkHovered:{
       color: theme.links.light.hover,
-    },
-    innerWrapper: {
-      paddingHorizontal: 70,
-      paddingTop: 50,
-      paddingBottom: 30,
     },
     pageTitle: {
       fontSize: theme.fontSizes.larger,

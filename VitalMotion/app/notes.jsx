@@ -1,26 +1,296 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import {
     View,
     Text,
+    TextInput,
+    Animated,
+    Modal,
     TouchableOpacity,
     FlatList,
     StyleSheet,
     ScrollView,
-    TextInput,
 } from 'react-native';
-import Navbar from './navbar';
-import styles from './index_styles';
-import { useAuth } from './auth_context';
+import { useAuth } from './auth_context.js';
 import { useRouter } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import Navbar from './navbar.js';
+import CustomPicker from './components/custom_picker.js';
+import styles from './index_styles.js';
+import theme from './design_system.js';
+
+const ModalForm = ({ type, form }) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    // Animated value for the vertical slide
+    const slideValue = useRef(new Animated.Value(-500)).current;
+
+    const toggleModal = () => {
+        // Close modal if it's already open: slide out and hide modal
+        if (isModalVisible) {
+            Animated.timing(slideValue, {
+                toValue: -500, // Slide out off-screen
+                duration: 300,
+                useNativeDriver: true,
+            }).start(() => setIsModalVisible(false));
+        }
+        // Open modal: slide in and show modal
+        else {
+            setIsModalVisible(true);
+            Animated.timing(slideValue, {
+                toValue: 0, // Slide to the center
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+    
+    return (
+        <View style={formStyles.container}>
+            {/* Open Button */}
+            <TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
+                <Text style={formStyles.textButtonText}>+ New {type}</Text>
+            </TouchableOpacity>
+
+            {/* Modal Popup */}
+            <Modal
+                transparent={true}
+                animationType="none"
+                visible={isModalVisible}
+            >
+                <View style={formStyles.modalOverlay}>
+                    {/* Animated Modal Content */}
+                    <Animated.View
+                        style={[
+                            formStyles.modalContent,
+                            { transform: [{ translateY: slideValue }] }, // Slide animation
+                        ]}
+                    >
+                        <View style={{width: '100%'}}>
+                            {React.cloneElement(form, { toggleModal })}
+                        </View>
+
+                        {/* Cancel Button */}
+                        <TouchableOpacity style={[formStyles.textButton, formStyles.cancelButton]} onPress={toggleModal}>
+                            <Text style={formStyles.textButtonText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </View>
+            </Modal>
+        </View>
+    );
+};
+
+const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
+    const [newBodyPart, setNewBodyPart] = useState('');
+    const [newPainLevel, setNewPainLevel] = useState(5);            // Default pain level = 5
+    const [hoveredPainLevel, setHoveredPainLevel] = useState(0);
+
+    // Static list of body parts
+    const ABS = "Abs";
+    const BACK = "Back";
+    const BICEPS = "Biceps";
+    const CHEST = "Chest";
+    const FOREARMS = "Forearms";
+    const GLUTES = "Glutes";
+    const HAMSTRINGS = "Hamstrings";
+    const QUADRICEPS = "Quadriceps";
+    const SHOULDERS = "Shoulders";
+    const TRAPS = "Traps";
+    const TRICEPS = "Triceps";
+    const muscles = [
+        ABS,
+        BACK,
+        BICEPS,
+        CHEST,
+        FOREARMS,
+        GLUTES,
+        HAMSTRINGS,
+        QUADRICEPS,
+        SHOULDERS,
+        TRAPS,
+        TRICEPS,
+    ];
+    const musclesMap = muscles.map((muscle, i) => ({ id: i+1, name: muscle }));    
+
+    const renderPainLevelRadio = () => (
+        <View style={formStyles.radioContainer}>
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
+                <TouchableOpacity
+                    key={level}
+                    style={[
+                        formStyles.radioButton,
+                        newPainLevel === level && formStyles.radioButtonSelected,
+                        newPainLevel !== level && hoveredPainLevel === level && formStyles.radioButtonHovered,
+                    ]}
+                    onPress={() => {console.log(`Set new pain level to ${level}.`); setNewPainLevel(level);}}
+                    onMouseEnter={() => {setHoveredPainLevel(level)}}
+                    onMouseLeave={() => {setHoveredPainLevel(0)}}
+                >
+                    <Text
+                        style={[
+                            formStyles.radioText,
+                            newPainLevel === level && formStyles.radioTextSelected,
+                        ]}
+                    >
+                        {level}
+                    </Text>
+                </TouchableOpacity>
+            ))}
+        </View>
+    );
+
+    // Add a new pain note
+    const addPainNote = async () => {
+        // Body part is required
+        if(newBodyPart === '') {
+            alert('Please select a body part.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5001/add-pain`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uid,
+                    date: new Date().toISOString().split('T')[0], // Format date as MM/DD/YYYY
+                    pain_level: newPainLevel,
+                    body_part: newBodyPart,
+                }),
+            });
+
+            if (response.ok) {
+                console.log('Pain note added successfully.');
+                fetchPainNotes();
+                setNewPainLevel(5);     // Reset pain level to default value.
+                setNewBodyPart('');     // Unselect body part.
+                toggleModal();          // Close modal only if successful.
+            } else {
+                const error = await response.json();
+                alert('Error', error.error);
+            }
+        } catch (err) {
+            console.error('Error adding pain note:', err);
+            alert('Error', 'Failed to add pain note.');
+        }
+    };
+
+    const handlePickerSelection = (value) => {
+        const muscle = musclesMap.find((muscle) => muscle.id === parseInt(value));
+        setNewBodyPart(muscle.name);
+    }
+
+    return (
+        <ScrollView>
+            <Text style={formStyles.modalTitle}>New Pain Note</Text>
+
+            <Text style={formStyles.label}>Body Part<Text style={theme.required}>*</Text></Text>
+
+            <CustomPicker
+                data={musclesMap}
+                style={formStyles.picker}
+                value={newBodyPart}
+                onValueChange={(value) => handlePickerSelection(value)}
+                placeholder="Select body part"
+            />
+
+            <Text style={formStyles.label}>Pain Level<Text style={theme.required}>*</Text></Text>
+            {renderPainLevelRadio()}
+
+            {/* Add Button */}
+            <TouchableOpacity
+                style={[formStyles.textButton, formStyles.addButton]}
+                onPress={addPainNote}
+            >
+                <Text style={formStyles.textButtonText}>Add Pain Note</Text>
+            </TouchableOpacity>
+
+        </ScrollView>
+    );
+};
+
+const JournalNoteForm = ({ toggleModal }) => {
+    const [content, setContent] = useState('');
+    const onChangeText = (text) => setContent(text);
+    
+    const addJournalEntry = async () => {
+        if (content === '') {
+            alert('Please enter some content.');
+            return;
+        }
+        // TODO: Add journal entry to backend.
+    };
+
+    return (
+        <ScrollView>
+            <Text style={formStyles.modalTitle}>Journal Entry</Text>
+            <Text style={formStyles.label}>Content<Text style={theme.required}>*</Text></Text>
+            <TextInput
+                style={formStyles.journalInput}
+                multiline={true}
+                numberOfLines={4}
+                onChangeText={onChangeText}
+                value={content}
+                placeholder="Enter your text here..."
+            />
+            <TouchableOpacity
+                style={[formStyles.textButton, formStyles.addButton]}
+                onPress={addJournalEntry}
+            >
+                <Text style={formStyles.textButtonText}>Add Journal Entry</Text>
+            </TouchableOpacity>
+        </ScrollView>
+    );
+};
+
+const MedicationNoteForm = ({ toggleModal }) => {    
+    // TODO: Implement medication note form.
+    return(
+        <ScrollView>
+            <Text style={formStyles.modalTitle}>New Medication Note</Text>
+        </ScrollView>
+    );
+};
 
 const Notes = () => {
     const { uid } = useAuth();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState('Pain'); // Default to Pain tab
+    const [activeTab, setActiveTab] = useState('Pain');   // Default to Pain tab
     const [painNotes, setPainNotes] = useState([]);
-    const [newPainLevel, setNewPainLevel] = useState(5); // Default pain level
-    const [newBodyPart, setNewBodyPart] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // TODO: Remove placeholder when fetching from backend is implemented.
+    const [journals, setJournals] = useState([
+        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },
+    ]);
+
+    // TODO: Remove placeholder when fetching from backend is implemented.
+    const [medNotes, setMedNotes] = useState([
+        { id: 1, date: '2021-09-01', content: 'Medication note 1' },
+    ]);
+    
+    // TODO: Fetch journals from backend.
+    const fetchJournals = async () => {
+        return;
+    };
+
+    // TODO: Delete journals from backend.
+    const deleteJournal = async (id) => {
+        return;
+    };
+
+    // TODO: Fetch medication notes from backend.
+    const fetchMedNotes = async () => {
+        setMedNotes([]);
+        return;
+    };
+
+    // TODO: Delete medication notes from backend.
+    const deleteMedNote = async (id) => {
+        return;
+    };
 
     // Fetch all pain notes
     const fetchPainNotes = async () => {
@@ -48,66 +318,6 @@ const Notes = () => {
         }
     };
 
-    // Add a new pain note
-    const addPainNote = async () => {
-        try {
-            const response = await fetch(`http://localhost:5001/add-pain`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uid,
-                    date: new Date().toISOString().split('T')[0], // Format date
-                    pain_level: newPainLevel,
-                    body_part: newBodyPart,
-                }),
-            });
-
-            if (response.ok) {
-                alert('Success', 'Pain note added successfully.');
-                fetchPainNotes();
-                setNewPainLevel(5);
-                setNewBodyPart('');
-            } else {
-                const error = await response.json();
-                alert('Error', error.error);
-            }
-        } catch (err) {
-            console.error('Error adding pain note:', err);
-            alert('Error', 'Failed to add pain note.');
-        }
-    };
-
-    // Edit a pain note
-    const editPainNote = async (hashId, updatedPainLevel, updatedBodyPart) => {
-        try {
-            const response = await fetch(`http://localhost:5001/edit-pain`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uid,
-                    hash_id: hashId,
-                    pain_level: updatedPainLevel,
-                    body_part: updatedBodyPart,
-                }),
-            });
-
-            if (response.ok) {
-                alert('Success', 'Pain note updated successfully.');
-                fetchPainNotes();
-            } else {
-                const error = await response.json();
-                alert('Error', error.error);
-            }
-        } catch (err) {
-            console.error('Error editing pain note:', err);
-            alert('Error', 'Failed to edit pain note.');
-        }
-    };
-
     // Delete a pain note
     const deletePainNote = async (hashId) => {
         try {
@@ -120,7 +330,7 @@ const Notes = () => {
             });
 
             if (response.ok) {
-                alert('Success', 'Pain note deleted successfully.');
+                console.log('Pain note deleted successfully.');
                 fetchPainNotes();
             } else {
                 const error = await response.json();
@@ -139,43 +349,33 @@ const Notes = () => {
             }, 800);
         } else {
             fetchPainNotes();
+            fetchJournals();    // TODO: Check if this should be called here.
+            fetchMedNotes();    // TODO: Check if this should be called here.
         }
     }, [uid]);
 
-    const renderPainLevelRadio = () => (
-        <View style={localStyles.radioContainer}>
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                <TouchableOpacity
-                    key={level}
-                    style={[
-                        localStyles.radioButton,
-                        newPainLevel === level && localStyles.radioSelected,
-                    ]}
-                    onPress={() => {console.log(`setting pain to ${level}`); setNewPainLevel(level);}}
-                >
-                    <Text
-                        style={[
-                            localStyles.radioText,
-                            newPainLevel === level && localStyles.radioTextSelected,
-                        ]}
-                    >
-                        {level}
-                    </Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-    );
+    const convertDate = (date) => {
+        const [year, month, day] = date.split('-');
+        return `${month}/${day}/${year}`;
+    }
 
     return (
         <ScrollView style={styles.outerWrapper}>
             <Navbar />
+
             <View style={styles.innerWrapper}>
-                <Text style={styles.pageTitle}>Notes</Text>
+                <View style={localStyles.headerContainer}>
+                    <Text style={styles.pageTitle}>Notes</Text>
+                    {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
+                    {/* {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm />}/>} {/** TODO: Modify as needed. Given unexpected text node error. */} 
+                    {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm />}/>}
+                </View>
+                
                 <View style={localStyles.tabContainer}>
                     <TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Pain' && localStyles.activeTab,
+                            activeTab === 'Pain' && localStyles.tabActive,
                         ]}
                         onPress={() => setActiveTab('Pain')}
                     >
@@ -184,63 +384,116 @@ const Notes = () => {
                     <TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Other' && localStyles.activeTab,
+                            activeTab === 'Medication' && localStyles.tabActive,
                         ]}
-                        onPress={() => setActiveTab('Other')}
+                        onPress={() => setActiveTab('Medication')}
                     >
-                        <Text style={localStyles.tabText}>Other</Text>
+                        <Text style={localStyles.tabText}>Medication</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            localStyles.tab,
+                            activeTab === 'Journal' && localStyles.tabActive,
+                        ]}
+                        onPress={() => setActiveTab('Journal')}
+                    >
+                        <Text style={localStyles.tabText}>Journal</Text>
                     </TouchableOpacity>
                 </View>
+
                 {activeTab === 'Pain' && (
                     <ScrollView>
-                        <View style={localStyles.form}>
-                            <TextInput
-                                style={localStyles.input}
-                                placeholder="Body Part"
-                                value={newBodyPart}
-                                onChangeText={setNewBodyPart}
-                            />
-                            <Text style={localStyles.label}>Pain Level:</Text>
-                            {renderPainLevelRadio()}
-                            <TouchableOpacity
-                                style={localStyles.addButton}
-                                onPress={addPainNote}
-                            >
-                                <Text style={localStyles.addButtonText}>Add Pain Note</Text>
-                            </TouchableOpacity>
-                        </View>
                         {loading ? (
-                            <Text>Loading...</Text>
+                            <Text style={localStyles.loading}>Loading...</Text>
                         ) : (
-                            <FlatList
-                                data={painNotes}
-                                keyExtractor={(item) => item.hash_id}
-                                renderItem={({ item }) => (
-                                    <View style={localStyles.noteItem}>
-                                        <Text>Date: {item.date.split('T')[0]}</Text>
-                                        <Text>Body Part: {item.body_part}</Text>
-                                        <Text>Pain Level: {item.pain_level}</Text>
-                                        <View style={localStyles.noteActions}>
+                            painNotes && painNotes.length === 0 ?
+                            (
+                                <Text style={localStyles.noContent}>No pain notes to display.</Text>
+                            ) : (
+                                <FlatList
+                                    data={painNotes}
+                                    keyExtractor={(item) => item.hash_id}
+                                    renderItem={({ item }) => (
+                                        <View style={localStyles.noteContainer}>
+                                            <View>
+                                                <Text style={localStyles.noteLabel}>Date:
+                                                    <Text style={localStyles.noteValue}> {convertDate(item.date.split('T')[0])}</Text>
+                                                </Text>
+                                                <Text style={localStyles.noteLabel}>Body Part:
+                                                    <Text style={localStyles.noteValue}> {item.body_part}</Text>
+                                                </Text>
+                                                <Text style={localStyles.noteLabel}>Pain Level:
+                                                    <Text style={localStyles.noteValue}> {item.pain_level} out of 10</Text>
+                                                </Text>
+                                            </View>
                                             <TouchableOpacity
-                                                onPress={() =>
-                                                    editPainNote(
-                                                        item.hash_id,
-                                                        newPainLevel,
-                                                        newBodyPart
-                                                    )
-                                                }
-                                            >
-                                                <Text style={localStyles.editButton}>Edit</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity
+                                                style={localStyles.deleteButton}
                                                 onPress={() => deletePainNote(item.hash_id)}
                                             >
-                                                <Text style={localStyles.deleteButton}>Delete</Text>
+                                                <Feather name="trash-2" size={26} style={styles.iconButton} />
                                             </TouchableOpacity>
                                         </View>
+                                    )}
+                                />
+                            )
+                        )}
+                    </ScrollView>
+                )}
+
+                {activeTab === 'Medication' && (
+                    <ScrollView>
+                        {loading ? (
+                            <Text style={localStyles.loading}>Loading...</Text>
+                        ) : (
+                            medNotes && medNotes.length === 0 ? (
+                                <Text style={localStyles.noContent}>No medication notes to display.</Text>
+                            ) : (
+                                medNotes.map((medNote) => (
+                                    <View key={medNote.id} style={localStyles.noteContainer}>
+                                        <View>
+                                            <Text style={localStyles.noteLabel}>Date:
+                                                <Text style={localStyles.noteValue}> {convertDate(medNote.date)}</Text>
+                                            </Text>
+                                            <Text style={localStyles.noteValue}>{medNote.content}</Text>  {/** TODO */}
+                                        </View>
+                                        <TouchableOpacity
+                                            style={localStyles.deleteButton}
+                                            onPress={() => deleteMedNote(medNote.id)}  /** TODO */
+                                        >
+                                            <Feather name="trash-2" size={26} style={styles.iconButton} />
+                                        </TouchableOpacity>
                                     </View>
-                                )}
-                            />
+                                ))
+                            )
+                        )}
+                    </ScrollView>
+                )}
+
+                {activeTab === 'Journal' && (
+                    <ScrollView>
+                        {loading ? (
+                            <Text style={localStyles.loading}>Loading...</Text>
+                        ) : (
+                            journals && journals.length === 0 ? (
+                                <Text style={localStyles.noContent}>No journals to display.</Text>
+                            ) : (
+                                journals.map((journal) => (
+                                    <View key={journal.id} style={localStyles.noteContainer}>
+                                        <View>
+                                            <Text style={localStyles.noteLabel}>Date:
+                                                <Text style={localStyles.noteValue}> {convertDate(journal.date)} {`\n\n`}</Text>
+                                            </Text>
+                                            <Text style={localStyles.noteValue}>{journal.content}</Text>
+                                        </View>
+                                        <TouchableOpacity
+                                            style={localStyles.deleteButton}
+                                            onPress={() => deleteJournal(journal.id)}  /** TODO */
+                                        >
+                                            <Feather name="trash-2" size={26} style={styles.iconButton} />
+                                        </TouchableOpacity>
+                                    </View>
+                                ))
+                            )
                         )}
                     </ScrollView>
                 )}
@@ -250,91 +503,169 @@ const Notes = () => {
 };
 
 const localStyles = StyleSheet.create({
-    tabContainer: {
+    headerContainer: {
+        display: 'flex',
         flexDirection: 'row',
-        marginBottom: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    tabContainer: {
+        display: 'flex',
+        flexDirection: 'row',
     },
     tab: {
+        display: 'flex',
         flex: 1,
-        padding: 10,
         alignItems: 'center',
+        padding: '0.5rem',
         borderBottomWidth: 2,
         borderColor: 'transparent',
     },
-    activeTab: {
-        borderColor: '#4CAF50',
+    tabActive: {
+        borderColor: theme.colors.aqua,
     },
     tabText: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
     },
-    form: {
-        marginBottom: 20,
+    loading:{
+        marginTop: '1rem',
+        textAlign: 'center',
+        fontSize: theme.fontSizes.regular,
     },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 10,
+    noContent:{
+        marginTop: '1rem',
+        textAlign: 'center',
+        fontSize: theme.fontSizes.regular,
+    },
+    noteContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: '1rem',
+        padding: '1rem',
+
+        borderRadius: '0.5rem',
+        backgroundColor: theme.colors.grey,
+    },
+    noteLabel: {
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+        marginBottom: 5,
+    },
+    noteValue: {
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.regular,
+    },
+});
+
+const formStyles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+    },
+    openButton: {
+        padding: '1rem',
+        borderRadius: '0.5rem',
+        backgroundColor: theme.colors.aqua,
+    },
+    modalOverlay: {
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: theme.colors.darkGrey + '80',
+    },
+    modalContent: {
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        padding: '1.5rem',
+
+        borderRadius: '0.5rem',
+        shadowColor: theme.colors.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: '0.5rem',
+        backgroundColor: theme.colors.white,
+    },
+    modalTitle: {
+        alignSelf: 'center',
+        marginBottom: '1rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    label: {
+        marginBottom: '0.5rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    picker: {
+        width: '100%',
     },
     radioContainer: {
+        width: '100%',
+        display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginVertical: 10,
+        marginVertical: '1rem',
     },
     radioButton: {
         width: '9%',
         aspectRatio: 1,
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        margin: 2,
+        margin: '0.25rem',
+        
+        borderRadius: '25%',
+        borderWidth: 2,
+        borderColor: theme.colors.aqua,
     },
-    radioSelected: {
-        backgroundColor: '#4CAF50',
+    radioButtonSelected: {
+        backgroundColor: theme.colors.aqua,
+    },
+    radioButtonHovered: {
+        backgroundColor: theme.colors.lightAqua,
     },
     radioText: {
-        fontSize: 14,
-        color: '#000',
+        color: theme.colors.black,
+        fontSize: theme.fontSizes.regular,
     },
     radioTextSelected: {
-        color: '#fff',
-        fontWeight: 'bold',
+        color: theme.colors.white,
+        fontWeight: theme.fontWeights.bold,
+    },
+    textButton: {
+        width: '100%',
+        padding: '0.5rem',
+        borderRadius: '0.5rem',
+    },
+    textButtonText: {
+        textAlign: 'center',
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
     },
     addButton: {
-        backgroundColor: '#4CAF50',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
+        marginBottom: '0.5rem',
+        backgroundColor: theme.colors.aqua,
     },
-    addButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
+    cancelButton: {
+        backgroundColor: theme.colors.darkGrey,
     },
-    noteItem: {
-        marginBottom: 15,
-        padding: 10,
-        backgroundColor: '#f8f8f8',
-        borderRadius: 5,
-    },
-    noteActions: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    editButton: {
-        color: '#4CAF50',
-    },
-    deleteButton: {
-        color: '#FF5722',
-    },
-    label: {
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
+    journalInput: {
+        width: '100%',
+        padding: '0.5rem',
+        marginBottom: '1rem',
+        borderWidth: 2,
+        borderColor: theme.colors.aqua,
+        borderRadius: '0.5rem',
+    }, // TODO: Add styles for focused and/or active states.
 });
 
 export default Notes;
