@@ -2,6 +2,9 @@ const theme = {
     colors: {
         lightAqua: '#D6E3E7',
         aqua: '#9ABFCA',
+        dustyAqua: '#A9C0C9A0',
+        dustyPurple: '#B2A9C9A0',
+        dustyPink: '#C9A9C0A0',
         black: '#0E0E0E',
         grey: '#EDEDED',
         darkGrey: '#C3C3C3',

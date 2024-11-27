@@ -177,30 +177,57 @@ const History = () => {
         );
     }
 
+    // Convert date from YYYY-MM-DD format to MM/DD/YYYY format
+    const convertDate = (date) => {
+        const newDate = date.split('-');
+        return `${newDate[1]}/${newDate[2]}/${newDate[0]}`;
+    };
+
     const renderHistoryItem = ({ item }) => {
         if (item.type === 'workout') {
             return (
-                <View style={localStyles.historyContainer}>
-                    <Text style={localStyles.date}>Date: {item.date}</Text>
-                    <Text style={localStyles.notes}>Notes: {item.notes || 'None'}</Text>
-                    <Text style={localStyles.difficulty}>Difficulty: {item.difficulty}/10</Text>
-                    <Text style={localStyles.exercisesTitle}>Exercises:</Text>
-                    {item.exercises.map((exercise, index) => (
-                        <View key={index} style={localStyles.exerciseItem}>
-                            <Text style={localStyles.exerciseName}>{exercise.name}</Text>
-                            <Text>
-                                {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
-                            </Text>
-                        </View>
-                    ))}
+                <View>
+                    <Text style={[localStyles.historyType, localStyles.workoutType]}>Workout</Text>
+
+                    <View style={localStyles.historyContainer}>
+                        <Text style={localStyles.label}>Date:
+                            <Text style={localStyles.value}> {convertDate(item.date)}</Text>
+                        </Text>
+                        <Text style={localStyles.label}>Notes:
+                            <Text style={localStyles.value}> {item.notes || 'None'}</Text>
+                        </Text>
+                        <Text style={localStyles.label}>Difficulty:
+                            <Text style={localStyles.value}> {item.difficulty}/10</Text>
+                        </Text>
+
+                        <Text style={localStyles.label}>Exercises:</Text>
+                        {item.exercises.map((exercise, index) => (
+                            <View key={index} style={localStyles.label}>
+                                <Text style={localStyles.sublabel}>{exercise.name}</Text>
+                                <Text style={localStyles.value}>
+                                    {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
+                                </Text>
+                            </View>
+                        ))}
+                    </View>
                 </View>
             );
         } else if (item.type === 'pain') {
             return (
-                <View style={localStyles.historyContainer}>
-                    <Text style={localStyles.date}>Date: {item.date}</Text>
-                    <Text style={localStyles.painLevel}>Pain Level: {item.pain_level}/10</Text>
-                    <Text style={localStyles.bodyPart}>Body Part: {item.body_part}</Text>
+                <View>
+                    <Text style={[localStyles.historyType, localStyles.painType]}>Pain</Text>
+
+                    <View style={localStyles.historyContainer}>
+                        <Text style={localStyles.label}>Date:
+                            <Text style={localStyles.value}> {convertDate(item.date)}</Text>
+                        </Text>
+                        <Text style={localStyles.label}>Pain Level:
+                            <Text style={localStyles.value}> {item.pain_level}/10</Text>
+                        </Text>
+                        <Text style={localStyles.label}>Body Part:
+                            <Text style={localStyles.value}> {item.body_part}</Text>
+                        </Text>
+                    </View>
                 </View>
             );
         }
@@ -209,11 +236,11 @@ const History = () => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContent}>
             <Navbar />
-            <View style={styles.innerWrapper}>
+            <ScrollView style={styles.innerWrapper}>
                 <View style={localStyles.row}>
                     <View>
                         <Text style={styles.pageTitle}>History</Text>
-                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>
+                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>  {/** TODO: Make subheading more general since we display non-workout info. */}
                     </View>
                     <View style={localStyles.workoutsCompletedContainer}>
                         <Text style={localStyles.workoutsCompletedText}>
@@ -229,35 +256,29 @@ const History = () => {
                 ) : (
                     <FlatList
                         data={workouts}
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(_, index) => index.toString()}
                         renderItem={renderHistoryItem}
                     />
                 )}
-            </View>
+            </ScrollView>
         </ScrollView>
     );
 };
 
 const localStyles = StyleSheet.create({
-    historyContainer: {
-        backgroundColor: '#f8f8f8',
-        borderRadius: 10,
-        padding: 15,
-        marginBottom: 20,
-    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: '1rem',
     },
     workoutsCompletedContainer: {
-        backgroundColor: theme.colors.aqua,
-        padding: 15,
-        borderRadius: 10,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: '0.5rem',
+        borderRadius: '0.5rem',
+        backgroundColor: theme.colors.aqua,
     },
     workoutsCompletedText: {
         fontSize: theme.fontSizes.regular,
@@ -269,38 +290,49 @@ const localStyles = StyleSheet.create({
         fontStyle: 'italic',
         marginTop: 5,
     },
-    date: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 5,
+    historyType:{
+        textAlign: 'center',
+        padding: '0.5rem',
+        
+        borderTopLeftRadius: '0.5rem',
+        borderTopRightRadius: '0.5rem',        
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bolder,
     },
-    notes: {
-        fontSize: 14,
-        marginBottom: 5,
+    workoutType: {
+        backgroundColor: theme.colors.dustyAqua,
+        color: theme.colors.white,
     },
-    difficulty: {
-        fontSize: 14,
-        marginBottom: 10,
+    painType: {
+        backgroundColor: theme.colors.dustyPurple,
+        color: theme.colors.white,
     },
-    painLevel: {
-        fontSize: 14,
-        marginBottom: 5,
+    medType: {  // TODO: Use for medication notes.
+        backgroundColor: theme.colors.dustyPink,
+        color: theme.colors.white,
     },
-    bodyPart: {
-        fontSize: 14,
-        marginBottom: 10,
+    historyContainer: {
+        backgroundColor: theme.colors.grey,
+        marginBottom: '1rem',
+        paddingHorizontal: '0.5rem',
+        paddingTop: '0.5rem',
+
+        borderBottomLeftRadius: '0.5rem',
+        borderBottomRightRadius: '0.5rem',
     },
-    exercisesTitle: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 5,
+    label: {
+        marginBottom: '0.5rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bolder,
     },
-    exerciseItem: {
-        marginBottom: 5,
+    sublabel:{
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
     },
-    exerciseName: {
-        fontSize: 14,
-        fontWeight: 'bold',
+    value: {
+        marginBottom: '0.5rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.regular,
     },
 });
 
