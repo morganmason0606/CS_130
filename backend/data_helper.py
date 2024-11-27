@@ -293,3 +293,80 @@ def delete_completed_workout(uid: str, template_id: str, completed_id: str, db: 
     completed_ref = db.collection('users').document(uid).collection('workouts').document(template_id).collection('completed').document(completed_id)
     completed_ref.delete()
     print(f'Completed workout {completed_id} deleted successfully for user {uid} under template {template_id}.')
+
+def create_journal(uid: str, journal_data: dict, db: google.cloud.firestore.Client):
+    """
+    Create a new journal entry.
+    :param uid: User ID
+    :param journal_data: Journal entry data
+    :param db: Firestore client
+    """
+    journal_ref = db.collection('users').document(uid).collection('journals')
+    doc_ref = journal_ref.add(journal_data)
+    print(f'Journal entry created successfully for user {uid} with ID: {doc_ref[1].id}')
+    return doc_ref[1].id
+
+def get_all_journals(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all journal entries for a user.
+    :param uid: User ID
+    :param db: Firestore client
+    """
+    journal_ref = db.collection('users').document(uid).collection('journals')
+    journal_docs = journal_ref.stream()
+    journal_list = []
+    for doc in journal_docs:
+        journal_data = doc.to_dict()
+        journal_data['id'] = doc.id
+        journal_list.append(journal_data)
+    return journal_list
+
+def delete_journal(uid: str, journal_id: str, db: google.cloud.firestore.Client):
+    """
+    Delete a specific journal entry.
+    :param uid: User ID
+    :param journal_id: Journal entry ID
+    :param db: Firestore client
+    """
+    journal_ref = db.collection('users').document(uid).collection('journals').document(journal_id)
+    journal_ref.delete()
+    print(f'Journal entry {journal_id} deleted successfully for user {uid}.')
+
+def create_medication(uid: str, medication_data: dict, db: google.cloud.firestore.Client):
+    """
+    Create a new medication entry.
+    :param uid: User ID
+    :param medication_data: Medication entry data
+    :param db: Firestore client
+    """
+    medication_ref = db.collection('users').document(uid).collection('medications')
+    doc_ref = medication_ref.add(medication_data)
+    print(f'Medication entry created successfully for user {uid} with ID: {doc_ref[1].id}')
+    return doc_ref[1].id
+
+def get_all_medications(uid: str, db: google.cloud.firestore.Client):
+    """
+    Retrieve all medication entries for a user.
+    :param uid: User ID
+    :param db: Firestore client
+    """
+    medication_ref = db.collection('users').document(uid).collection('medications')
+    medication_docs = medication_ref.stream()
+    medication_list = []
+    for doc in medication_docs:
+        medication_data = doc.to_dict()
+        medication_data['id'] = doc.id
+        medication_list.append(medication_data)
+    return medication_list
+
+def delete_medication(uid: str, medication_id: str, db: google.cloud.firestore.Client):
+    """
+    Delete a specific medication entry.
+    :param uid: User ID
+    :param medication_id: Medication entry ID
+    :param db: Firestore client
+    """
+    medication_ref = db.collection('users').document(uid).collection('medications').document(medication_id)
+    medication_ref.delete()
+    print(f'Medication entry {medication_id} deleted successfully for user {uid}.')
+

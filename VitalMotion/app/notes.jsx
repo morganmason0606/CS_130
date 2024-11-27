@@ -21,37 +21,100 @@ const Notes = () => {
     const [activeTab, setActiveTab] = useState('Pain');   // Default to Pain tab
     const [painNotes, setPainNotes] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    // TODO: Remove placeholder when fetching from backend is implemented.
-    const [journals, setJournals] = useState([
-        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },
-    ]);
-
-    // TODO: Remove placeholder when fetching from backend is implemented.
-    const [medNotes, setMedNotes] = useState([
-        { id: 1, date: '2021-09-01', content: 'Medication note 1' },
-    ]);
+    const [journals, setJournals] = useState([]);
+    const [medNotes, setMedNotes] = useState([]);
     
-    // TODO: Fetch journals from backend.
-    const fetchJournals = async () => {
-        return;
-    };
+	const fetchJournals = async () => {
+	    setLoading(true);
+	    try {
+		const response = await fetch(`http://localhost:5001/users/${uid}/journals`, {
+		    method: 'GET',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		});
 
-    // TODO: Delete journals from backend.
-    const deleteJournal = async (id) => {
-        return;
-    };
+		if (response.ok) {
+		    const data = await response.json();
+		    setJournals(data);
+		} else {
+		    const error = await response.json();
+		    console.error('Failed to fetch journals:', error.error);
+		}
+	    } catch (err) {
+		console.error('Error fetching journals:', err);
+	    } finally {
+		setLoading(false);
+	    }
+	};
 
-    // TODO: Fetch medication notes from backend.
-    const fetchMedNotes = async () => {
-        setMedNotes([]);
-        return;
-    };
+	const deleteJournal = async (id) => {
+	    try {
+		const response = await fetch(`http://localhost:5001/users/${uid}/journals/${id}`, {
+		    method: 'DELETE',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		});
 
-    // TODO: Delete medication notes from backend.
-    const deleteMedNote = async (id) => {
-        return;
-    };
+		if (response.ok) {
+		    console.log('Journal deleted successfully.');
+		    fetchJournals();
+		} else {
+		    const error = await response.json();
+		    alert('Error', error.error);
+		}
+	    } catch (err) {
+		console.error('Error deleting journal:', err);
+		alert('Error', 'Failed to delete journal.');
+	    }
+	};
+
+	const fetchMedNotes = async () => {
+	    setLoading(true);
+	    try {
+		const response = await fetch(`http://localhost:5001/users/${uid}/medications`, {
+		    method: 'GET',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		});
+
+		if (response.ok) {
+		    const data = await response.json();
+		    setMedNotes(data);
+		} else {
+		    const error = await response.json();
+		    console.error('Failed to fetch medication notes:', error.error);
+		}
+	    } catch (err) {
+		console.error('Error fetching medication notes:', err);
+	    } finally {
+		setLoading(false);
+	    }
+	};
+
+	const deleteMedNote = async (id) => {
+	    try {
+		const response = await fetch(`http://localhost:5001/users/${uid}/medications/${id}`, {
+		    method: 'DELETE',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		});
+
+		if (response.ok) {
+		    console.log('Medication note deleted successfully.');
+		    fetchMedNotes();
+		} else {
+		    const error = await response.json();
+		    alert('Error', error.error);
+		}
+	    } catch (err) {
+		console.error('Error deleting medication note:', err);
+		alert('Error', 'Failed to delete medication note.');
+	    }
+	};
 
     // Fetch all pain notes
     const fetchPainNotes = async () => {
@@ -110,14 +173,19 @@ const Notes = () => {
             }, 800);
         } else {
             fetchPainNotes();
-            fetchJournals();    // TODO: Check if this should be called here.
-            fetchMedNotes();    // TODO: Check if this should be called here.
+            fetchJournals(); 
+            fetchMedNotes();
         }
     }, [uid]);
 
     const convertDate = (date) => {
+	try {
         const [year, month, day] = date.split('-');
         return `${month}/${day}/${year}`;
+	}
+	catch (err) {
+	    console.error('Error converting date:', err);
+	}
     }
 
     return (
@@ -128,8 +196,8 @@ const Notes = () => {
                 <View style={localStyles.headerContainer}>
                     <Text style={styles.pageTitle}>Notes</Text>
                     {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
-                    {/* {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm />}/>} {/** TODO: Modify as needed. Given unexpected text node error. */} 
-                    {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm />}/>}
+                    {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm uid={uid} fetchMedNotes={fetchMedNotes} />}/>}
+                    {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm uid={uid} fetchJournals={fetchJournals}/>}/>}
                 </View>
                 
                 <View style={localStyles.tabContainer}>
@@ -214,12 +282,20 @@ const Notes = () => {
                                         <View>
                                             <Text style={localStyles.noteLabel}>Date:
                                                 <Text style={localStyles.noteValue}> {convertDate(medNote.date)}</Text>
-                                            </Text>
-                                            <Text style={localStyles.noteValue}>{medNote.content}</Text>  {/** TODO */}
+					    </Text>
+					    <Text style={localStyles.noteLabel}>Medication: 
+						<Text style={localStyles.noteValue}> {medNote.name}</Text>
+					    </Text>
+					    <Text style={localStyles.noteLabel}>Dosage:
+						<Text style={localStyles.noteValue}> {medNote.dosage}</Text>
+					    </Text>
+					    <Text style={localStyles.noteLabel}>Time: 
+						<Text style={localStyles.noteValue}> {medNote.time}</Text>
+					    </Text>
                                         </View>
                                         <TouchableOpacity
                                             style={localStyles.deleteButton}
-                                            onPress={() => deleteMedNote(medNote.id)}  /** TODO */
+                                            onPress={() => deleteMedNote(medNote.id)}
                                         >
                                             <Feather name="trash-2" size={26} style={styles.iconButton} />
                                         </TouchableOpacity>
@@ -248,7 +324,7 @@ const Notes = () => {
                                         </View>
                                         <TouchableOpacity
                                             style={localStyles.deleteButton}
-                                            onPress={() => deleteJournal(journal.id)}  /** TODO */
+                                            onPress={() => deleteJournal(journal.id)}
                                         >
                                             <Feather name="trash-2" size={26} style={styles.iconButton} />
                                         </TouchableOpacity>
