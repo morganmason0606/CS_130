@@ -61,18 +61,17 @@ const LoginScreen = () => {
 				setIsDisabled(false);
 			}
 		}
-	}, [email, password, firstName, lastName]);
+	}, [email, password, firstName, lastName, isSignUp]);
 
 	// Remove error messages when the user updates in input fields.
 	useEffect(() => {
 		setError('');
 		setEmailError('');
 		setPasswordError('');
-	}, [email, password, firstName, lastName]);
+	}, [email, password, firstName, lastName, isSignUp]);
 
 	useEffect(() => {
 		if ((uid !== null)  && !needsToLogin && !isSignUp && !isLoading) {
-		    console.log(uid, needsToLogin);
 		    setTimeout(() => {router.push('/');}, 800);
 		}
 	}, [uid, needsToLogin, isSignUp]);
