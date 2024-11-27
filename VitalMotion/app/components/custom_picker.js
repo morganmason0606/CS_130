@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         borderRadius: '0.5rem',
         fontSize: theme.fontSizes.small,
     },
+    // TODO: Define styles for focused and/or active states.
 });
 
 export default CustomPicker;
