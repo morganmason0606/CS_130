@@ -19,7 +19,7 @@ const LoginScreen = () => {
 
     const [isSignUp, setIsSignUp] = useState(false);
   	const [isHovered, setIsHovered] = useState(false);
-	// const [isDisabled, setIsDisabled] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(false);
 	
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
 
@@ -44,25 +44,26 @@ const LoginScreen = () => {
 	}, []);
 	
 	// Disable the submit button if any required fields are empty.
-	// useEffect(() => {
-	// 	if (isSignUp){
-	// 		if (!firstName | !lastName | !email | !password) {
-	// 			setIsDisabled(true);
-	// 		}
-	// 		else {
-	// 			setIsDisabled(false);
-	// 		}
-	// 	}
-	// 	else {
-	// 		if (!email | !password) {
-	// 			setIsDisabled(true);
-	// 		}
-	// 		else {
-	// 			setIsDisabled(false);
-	// 		}
-	// 	}
-	// }, [email, password, firstName, lastName]);
+	useEffect(() => {
+		if (isSignUp){
+			if (!firstName | !lastName | !email | !password) {
+				setIsDisabled(true);
+			}
+			else {
+				setIsDisabled(false);
+			}
+		}
+		else {
+			if (!email | !password) {
+				setIsDisabled(true);
+			}
+			else {
+				setIsDisabled(false);
+			}
+		}
+	}, [email, password, firstName, lastName]);
 
+	// Remove error messages when the user updates in input fields.
 	useEffect(() => {
 		setError('');
 		setEmailError('');
@@ -255,16 +256,16 @@ const LoginScreen = () => {
 
             {isSignUp ? (
 				<Text
-					style={styles.submitButton} // isDisabled && styles.disabledButton
-					// pointerEvents={isDisabled ? 'none' : 'auto'}
+					style={[styles.submitButton, isDisabled && styles.disabledButton]}
+					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleSignUp}
 				>
 					{isLoading ? 'Loading...' : 'Register'}
 				</Text>
             ) : (
                 <Text
-					style={styles.submitButton} // isDisabled && styles.disabledButton
-					// pointerEvents={isDisabled ? 'none' : 'auto'}
+					style={[styles.submitButton, isDisabled && styles.disabledButton]}
+					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleLogin}
 				>
 					Login
