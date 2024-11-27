@@ -9,10 +9,10 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { useAuth } from './auth_context';
+import { useAuth } from './auth_context.js';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import Navbar from './navbar';
+import Navbar from './navbar.js';
 import CustomPicker from './components/custom_picker.js';
 import styles from './index_styles.js';
 import theme from './design_system.js';
@@ -196,8 +196,8 @@ const PainNoteForm = ({ uid, fetchPainNotes }) =>  {
                 </View>
             </Modal>
         </View>
-    )
-}
+    );
+};
 
 const Notes = () => {
     const { uid } = useAuth();
@@ -205,6 +205,16 @@ const Notes = () => {
     const [activeTab, setActiveTab] = useState('Pain');   // Default to Pain tab
     const [painNotes, setPainNotes] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [journals, setJournals] = useState([
+        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },
+    ]);  // TODO: Fetch journals from backend.
+
+    // TODO: Delete journals from backend.
+    const deleteJournal = (id) => {
+        // setJournals(journals.filter((journal) => journal.id !== id));
+        return;
+    };
 
     // Fetch all pain notes
     const fetchPainNotes = async () => {
@@ -294,11 +304,11 @@ const Notes = () => {
                     <TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Other' && localStyles.tabActive,
+                            activeTab === 'Journal' && localStyles.tabActive,
                         ]}
-                        onPress={() => setActiveTab('Other')}
+                        onPress={() => setActiveTab('Journal')}
                     >
-                        <Text style={localStyles.tabText}>Other</Text>
+                        <Text style={localStyles.tabText}>Journal</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -307,31 +317,65 @@ const Notes = () => {
                         {loading ? (
                             <Text style={localStyles.loading}>Loading...</Text>
                         ) : (
-                            <FlatList
-                                data={painNotes}
-                                keyExtractor={(item) => item.hash_id}
-                                renderItem={({ item }) => (
-                                    <View style={localStyles.noteContainer}>
+                            painNotes && painNotes.length === 0 ?
+                            (
+                                <Text style={localStyles.noContent}>No pain notes to display.</Text>
+                            ) : (
+                                <FlatList
+                                    data={painNotes}
+                                    keyExtractor={(item) => item.hash_id}
+                                    renderItem={({ item }) => (
+                                        <View style={localStyles.noteContainer}>
+                                            <View>
+                                                <Text style={localStyles.noteLabel}>Date:
+                                                    <Text style={localStyles.noteValue}> {convertDate(item.date.split('T')[0])}</Text>
+                                                </Text>
+                                                <Text style={localStyles.noteLabel}>Body Part:
+                                                    <Text style={localStyles.noteValue}> {item.body_part}</Text>
+                                                </Text>
+                                                <Text style={localStyles.noteLabel}>Pain Level:
+                                                    <Text style={localStyles.noteValue}> {item.pain_level} out of 10</Text>
+                                                </Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                style={localStyles.deleteButton}
+                                                onPress={() => deletePainNote(item.hash_id)}
+                                            >
+                                                <Feather name="trash-2" size={26} style={styles.iconButton} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    )}
+                                />
+                            )
+                        )}
+                    </ScrollView>
+                )}
+
+                {activeTab === 'Journal' && (
+                    <ScrollView>
+                        {loading ? (
+                            <Text style={localStyles.loading}>Loading...</Text>
+                        ) : (
+                            journals && journals.length === 0 ? (
+                                <Text style={localStyles.noContent}>No journals to display.</Text>
+                            ) : (
+                                journals.map((journal) => (
+                                    <View key={journal.id} style={localStyles.noteContainer}>
                                         <View>
                                             <Text style={localStyles.noteLabel}>Date:
-                                                <Text style={localStyles.noteValue}> {convertDate(item.date.split('T')[0])}</Text>
+                                                <Text style={localStyles.noteValue}> {convertDate(journal.date)} {`\n\n`}</Text>
                                             </Text>
-                                            <Text style={localStyles.noteLabel}>Body Part:
-                                                <Text style={localStyles.noteValue}> {item.body_part}</Text>
-                                            </Text>
-                                            <Text style={localStyles.noteLabel}>Pain Level:
-                                                <Text style={localStyles.noteValue}> {item.pain_level} out of 10</Text>
-                                            </Text>
+                                            <Text style={localStyles.noteValue}>{journal.content}</Text>
                                         </View>
                                         <TouchableOpacity
                                             style={localStyles.deleteButton}
-                                            onPress={() => deletePainNote(item.hash_id)}
+                                            onPress={() => deleteJournal(journal.id)}
                                         >
                                             <Feather name="trash-2" size={26} style={styles.iconButton} />
                                         </TouchableOpacity>
                                     </View>
-                                )}
-                            />
+                                ))
+                            )
                         )}
                     </ScrollView>
                 )}
@@ -366,6 +410,16 @@ const localStyles = StyleSheet.create({
         fontSize: theme.fontSizes.regular,
         fontWeight: theme.fontWeights.bold,
     },
+    loading:{
+        marginTop: '1rem',
+        textAlign: 'center',
+        fontSize: theme.fontSizes.regular,
+    },
+    noContent:{
+        marginTop: '1rem',
+        textAlign: 'center',
+        fontSize: theme.fontSizes.regular,
+    },
     noteContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -382,6 +436,7 @@ const localStyles = StyleSheet.create({
         marginBottom: 5,
     },
     noteValue: {
+        fontSize: theme.fontSizes.regular,
         fontWeight: theme.fontWeights.regular,
     },
 });
