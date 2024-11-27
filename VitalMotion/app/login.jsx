@@ -120,7 +120,7 @@ const LoginScreen = () => {
         setError('');
 		setEmailError('');
 		setPasswordError('');
-		if (!firstName && !lastName && !email && !password) {
+		if (!firstName | !lastName | !email | !password) {
             setError('Please fill in all fields.');
             return;
 		}
