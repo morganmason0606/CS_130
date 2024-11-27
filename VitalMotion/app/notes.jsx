@@ -113,29 +113,35 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
     const musclesMap = muscles.map((muscle, i) => ({ id: i+1, name: muscle }));    
 
     const renderPainLevelRadio = () => (
-        <View style={formStyles.radioContainer}>
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                <TouchableOpacity
-                    key={level}
-                    style={[
-                        formStyles.radioButton,
-                        newPainLevel === level && formStyles.radioButtonSelected,
-                        newPainLevel !== level && hoveredPainLevel === level && formStyles.radioButtonHovered,
-                    ]}
-                    onPress={() => {console.log(`Set new pain level to ${level}.`); setNewPainLevel(level);}}
-                    onMouseEnter={() => {setHoveredPainLevel(level)}}
-                    onMouseLeave={() => {setHoveredPainLevel(0)}}
-                >
-                    <Text
-                        style={[
-                            formStyles.radioText,
-                            newPainLevel === level && formStyles.radioTextSelected,
-                        ]}
-                    >
-                        {level}
-                    </Text>
-                </TouchableOpacity>
-            ))}
+        <View>
+            <View style={formStyles.radioLabelWrapper}>
+                <Text style={formStyles.radioLabel}>Not Painful</Text>
+                <Text style={formStyles.radioLabel}>Extremely Painful</Text>
+            </View>
+            <View style={formStyles.radioContainer}>
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
+                        <TouchableOpacity
+                            key={level}
+                            style={[
+                                formStyles.radioButton,
+                                newPainLevel === level && formStyles.radioButtonSelected,
+                                newPainLevel !== level && hoveredPainLevel === level && formStyles.radioButtonHovered,
+                            ]}
+                            onPress={() => {console.log(`Set new pain level to ${level}.`); setNewPainLevel(level);}}
+                            onMouseEnter={() => {setHoveredPainLevel(level)}}
+                            onMouseLeave={() => {setHoveredPainLevel(0)}}
+                        >
+                            <Text
+                                style={[
+                                    formStyles.radioText,
+                                    newPainLevel === level && formStyles.radioTextSelected,
+                                ]}
+                            >
+                                {level}
+                            </Text>
+                        </TouchableOpacity>
+                ))}
+            </View>
         </View>
     );
 
@@ -606,13 +612,22 @@ const formStyles = StyleSheet.create({
     picker: {
         width: '100%',
     },
+    radioLabel:{
+        fontSize: theme.fontSizes.regular,
+        marginBottom: '0.5rem',
+    },
+    radioLabelWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     radioContainer: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginVertical: '1rem',
+        marginBottom: '1rem',
     },
     radioButton: {
         width: '9%',
