@@ -224,7 +224,7 @@ const JournalNoteForm = () => {
     };
 
     return (
-        <View>
+        <ScrollView>
             <Text style={formStyles.modalTitle}>Journal Entry</Text>
             <Text style={formStyles.label}>Content<Text style={theme.required}>*</Text></Text>
             <TextInput
@@ -241,7 +241,16 @@ const JournalNoteForm = () => {
             >
                 <Text style={formStyles.textButtonText}>Add Journal Entry</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
+    );
+};
+
+const MedicationNoteForm = () => {    
+    // TODO: Implement medication note form.
+    return(
+        <ScrollView>
+            <Text style={formStyles.modalTitle}>Medication Notes</Text>
+        </ScrollView>
     );
 };
 
@@ -252,17 +261,35 @@ const Notes = () => {
     const [painNotes, setPainNotes] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    // TODO: Remove placeholder when fetching from backend is implemented.
     const [journals, setJournals] = useState([
-        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },  // TODO: Remove placeholder when fetching from backend is implemented.
+        { id: 1, date: '2021-09-01', content: 'Journal entry 1' },
+    ]);
+
+    // TODO: Remove placeholder when fetching from backend is implemented.
+    const [medNotes, setMedNotes] = useState([
+        { id: 1, date: '2021-09-01', content: 'Medication note 1' },
     ]);
     
     // TODO: Fetch journals from backend.
     const fetchJournals = async () => {
+        setJournals([]);
         return;
     };
 
     // TODO: Delete journals from backend.
     const deleteJournal = async (id) => {
+        return;
+    };
+
+    // TODO: Fetch medication notes from backend.
+    const fetchMedNotes = async () => {
+        setMedNotes([]);
+        return;
+    };
+
+    // TODO: Delete medication notes from backend.
+    const deleteMedNote = async (id) => {
         return;
     };
 
@@ -340,8 +367,8 @@ const Notes = () => {
                 <View style={localStyles.headerContainer}>
                     <Text style={styles.pageTitle}>Notes</Text>
                     {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
+                    {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm />}/>} {/** TODO: Modify as needed. */}
                     {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm />}/>}
-                    {/** TODO: Medication Notes Tab */}
                 </View>
                 
                 <View style={localStyles.tabContainer}>
@@ -353,6 +380,15 @@ const Notes = () => {
                         onPress={() => setActiveTab('Pain')}
                     >
                         <Text style={localStyles.tabText}>Pain</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            localStyles.tab,
+                            activeTab === 'Medication' && localStyles.tabActive,
+                        ]}
+                        onPress={() => setActiveTab('Medication')}
+                    >
+                        <Text style={localStyles.tabText}>Medication</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[
@@ -404,6 +440,35 @@ const Notes = () => {
                     </ScrollView>
                 )}
 
+                {activeTab === 'Medication' && (
+                    <ScrollView>
+                        {loading ? (
+                            <Text style={localStyles.loading}>Loading...</Text>
+                        ) : (
+                            medNotes && medNotes.length === 0 ? (
+                                <Text style={localStyles.noContent}>No medication notes to display.</Text>
+                            ) : (
+                                medNotes.map((medNote) => (
+                                    <View key={medNote.id} style={localStyles.noteContainer}>
+                                        <View>
+                                            <Text style={localStyles.noteLabel}>Date:
+                                                <Text style={localStyles.noteValue}> {convertDate(medNote.date)}</Text>
+                                            </Text>
+                                            <Text style={localStyles.noteValue}>{medNote.content}</Text>  {/** TODO */}
+                                        </View>
+                                        <TouchableOpacity
+                                            style={localStyles.deleteButton}
+                                            onPress={() => deleteMedNote(medNote.id)}  /** TODO */
+                                        >
+                                            <Feather name="trash-2" size={26} style={styles.iconButton} />
+                                        </TouchableOpacity>
+                                    </View>
+                                ))
+                            )
+                        )}
+                    </ScrollView>
+                )}
+
                 {activeTab === 'Journal' && (
                     <ScrollView>
                         {loading ? (
@@ -422,7 +487,7 @@ const Notes = () => {
                                         </View>
                                         <TouchableOpacity
                                             style={localStyles.deleteButton}
-                                            onPress={() => deleteJournal(journal.id)}
+                                            onPress={() => deleteJournal(journal.id)}  /** TODO */
                                         >
                                             <Feather name="trash-2" size={26} style={styles.iconButton} />
                                         </TouchableOpacity>
