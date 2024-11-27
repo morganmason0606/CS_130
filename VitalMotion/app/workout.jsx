@@ -153,7 +153,9 @@ const Workout = () => {
                         keyExtractor={(exercise) => exercise.eid}
                         renderItem={({ item: exercise }) => (
                             <View>
-                                <Text style={localStyles.cardDetail}>{`\u2022 ${exercise.name}`} : {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs</Text>
+                                <Text style={localStyles.cardDetail}>
+                                    <Text style={localStyles.bold}> {`\u2022 ${exercise.name}`}</Text>: {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
+                                </Text>
                             </View>
                         )}
                         style={localStyles.exerciseInfo}
@@ -178,10 +180,14 @@ const Workout = () => {
                         <Text style={styles.pageTitle}>Workouts</Text>
                         <Text style={styles.pageSubtitle}>Your Workouts</Text>
                     </View>
-                    <View>
+                    <View style={localStyles.actionButtons}>
                         <CustomButton
                             title="+ Create New Workout"
-                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
+                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
+                        />
+                        <CustomButton
+                            title="+ Get Workout Recommendation"
+                            onPress={() => router.push({ pathname: '/rec_workout'})}
                         />
                     </View>
                 </View>
@@ -250,6 +256,9 @@ const localStyles = StyleSheet.create({
         flexDirection: 'row',
         gap: 5,
     },
+    bold: {
+        fontWeight: theme.fontWeights.bold,
+    }
 });
 
 export default Workout;
