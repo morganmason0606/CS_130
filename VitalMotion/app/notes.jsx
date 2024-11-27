@@ -423,7 +423,7 @@ const Notes = () => {
                                                     <Text style={localStyles.noteValue}> {item.body_part}</Text>
                                                 </Text>
                                                 <Text style={localStyles.noteLabel}>Pain Level:
-                                                    <Text style={localStyles.noteValue}> {item.pain_level} out of 10</Text>
+                                                    <Text style={localStyles.noteValue}> {item.pain_level}/10</Text>
                                                 </Text>
                                             </View>
                                             <TouchableOpacity
