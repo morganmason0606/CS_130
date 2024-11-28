@@ -241,8 +241,42 @@ const RecWorkout = () => {
         router.push('/workout');
     }
 
-    const retrieveRec = () =>{
-        fetchWorkoutDetails();
+    const retrieveRec = async () =>{
+        if(workoutId && workoutId != 'new'){
+            setLoading(true);
+            try{
+                const response = await fetch(`http://localhost:5001/recommend/workout/${workoutId}`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                if(!response.ok){
+                    const error = await response.json()
+                    console.error("Faild to fetch recommended workout", error.error)
+                }else{
+                    const data = await response.json();
+                    const parsedExercises = await Promise.all(
+                        data.exercises.map(async (exerciseStr) => {
+                            const [sets, reps, weight, eid] = exerciseStr.split('|');
+                            const exercise = await fetchExerciseDetails(eid);
+                            return {
+                                sets,
+                                reps,
+                                weight,
+                                eid,
+                                name: exercise.name,
+                            };
+                        })
+                    );
+                    setExercises(parsedExercises);
+                }
+            }catch(err){
+                console.error("Error fetching recommended workout:", err);
+            }finally{
+                setLoading(false);
+            }
+        }
     }
 
     if (loading) {
