@@ -28,6 +28,12 @@ const History = () => {
     const [viewGraphs, setViewGraphs] = useState(false);
     const [startDate, setStartDate] = useState('2024-01-01');       // YYYY-MM-DD format; random default values
     const [endDate, setEndDate] = useState('2024-11-28');           // YYYY-MM-DD format; random default values
+    const [currentDate, _] = useState(new Date().toISOString().split('T')[0]);
+
+    // Set end date to current date if it is in the future
+    useEffect(() => {
+        currentDate > endDate ? setEndDate(endDate) : setEndDate(currentDate);
+    }, [endDate]);
 
     // Fetch workout and pain history
     const fetchHistory = async () => {
@@ -282,8 +288,8 @@ const History = () => {
                                     const newStartDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
                                     setStartDate(newStartDate);
                                 }}
-                                current={startDate}             // Date string in YYYY-MM-DD format
-                                maxDate={endDate}
+                                current={startDate}             // Date string in YYYY-MM-DD format (determines month to show)
+                                maxDate={endDate}               // Date string in YYYY-MM-DD format (latest date user can select)
                                 markedDates={{                  // Style selected dates
                                     [startDate]: {
                                       selected: true,
@@ -308,8 +314,9 @@ const History = () => {
                                     const newEndDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
                                     setEndDate(newEndDate);
                                 }}
-                                current={endDate}               // Date string in YYYY-MM-DD format
-                                minDate={startDate}
+                                current={endDate}               // Date string in YYYY-MM-DD format (determines month to show)
+                                minDate={startDate}             // Date string in YYYY-MM-DD format (earliest date user can select)
+                                maxDate={currentDate}           // Date string in YYYY-MM-DD format (latest date user can select)
                                 markedDates={{                  // Style selected dates
                                     [endDate]: {
                                       selected: true,
