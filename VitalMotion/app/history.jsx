@@ -7,10 +7,11 @@ import {
     ActivityIndicator,
     ScrollView,
 } from 'react-native';
-import Navbar from './navbar';
-import styles from './index_styles';
 import { useAuth } from './auth_context';
 import { useRouter } from 'expo-router';
+import Navbar from './navbar';
+import Graph from './history_graph';
+import styles from './index_styles';
 import theme from './design_system';
 
 const History = () => {
@@ -19,6 +20,7 @@ const History = () => {
 
     const [workouts, setWorkouts] = useState([]);
     const [painNotes, setPainNotes] = useState([]);
+    const [combinedHistory, setCombinedHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
     // Fetch workout and pain history
@@ -62,6 +64,7 @@ const History = () => {
                         };
                     })
                 );
+                setWorkouts(parsedWorkouts);
             }
 
             // Fetch all pain notes
@@ -82,13 +85,14 @@ const History = () => {
                     pain_level: note.pain_level,
                     body_part: note.body_part,
                 }));
+                setPainNotes(parsedPainNotes);
             }
 
             // Combine and sort by date
             const combinedHistory = [...parsedWorkouts, ...parsedPainNotes].sort(
                 (a, b) => new Date(b.date) - new Date(a.date)
             );
-            setWorkouts(combinedHistory);
+            setCombinedHistory(combinedHistory);
         } catch (err) {
             console.error('Error fetching history:', err);
         } finally {
@@ -251,11 +255,18 @@ const History = () => {
                         </Text>
                     </View>
                 </View>
+
+                <View>
+                    {/** TODO: Button for user to change the graph they want to view or to view all notes. */}
+                    {/** TODO: Date input boxes for start and end date. */}
+                    <Graph startDate={'2024-11-27'} endDate={'2024-11-28'} type={'pain'} data={painNotes} />
+                </View>
+
                 {workouts.length === 0 ? (
                     <Text style={styles.emptyMessage}>No history found.</Text>
                 ) : (
                     <FlatList
-                        data={workouts}
+                        data={combinedHistory}
                         keyExtractor={(_, index) => index.toString()}
                         renderItem={renderHistoryItem}
                     />
