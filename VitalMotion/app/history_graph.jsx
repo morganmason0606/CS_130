@@ -6,7 +6,7 @@ import theme from './design_system.js';
 const Graph = ({startDate, endDate, type, data}) => {
   const screenWidth = Dimensions.get('window').width;
 
-  const [dataset, setDataset] = useState([]);     // For populating the charts
+  const [dataset, setDataset] = useState({});     // For populating the charts
 
   // Bar chart configuration
   const barChartConfig = {
@@ -32,6 +32,12 @@ const Graph = ({startDate, endDate, type, data}) => {
     const filteredPainData = data.filter((entry) => {
       return entry.date >= startDate && entry.date <= endDate;
     });
+
+    if (!filteredPainData || filteredPainData.length === 0) {
+      console.log('No data found within the date range.');
+      setDataset({});
+      return;
+    }
 
     // Convert date to MM/DD/YYYY format
     const reformattedPainData = filteredPainData.map((entry) => {
@@ -86,43 +92,150 @@ const Graph = ({startDate, endDate, type, data}) => {
     setDataset(dataset);
   };
 
-  // TODO: Set up weekly datasets for workouts graphs
+  // Set up weekly datasets for workouts graphs
   const setupWorkoutsDataset = () => {
+    // Filter workout notes based on date range
+    const filteredWorkoutData = data.filter((entry) => {
+      return entry.date >= startDate && entry.date <= endDate;
+    });
+
+    console.log('filteredWorkoutData:', filteredWorkoutData);
+
+    // Exit early if there's no data within the date range
+    if (!filteredWorkoutData || filteredWorkoutData.length === 0) {
+      console.log('No data found within the date range.');
+      setDataset({});
+      return;
+    }
+
+    // Convert date to MM/DD/YYYY format
+    const reformattedWorkoutData = filteredWorkoutData.map((entry) => {
+      return {
+        date: convertDate(entry.date),
+      };
+    });
+
+    // Sort workouts by date (earliest to latest)
+    reformattedWorkoutData.sort((a, b) => {
+      const dateA = a.date.split('/');
+      const dateB = b.date.split('/');
+      return new Date(dateA[2], dateA[0], dateA[1]) - new Date(dateB[2], dateB[0], dateB[1]);
+    });
+
+    console.log('reformattedWorkoutData:', reformattedWorkoutData);
+
+    // Count workouts by week starting from earliest date
+    const weekToWorkouts = {};
+    reformattedWorkoutData.forEach((entry) => {
+      const date = entry.date;
+      
+      // If weekToWorkouts is empty, add first date (start of the first week)
+      if (Object.entries(weekToWorkouts).length === 0){
+        weekToWorkouts[date] = 1;
+      }
+      else {
+        const lastDate = Object.keys(weekToWorkouts).pop();
+
+        // Create date objects for comparison (convert strings from MM/DD/YYYY to YYYY/MM/DD and pass then pass into Date constructor)
+        const lastDateParts = lastDate.split('/');
+        const dateParts = date.split('/');
+        const dateObj = new Date(dateParts[2] + '/' + dateParts[0] + '/' + dateParts[1]);
+        const lastDateObj = new Date(lastDateParts[2] + '/' + lastDateParts[0] + '/' + lastDateParts[1]);
+
+        // Check if dateObj is within 6 days of lastDateObj
+        if ((dateObj - lastDateObj) / (1000 * 60 * 60 * 24) <= 6) {
+          weekToWorkouts[lastDate]++;
+        }
+        else {
+          weekToWorkouts[date] = 1;
+        }
+      }
+    });
+
+    console.log('weekToWorkouts:', weekToWorkouts);
+
+    // Set up datasets (labels and values) for the bar chart  (1 dataset for all workouts; 1 bar per week)
+    const labels = [];
+    const values = [];
+    for (const weekStart in weekToWorkouts) {
+      let weekEnd = new Date(weekStart);          // weekStart is in MM/DD/YYYY format
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      weekEnd = weekEnd.toLocaleDateString();     // weekEnd is converted to MM/DD/YYYY format
+
+      labels.push(`${weekStart} to ${weekEnd}`);
+      values.push(weekToWorkouts[weekStart]);
+    }
+    const dataset = {labels: labels, datasets: [{data: values}]};
+
+    console.log('dataset:', dataset);
+    setDataset(dataset);
   };
   
   useEffect(() => {
     // Pain graph per day per body part.
+    if (data.length === 0) {
+      console.log('No data found.');
+      setDataset({});
+      return;
+    }
+
     if (type === 'pain') {
       setupPainDataset('pain');
     }
     else if (type === 'workouts') {
-      // TODO: Convert date range to week range for weekly workout data
       setupWorkoutsDataset('workouts');
     }
-  }, []);
+  }, [type, data, startDate, endDate]);
 
   return (
     <View style={graphStyles.container}>
-      {type === 'pain' && <Text style={graphStyles.graphTitle}>Pain Level Per Day</Text>}
+      {Object.entries(dataset).length === 0 && <Text style={graphStyles.emptyMessage}>No data found within selected date range.</Text>}
 
-      {/* Display bar chart for each body part */}
-      <View style={graphStyles.graphOuterWrapper}>
-        {Object.keys(dataset).map((bodyPart) => {
-          return (
-            <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
-              <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
-              <BarChart
-                chartConfig={barChartConfig}
-                data={dataset[bodyPart]}
-                width={screenWidth * 0.4}            // 40% of screen width
-                height={220}
-                fromZero={true}
-                style={graphStyles.chart}
-              />
-            </View>
-          );
-        })}
-      </View>
+      {type === 'pain' && dataset[bodyPart] !== undefined && dataset[bodyPart].labels && dataset[bodyPart].datasets && dataset[bodyPart].datasets[0].data &&
+        <View>
+          <Text style={graphStyles.graphTitle}>Pain Level Per Day</Text>
+
+          {/* Display bar chart for each body part */}
+          <View style={graphStyles.graphOuterWrapper}>
+            {Object.keys(dataset).map((bodyPart) => {
+              return (
+                <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
+                  <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
+                  <BarChart
+                    chartConfig={barChartConfig}
+                    data={dataset[bodyPart]}
+                    width={screenWidth * 0.4}            // 40% of screen width
+                    height={220}
+                    fromZero={true}
+                    style={graphStyles.chart}
+                  />
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      }
+      
+      {type === 'workouts' && dataset.labels && dataset.datasets && dataset.datasets[0].data &&
+        <View>
+          <Text style={graphStyles.graphTitle}>
+            Workouts Completed Per Week From {convertDate(startDate)} to {convertDate(endDate)}
+          </Text>
+
+          {/* Display bar chart for workouts */}
+          <View style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
+            <BarChart
+              chartConfig={barChartConfig}
+              data={dataset}
+              width={screenWidth * 0.4}            // 40% of screen width
+              height={360}
+              fromZero={true}
+              verticalLabelRotation={20}
+              style={graphStyles.chart}
+            />
+          </View>
+        </View>
+      }
     </View>
   );
 };
@@ -161,6 +274,10 @@ const graphStyles = StyleSheet.create({
   chart: {
     marginVertical: '1rem',
     borderRadius: '0.5rem',
+  },
+  emptyMessage: {
+    fontSize: theme.fontSizes.regular,
+    fontWeight: theme.fontWeights.bold,
   },
 });
 

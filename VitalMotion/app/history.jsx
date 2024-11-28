@@ -180,7 +180,7 @@ const History = () => {
                 router.push('/login');
             }, 800);
         } else {
-            fetchHistory();
+            fetchHistory();  // TODO: Bug – History does not refresh when workout or notes are added unless page is reloaded.
         }
     }, [uid]);
 
@@ -331,8 +331,8 @@ const History = () => {
                         key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
                         startDate={startDate}               // Date string in YYYY-MM-DD format
                         endDate={endDate}                   // Date string in YYYY-MM-DD format
-                        type={'pain'}
-                        data={painNotes}
+                        type={'workouts'}                   // Type of data to display (workouts or pain)
+                        data={workouts}
                     />
                 </View>}
 
