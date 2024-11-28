@@ -6,9 +6,11 @@ import {
     FlatList,
     ActivityIndicator,
     ScrollView,
+    TouchableOpacity,
 } from 'react-native';
 import { useAuth } from './auth_context';
 import { useRouter } from 'expo-router';
+import Calendar from 'react-calendar';
 import Navbar from './navbar';
 import Graph from './history_graph';
 import styles from './index_styles';
@@ -22,6 +24,10 @@ const History = () => {
     const [painNotes, setPainNotes] = useState([]);
     const [combinedHistory, setCombinedHistory] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [viewGraphs, setViewGraphs] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     // Fetch workout and pain history
     const fetchHistory = async () => {
@@ -256,11 +262,40 @@ const History = () => {
                     </View>
                 </View>
 
-                <View>
-                    {/** TODO: Button for user to change the graph they want to view or to view all notes. */}
-                    {/** TODO: Date input boxes for start and end date. */}
-                    <Graph startDate={'2024-11-27'} endDate={'2024-11-28'} type={'pain'} data={painNotes} />
-                </View>
+                <TouchableOpacity style={localStyles.button} onPress={() => setViewGraphs(!viewGraphs)}>
+                    <Text style={localStyles.buttonText}>View Graphs</Text>
+                </TouchableOpacity>
+                {viewGraphs && <View>
+                    <View style={localStyles.datePickerWrapper}>
+                        <Text style={localStyles.dateLabel}>Selected Start Date: {startDate.toLocaleDateString()}</Text>
+                        <Calendar
+                            onChange={(newDate) => {
+                                setStartDate(newDate);
+                              }}
+                            value={startDate}           // Date object
+                            maxDate={endDate}           // Date object
+                            locale="en-US"
+                            calendarType="gregory"
+                        />
+                        <Text style={localStyles.dateLabel}>Selected End Date: {endDate.toLocaleDateString()}</Text>
+                        <Calendar
+                            onChange={(newDate) => {
+                                setEndDate(newDate);
+                                console.log(newDate);
+                              }}
+                            value={endDate}                 // Date object
+                            minDate={startDate}             // Date object
+                            locale="en-US"
+                            calendarType="gregory"
+                        />
+                    </View>
+                    <Graph
+                        startDate={startDate.toLocaleDateString()}      // Date string in MM/DD/YYYY format
+                        endDate={endDate.toLocaleDateString()}          // Date string in MM/DD/YYYY format
+                        type={'pain'}
+                        data={painNotes}
+                    />
+                </View>}
 
                 {workouts.length === 0 ? (
                     <Text style={styles.emptyMessage}>No history found.</Text>
@@ -277,6 +312,31 @@ const History = () => {
 };
 
 const localStyles = StyleSheet.create({
+    button: {
+        width: '8%',
+        backgroundColor: theme.colors.aqua,
+        padding: '0.5rem',
+        borderRadius: '0.5rem',
+        marginBottom: '1rem',
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    datePickerWrapper: {
+        padding: '1rem',
+        paddingTop: 0,
+        marginBottom: '1rem',
+        borderRadius: '1rem',
+        backgroundColor: theme.colors.lightAqua,
+    },
+    dateLabel: {
+        marginVertical: '0.5rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold
+    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -28,6 +28,12 @@ const Graph = ({startDate, endDate, type, data}) => {
 
   // Set up daily datasets for pain graphs per body part
   const setupPainDataset = () => {
+    // Convert start and end dates to YYYY-MM-DD format
+    startDate = startDate.split('/');
+    startDate = `${startDate[2]}-${startDate[0]}-${startDate[1]}`;
+    endDate = endDate.split('/');
+    endDate = `${endDate[2]}-${endDate[0]}-${endDate[1]}`;
+    
     // Filter pain notes based on date range
     const filteredPainData = data.filter((entry) => {
       return entry.date >= startDate && entry.date <= endDate;
