@@ -149,5 +149,9 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     return {"recommended": to_recommend, "intensity": get_intensity(recent_pain, to_recommend)}
 
 
-def recommend_workout(uid: str, exercise_id: str, db: google.cloud.firestore.Client):
-    pass
+def recommend_workout(workout_id: str, db: google.cloud.firestore.Client):
+    doc_ref = db.collection('globals').document('workouts').collection('premades').document(workout_id)
+    doc = doc_ref.get()
+    if doc.exists:
+        return doc.to_dict()
+    return None

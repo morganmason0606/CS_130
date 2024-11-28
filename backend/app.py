@@ -277,9 +277,15 @@ def get_recommended_exercise(uid):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route('/recommend/<uid>/workout', methods=['POST'])
-def get_recommended_workout(uid):
-    return jsonify({"error": "Not implemented yet."}), 501
+@app.route("/recommend/workout/<part>", methods=['GET'])
+def get_recommended_workout(part):
+    try:
+        rec_workout = recommender.recommend_workout(part, db)
+        if rec_workout:
+           return jsonify(rec_workout), 200
+        return jsonify({"error":"recommended workout not found"}), 404
+    except Exception as e:
+        return jsonify({'error':str(e)}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
