@@ -30,6 +30,8 @@ const History = () => {
     const [endDate, setEndDate] = useState('2024-11-28');           // YYYY-MM-DD format; random default values
     const [currentDate, _] = useState(new Date().toISOString().split('T')[0]);
 
+    const [activeTab, setActiveTab] = useState('workouts');   // Active tab for pain or workouts; default: workouts
+
     // Set end date to current date if it is in the future
     useEffect(() => {
         currentDate > endDate ? setEndDate(endDate) : setEndDate(currentDate);
@@ -271,8 +273,11 @@ const History = () => {
                 <TouchableOpacity style={graphCalendarStyles.button} onPress={() => setViewGraphs(!viewGraphs)}>
                     <Text style={graphCalendarStyles.buttonText}>View Graphs</Text>
                 </TouchableOpacity>
+
                 {viewGraphs && <View style={graphCalendarStyles.graphCalendarContainer}>
                     <View style={graphCalendarStyles.calendarContainer}>
+
+                        {/* Start Date Calendar */}
                         <View style={graphCalendarStyles.calendarSubcontainer}>
                             <Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
                                 <Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}</Text>
@@ -299,6 +304,8 @@ const History = () => {
                                 theme={calendarTheme}
                             />
                         </View>
+
+                        {/* End Date Calendar */}
                         <View style={graphCalendarStyles.calendarSubcontainer}>
                             <Text style={graphCalendarStyles.dateLabel}>Selected End Date:
                                 <Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}</Text>
@@ -327,13 +334,49 @@ const History = () => {
                             />
                         </View>
                     </View>
-                    <Graph
-                        key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
-                        startDate={startDate}               // Date string in YYYY-MM-DD format
-                        endDate={endDate}                   // Date string in YYYY-MM-DD format
-                        type={'workouts'}                   // Type of data to display (workouts or pain)
-                        data={workouts}
-                    />
+                    
+                    {/* Tabs for viewing different graphs. */}
+                    <View style={localStyles.tabContainer}>
+                        <TouchableOpacity
+                            style={[
+                                localStyles.tab,
+                                activeTab === 'workouts' && localStyles.tabActive,
+                            ]}
+                            onPress={() => setActiveTab('workouts')}
+                        >
+                            <Text style={localStyles.tabText}>Workout Logs</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                localStyles.tab,
+                                activeTab === 'pain' && localStyles.tabActive,
+                            ]}
+                            onPress={() => setActiveTab('pain')}
+                        >
+                            <Text style={localStyles.tabText}>Pain Notes</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {activeTab === 'workouts' && 
+                        <Graph
+                            key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
+                            startDate={startDate}               // Date string in YYYY-MM-DD format
+                            endDate={endDate}                   // Date string in YYYY-MM-DD format
+                            type={'workouts'}                   // Type of data to display (workouts or pain)
+                            data={workouts}
+                        />
+                    }
+
+                    {activeTab === 'pain' && 
+                        <Graph
+                            key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
+                            startDate={startDate}               // Date string in YYYY-MM-DD format
+                            endDate={endDate}                   // Date string in YYYY-MM-DD format
+                            type={'pain'}                       // Type of data to display (workouts or pain)
+                            data={painNotes}
+                        />
+                    }
+
                 </View>}
 
                 {workouts.length === 0 ? (
@@ -374,6 +417,26 @@ const localStyles = StyleSheet.create({
         color: theme.colors.white,
         fontStyle: 'italic',
         marginTop: 5,
+    },
+    tabContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    tab: {
+        display: 'flex',
+        flex: 1,
+        alignItems: 'center',
+        marginBottom: '1rem',
+        padding: '0.5rem',
+        borderBottomWidth: 4,
+        borderColor: 'transparent',
+    },
+    tabActive: {
+        borderColor: theme.colors.aqua,
+    },
+    tabText: {
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
     },
     historyType:{
         textAlign: 'center',

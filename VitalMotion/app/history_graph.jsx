@@ -191,32 +191,34 @@ const Graph = ({startDate, endDate, type, data}) => {
     <View style={graphStyles.container}>
       {Object.entries(dataset).length === 0 && <Text style={graphStyles.emptyMessage}>No data found within selected date range.</Text>}
 
-      {type === 'pain' && dataset[bodyPart] !== undefined && dataset[bodyPart].labels && dataset[bodyPart].datasets && dataset[bodyPart].datasets[0].data &&
+      {type === 'pain' && Object.keys(dataset).length > 0 &&
         <View>
           <Text style={graphStyles.graphTitle}>Pain Level Per Day</Text>
 
           {/* Display bar chart for each body part */}
           <View style={graphStyles.graphOuterWrapper}>
             {Object.keys(dataset).map((bodyPart) => {
-              return (
-                <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
-                  <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
-                  <BarChart
-                    chartConfig={barChartConfig}
-                    data={dataset[bodyPart]}
-                    width={screenWidth * 0.4}            // 40% of screen width
-                    height={220}
-                    fromZero={true}
-                    style={graphStyles.chart}
-                  />
-                </View>
-              );
+              if (dataset[bodyPart] !== undefined && dataset[bodyPart].labels && dataset[bodyPart].datasets && dataset[bodyPart].datasets[0].data){  // Extra check if dataset is not empty (addresses map error for BarChart)
+                return (
+                  <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
+                    <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
+                    <BarChart
+                      chartConfig={barChartConfig}
+                      data={dataset[bodyPart]}
+                      width={screenWidth * 0.4}            // 40% of screen width
+                      height={220}
+                      fromZero={true}
+                      style={graphStyles.chart}
+                    />
+                  </View>
+                );
+              }
             })}
           </View>
         </View>
       }
       
-      {type === 'workouts' && dataset.labels && dataset.datasets && dataset.datasets[0].data &&
+      {type === 'workouts' && dataset.labels && dataset.datasets && dataset.datasets[0].data &&  // Extra check if dataset is not empty (addresses map error for BarChart)
         <View>
           <Text style={graphStyles.graphTitle}>
             Workouts Completed Per Week From {convertDate(startDate)} to {convertDate(endDate)}
@@ -255,6 +257,7 @@ const graphStyles = StyleSheet.create({
     alignItems: 'center',
   },
   graphTitle: {
+    alignSelf: 'center',
     marginBottom: '1rem',
     fontSize: theme.fontSizes.large,
     fontWeight: theme.fontWeights.bolder,
