@@ -10,8 +10,9 @@ import {
     Platform,
     Picker
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAuth } from './auth_context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import Navbar from './navbar';
 import CustomButton from './components/custom_button';
@@ -42,6 +43,7 @@ const RecWorkout = () => {
 
     const [notificationVisible, setNotificationVisible] = useState(false);
     const [message, setMessage] = useState('');
+    const [isDisabled, setIsDisabled] = useState(false);
 
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
@@ -265,7 +267,7 @@ const RecWorkout = () => {
 
     useEffect(() => {
         recommendExercise();
-    }, [toggleNotification]); // run when toggleNotification changes
+    }, [notificationVisible]);
 
     if (loading) {
         return (
@@ -415,7 +417,8 @@ const RecWorkout = () => {
                 <CustomButton
                     title="View Exercise Recommendation"
                     onPress={toggleNotification}
-                    style={[localStyles.button, localStyles.recommendationButton]}
+                    disabled={isDisabled}
+                    style={[localStyles.button, localStyles.recommendationButton, isDisabled && styles.disabledButton]}
                 />
                 <CustomButton
                     title="Cancel"

@@ -184,9 +184,9 @@ const Workout = () => {
                         </View>
                         <View>
                             {/* Using react-native-popup-menu for the button */}
-                            <Menu>
+                            <Menu style={localStyles.menu}>
                                 <MenuTrigger
-                                    text="+ Create New Workout"
+                                    text="+ New Workout"
                                     customStyles={triggerStyles}
                                     style={localStyles.menuTrigger}
                                 >
@@ -261,7 +261,7 @@ const optionStyles = {
     optionWrapper: {
         backgroundColor: theme.colors.aqua,
         padding: 10,
-    }
+    },
 }
 
 const localStyles = StyleSheet.create({
@@ -274,6 +274,10 @@ const localStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    menu: {
+        marginRight: 30,
+        marginTop: 50,
     },
     card: {
         backgroundColor: theme.colors.grey,
@@ -317,7 +321,7 @@ const localStyles = StyleSheet.create({
         fontWeight: theme.fontWeights.bold,
     },
     menuTrigger: {
-        marginBottom: 50,
+        top: -50,
     },
 });
 

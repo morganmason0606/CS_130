@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   message: {
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: theme.fontSizes.small,
     marginRight: 10,
   },
   closeButton: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: theme.colors.white,
-    fontSize: 18,
+    fontSize: theme.fontSizes.regular,
   },
 });
 
