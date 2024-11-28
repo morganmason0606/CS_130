@@ -28,12 +28,6 @@ const Graph = ({startDate, endDate, type, data}) => {
 
   // Set up daily datasets for pain graphs per body part
   const setupPainDataset = () => {
-    // Convert start and end dates to YYYY-MM-DD format
-    startDate = startDate.split('/');
-    startDate = `${startDate[2]}-${startDate[0]}-${startDate[1]}`;
-    endDate = endDate.split('/');
-    endDate = `${endDate[2]}-${endDate[0]}-${endDate[1]}`;
-    
     // Filter pain notes based on date range
     const filteredPainData = data.filter((entry) => {
       return entry.date >= startDate && entry.date <= endDate;
@@ -79,6 +73,13 @@ const Graph = ({startDate, endDate, type, data}) => {
         return labelsToValues[date].reduce((a, b) => a + b, 0) / labelsToValues[date].length;
       });
 
+      // Sort dates from earliest to latest
+      labels.sort((a, b) => {
+        const dateA = a.split('/');
+        const dateB = b.split('/');
+        return new Date(dateA[2], dateA[0], dateA[1]) - new Date(dateB[2], dateB[0], dateB[1]);
+      });
+
       // Add averages per day to dataset
       dataset[bodyPart] = {labels: labels, datasets: [{data: averageValue},],};
     };
@@ -108,12 +109,12 @@ const Graph = ({startDate, endDate, type, data}) => {
       <View style={graphStyles.graphOuterWrapper}>
         {Object.keys(dataset).map((bodyPart) => {
           return (
-            <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.4}]}>
+            <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
               <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
               <BarChart
                 chartConfig={barChartConfig}
                 data={dataset[bodyPart]}
-                width={screenWidth * 0.35}            // 35% of screen width
+                width={screenWidth * 0.4}            // 40% of screen width
                 height={220}
                 fromZero={true}
                 style={graphStyles.chart}
@@ -129,10 +130,10 @@ const Graph = ({startDate, endDate, type, data}) => {
 const graphStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginBottom: '0.25rem',
     padding: '1rem',
-    borderRadius: '1rem',
+    borderRadius: '0.5rem',
     backgroundColor: theme.colors.lightAqua,
-    marginBottom: '1rem',
   },
   graphOuterWrapper: {
     flexDirection: 'row',
@@ -143,14 +144,14 @@ const graphStyles = StyleSheet.create({
   graphTitle: {
     marginBottom: '1rem',
     fontSize: theme.fontSizes.large,
-    fontWeight: theme.fontWeights.bold,
+    fontWeight: theme.fontWeights.bolder,
   },
   graphInnerWrapper: {
     alignItems: 'center',
     marginHorizontal: '1rem',
     marginBottom: '1rem',
-    padding: '1rem',
-    borderRadius: '1rem',
+    paddingVertical: '1rem',
+    borderRadius: '0.5rem',
     backgroundColor: theme.colors.dustyAqua,
   },
   graphSubtitle: {
@@ -159,7 +160,7 @@ const graphStyles = StyleSheet.create({
   },
   chart: {
     marginVertical: '1rem',
-    borderRadius: '1rem',
+    borderRadius: '0.5rem',
   },
 });
 

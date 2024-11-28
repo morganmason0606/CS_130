@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useAuth } from './auth_context';
 import { useRouter } from 'expo-router';
-import Calendar from 'react-calendar';
+import { Calendar } from 'react-native-calendars';
 import Navbar from './navbar';
 import Graph from './history_graph';
 import styles from './index_styles';
@@ -26,8 +26,8 @@ const History = () => {
     const [loading, setLoading] = useState(false);
 
     const [viewGraphs, setViewGraphs] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState('2024-01-01');       // YYYY-MM-DD format; random default values
+    const [endDate, setEndDate] = useState('2024-11-28');           // YYYY-MM-DD format; random default values
 
     // Fetch workout and pain history
     const fetchHistory = async () => {
@@ -262,36 +262,68 @@ const History = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity style={localStyles.button} onPress={() => setViewGraphs(!viewGraphs)}>
-                    <Text style={localStyles.buttonText}>View Graphs</Text>
+                <TouchableOpacity style={graphCalendarStyles.button} onPress={() => setViewGraphs(!viewGraphs)}>
+                    <Text style={graphCalendarStyles.buttonText}>View Graphs</Text>
                 </TouchableOpacity>
-                {viewGraphs && <View>
-                    <View style={localStyles.datePickerWrapper}>
-                        <Text style={localStyles.dateLabel}>Selected Start Date: {startDate.toLocaleDateString()}</Text>
-                        <Calendar
-                            onChange={(newDate) => {
-                                setStartDate(newDate);
-                              }}
-                            value={startDate}           // Date object
-                            maxDate={endDate}           // Date object
-                            locale="en-US"
-                            calendarType="gregory"
-                        />
-                        <Text style={localStyles.dateLabel}>Selected End Date: {endDate.toLocaleDateString()}</Text>
-                        <Calendar
-                            onChange={(newDate) => {
-                                setEndDate(newDate);
-                                console.log(newDate);
-                              }}
-                            value={endDate}                 // Date object
-                            minDate={startDate}             // Date object
-                            locale="en-US"
-                            calendarType="gregory"
-                        />
+                {viewGraphs && <View style={graphCalendarStyles.graphCalendarContainer}>
+                    <View style={graphCalendarStyles.calendarContainer}>
+                        <View style={graphCalendarStyles.calendarSubcontainer}>
+                            <Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
+                                <Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}</Text>
+                            </Text>
+                            <Calendar
+                                onDayPress={(newDate) => {
+                                    if (newDate.month < 10) {
+                                        newDate.month = `0${newDate.month}`;
+                                    }
+                                    if (newDate.day < 10) {
+                                        newDate.day = `0${newDate.day}`;
+                                    }
+                                    const newStartDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
+                                    setStartDate(newStartDate);
+                                }}
+                                current={startDate}             // Date string in YYYY-MM-DD format
+                                maxDate={endDate}
+                                markedDates={{                  // Style selected dates
+                                    [startDate]: {
+                                      selected: true,
+                                    },
+                                }}
+                                style={graphCalendarStyles.calendar}
+                                theme={calendarTheme}
+                            />
+                        </View>
+                        <View style={graphCalendarStyles.calendarSubcontainer}>
+                            <Text style={graphCalendarStyles.dateLabel}>Selected End Date:
+                                <Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}</Text>
+                            </Text>
+                            <Calendar
+                                onDayPress={(newDate) => {
+                                    if (newDate.month < 10) {
+                                        newDate.month = `0${newDate.month}`;
+                                    }
+                                    if (newDate.day < 10) {
+                                        newDate.day = `0${newDate.day}`;
+                                    }
+                                    const newEndDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
+                                    setEndDate(newEndDate);
+                                }}
+                                current={endDate}               // Date string in YYYY-MM-DD format
+                                minDate={startDate}
+                                markedDates={{                  // Style selected dates
+                                    [endDate]: {
+                                      selected: true,
+                                    },
+                                }}
+                                style={graphCalendarStyles.calendar}
+                                theme={calendarTheme}
+                            />
+                        </View>
                     </View>
                     <Graph
-                        startDate={startDate.toLocaleDateString()}      // Date string in MM/DD/YYYY format
-                        endDate={endDate.toLocaleDateString()}          // Date string in MM/DD/YYYY format
+                        key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
+                        startDate={startDate}               // Date string in YYYY-MM-DD format
+                        endDate={endDate}                   // Date string in YYYY-MM-DD format
                         type={'pain'}
                         data={painNotes}
                     />
@@ -312,31 +344,6 @@ const History = () => {
 };
 
 const localStyles = StyleSheet.create({
-    button: {
-        width: '8%',
-        backgroundColor: theme.colors.aqua,
-        padding: '0.5rem',
-        borderRadius: '0.5rem',
-        marginBottom: '1rem',
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: theme.colors.white,
-        fontSize: theme.fontSizes.regular,
-        fontWeight: theme.fontWeights.bold,
-    },
-    datePickerWrapper: {
-        padding: '1rem',
-        paddingTop: 0,
-        marginBottom: '1rem',
-        borderRadius: '1rem',
-        backgroundColor: theme.colors.lightAqua,
-    },
-    dateLabel: {
-        marginVertical: '0.5rem',
-        fontSize: theme.fontSizes.regular,
-        fontWeight: theme.fontWeights.bold
-    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -406,5 +413,76 @@ const localStyles = StyleSheet.create({
         fontWeight: theme.fontWeights.regular,
     },
 });
+
+const graphCalendarStyles = StyleSheet.create({
+    button: {
+        width: '8%',
+        backgroundColor: theme.colors.aqua,
+        padding: '0.5rem',
+        borderRadius: '0.5rem',
+        marginBottom: '1rem',
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    graphCalendarContainer: {
+        padding: '1rem',
+        marginBottom: '1rem',
+        borderRadius: '0.5rem',
+        backgroundColor: theme.colors.dustyAqua,
+    },
+    dateLabel: {
+        marginVertical: '0.5rem',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bolder,
+    },
+    dateValue: {
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.regular,
+    },
+    calendarContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1rem',
+        paddingTop: 0,
+        marginBottom: '1rem',
+
+        borderRadius: '0.5rem',
+        backgroundColor: theme.colors.lightAqua,
+    },
+    calendarSubcontainer: {
+        width: '48%',
+    },
+    calendar: {
+        borderRadius: '0.5rem',
+    },
+});
+
+const calendarTheme = {
+    // Selected days
+    selectedDayBackgroundColor: theme.colors.aqua, // Background color of selected date
+    selectedDayTextColor: theme.colors.white, // Text color of selected date
+
+    // Non-selected days
+    textDayFontSize: theme.fontSizes.regular,
+    textDisabledColor: theme.colors.darkGrey, // Color of disabled dates
+    todayTextColor: theme.colors.aqua, // Color of today's date
+    dayTextColor: theme.colors.black, // Color of non-disabled dates
+    
+    // Month and navigation arrows
+    arrowColor: theme.colors.aqua,
+    textMonthFontSize: theme.fontSizes.regular,
+    textMonthFontWeight: theme.fontWeights.bold,
+    monthTextColor: theme.colors.aqua, // Color of the month title
+
+    // Day headers (e.g., Sun, Mon)
+    textDayHeaderFontSize: theme.fontSizes.small,
+    textSectionTitleColor: theme.colors.dustyAqua,
+};
 
 export default History;
