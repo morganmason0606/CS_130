@@ -251,6 +251,69 @@ const History = () => {
         }
     };
 
+    const renderCalendars = () => {
+        return(
+            <View style={graphCalendarStyles.calendarContainer}>
+                {/* Start Date Calendar */}
+                <View style={graphCalendarStyles.calendarSubcontainer}>
+                    <Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
+                        <Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}</Text>
+                    </Text>
+                    <Calendar
+                        onDayPress={(newDate) => {
+                            if (newDate.month < 10) {
+                                newDate.month = `0${newDate.month}`;
+                            }
+                            if (newDate.day < 10) {
+                                newDate.day = `0${newDate.day}`;
+                            }
+                            const newStartDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
+                            setStartDate(newStartDate);
+                        }}
+                        current={startDate}             // Date string in YYYY-MM-DD format (determines month to show)
+                        maxDate={endDate}               // Date string in YYYY-MM-DD format (latest date user can select)
+                        markedDates={{                  // Style selected dates
+                            [startDate]: {
+                                selected: true,
+                            },
+                        }}
+                        style={graphCalendarStyles.calendar}
+                        theme={calendarTheme}
+                    />
+                </View>
+
+                {/* End Date Calendar */}
+                <View style={graphCalendarStyles.calendarSubcontainer}>
+                    <Text style={graphCalendarStyles.dateLabel}>Selected End Date:
+                        <Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}</Text>
+                    </Text>
+                    <Calendar
+                        onDayPress={(newDate) => {
+                            if (newDate.month < 10) {
+                                newDate.month = `0${newDate.month}`;
+                            }
+                            if (newDate.day < 10) {
+                                newDate.day = `0${newDate.day}`;
+                            }
+                            const newEndDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
+                            setEndDate(newEndDate);
+                        }}
+                        current={endDate}               // Date string in YYYY-MM-DD format (determines month to show)
+                        minDate={startDate}             // Date string in YYYY-MM-DD format (earliest date user can select)
+                        maxDate={currentDate}           // Date string in YYYY-MM-DD format (latest date user can select)
+                        markedDates={{                  // Style selected dates
+                            [endDate]: {
+                                selected: true,
+                            },
+                        }}
+                        style={graphCalendarStyles.calendar}
+                        theme={calendarTheme}
+                    />
+                </View>
+            </View>
+        )
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContent}>
             <Navbar />
@@ -275,65 +338,7 @@ const History = () => {
                 </TouchableOpacity>
 
                 {viewGraphs && <View style={graphCalendarStyles.graphCalendarContainer}>
-                    <View style={graphCalendarStyles.calendarContainer}>
-
-                        {/* Start Date Calendar */}
-                        <View style={graphCalendarStyles.calendarSubcontainer}>
-                            <Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
-                                <Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}</Text>
-                            </Text>
-                            <Calendar
-                                onDayPress={(newDate) => {
-                                    if (newDate.month < 10) {
-                                        newDate.month = `0${newDate.month}`;
-                                    }
-                                    if (newDate.day < 10) {
-                                        newDate.day = `0${newDate.day}`;
-                                    }
-                                    const newStartDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
-                                    setStartDate(newStartDate);
-                                }}
-                                current={startDate}             // Date string in YYYY-MM-DD format (determines month to show)
-                                maxDate={endDate}               // Date string in YYYY-MM-DD format (latest date user can select)
-                                markedDates={{                  // Style selected dates
-                                    [startDate]: {
-                                      selected: true,
-                                    },
-                                }}
-                                style={graphCalendarStyles.calendar}
-                                theme={calendarTheme}
-                            />
-                        </View>
-
-                        {/* End Date Calendar */}
-                        <View style={graphCalendarStyles.calendarSubcontainer}>
-                            <Text style={graphCalendarStyles.dateLabel}>Selected End Date:
-                                <Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}</Text>
-                            </Text>
-                            <Calendar
-                                onDayPress={(newDate) => {
-                                    if (newDate.month < 10) {
-                                        newDate.month = `0${newDate.month}`;
-                                    }
-                                    if (newDate.day < 10) {
-                                        newDate.day = `0${newDate.day}`;
-                                    }
-                                    const newEndDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
-                                    setEndDate(newEndDate);
-                                }}
-                                current={endDate}               // Date string in YYYY-MM-DD format (determines month to show)
-                                minDate={startDate}             // Date string in YYYY-MM-DD format (earliest date user can select)
-                                maxDate={currentDate}           // Date string in YYYY-MM-DD format (latest date user can select)
-                                markedDates={{                  // Style selected dates
-                                    [endDate]: {
-                                      selected: true,
-                                    },
-                                }}
-                                style={graphCalendarStyles.calendar}
-                                theme={calendarTheme}
-                            />
-                        </View>
-                    </View>
+                    {renderCalendars()}
                     
                     {/* Tabs for viewing different graphs. */}
                     <View style={localStyles.tabContainer}>
