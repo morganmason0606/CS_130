@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import theme from './design_system.js';
 
 const Graph = ({startDate, endDate, type, data}) => {
@@ -9,11 +9,11 @@ const Graph = ({startDate, endDate, type, data}) => {
   const [dataset, setDataset] = useState({});     // For populating the charts
 
   // Bar chart configuration
-  const barChartConfig = {
+  const chartConfig = {
     backgroundGradientFrom: theme.colors.white,
     backgroundGradientTo: theme.colors.white,
     decimalPlaces: 0,                             // Number of decimal places in data
-    color: () => theme.colors.aqua,               // Bar color
+    color: () => "rgba(0, 0, 0, 1",               // Bar color
     labelColor: () => theme.colors.black,         // Label color
     propsForLabels: { 
       fontSize: theme.fontSizes.small,            // Label font size
@@ -87,7 +87,18 @@ const Graph = ({startDate, endDate, type, data}) => {
       });
 
       // Add averages per day to dataset
-      dataset[bodyPart] = {labels: labels, datasets: [{data: averageValue},],};
+      dataset[bodyPart] = {labels: labels, datasets: [
+        {
+          data: averageValue
+        },
+        {
+          data: [1], // min
+          withDots: false,
+        },
+        {
+          data: [10], // max
+          withDots: false,
+        },],};
     };
     setDataset(dataset);
   };
@@ -165,7 +176,19 @@ const Graph = ({startDate, endDate, type, data}) => {
       labels.push(`${weekStart} to ${weekEnd}`);
       values.push(weekToWorkouts[weekStart]);
     }
-    const dataset = {labels: labels, datasets: [{data: values}]};
+    const dataset = {labels: labels, datasets: [
+      {
+        data: values
+      },
+      {
+        data: [1], // min
+        withDots: false,
+      },
+      {
+        data: [10], // max
+        withDots: false,
+      },
+    ],};
 
     console.log('dataset:', dataset);
     setDataset(dataset);
@@ -202,11 +225,12 @@ const Graph = ({startDate, endDate, type, data}) => {
                 return (
                   <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
                     <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
-                    <BarChart
-                      chartConfig={barChartConfig}
+                    <LineChart
+                      chartConfig={chartConfig}
                       data={dataset[bodyPart]}
                       width={screenWidth * 0.4}            // 40% of screen width
                       height={220}
+                      segments={5}
                       fromZero={true}
                       style={graphStyles.chart}
                     />
@@ -226,11 +250,12 @@ const Graph = ({startDate, endDate, type, data}) => {
 
           {/* Display bar chart for workouts */}
           <View style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
-            <BarChart
-              chartConfig={barChartConfig}
+            <LineChart
+              chartConfig={chartConfig}
               data={dataset}
               width={screenWidth * 0.4}            // 40% of screen width
               height={360}
+              segments={5}
               fromZero={true}
               verticalLabelRotation={20}
               style={graphStyles.chart}
