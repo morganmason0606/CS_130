@@ -14,7 +14,6 @@ export default function Index() {
         setTimeout(() => {router.push('/login');}, 800);
       }
       else {
-        setTimeout(() => {router.push('/workout');}, 800);
         console.log('User ID:', uid);
       }
     }, [uid]); // Runs whenever uid changes
@@ -23,7 +22,6 @@ export default function Index() {
       <View style={styles.outerWrapper}>
         <Navbar />
         <View style={styles.innerWrapper}>
-          <Text>Home screen (under construction :D) </Text>
         </View>
       </View>
   );
