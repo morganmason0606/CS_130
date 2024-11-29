@@ -287,5 +287,56 @@ def get_recommended_workout(part):
     except Exception as e:
         return jsonify({'error':str(e)}), 400
 
+@app.route('/users/<uid>/journals', methods=['POST'])
+def create_journal(uid):
+    try:
+        journal_data = request.json
+        journal_id = data_helper.create_journal(uid, journal_data, db)
+        return jsonify({"message": "Journal created successfully.", "id": journal_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/journals', methods=['GET'])
+def read_all_journals(uid):
+    try:
+        journals = data_helper.get_all_journals(uid, db)
+        return jsonify(journals), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/journals/<journal_id>', methods=['DELETE'])
+def delete_journal(uid, journal_id):
+    try:
+        data_helper.delete_journal(uid, journal_id, db)
+        return jsonify({"message": "Journal deleted successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+#medication notes have a name, dosage, and time
+@app.route('/users/<uid>/medications', methods=['POST'])
+def create_medication(uid):
+    try:
+        medication_data = request.json
+        medication_id = data_helper.create_medication(uid, medication_data, db)
+        return jsonify({"message": "Medication created successfully.", "id": medication_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/medications', methods=['GET'])
+def read_all_medications(uid):
+    try:
+        medications = data_helper.get_all_medications(uid, db)
+        return jsonify(medications), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/users/<uid>/medications/<medication_id>', methods=['DELETE'])
+def delete_medication(uid, medication_id):
+    try:
+        data_helper.delete_medication(uid, medication_id, db)
+        return jsonify({"message": "Medication deleted successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)

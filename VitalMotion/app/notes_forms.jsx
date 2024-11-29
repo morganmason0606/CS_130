@@ -203,17 +203,42 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
     );
 };
 
-const JournalNoteForm = ({ toggleModal }) => {
+const JournalNoteForm = ({ uid, fetchJournals, toggleModal }) => {
     const [content, setContent] = useState('');
     const onChangeText = (text) => setContent(text);
-    
-    const addJournalEntry = async () => {
-        if (content === '') {
-            alert('Please enter some content.');
-            return;
-        }
-        // TODO: Add journal entry to backend.
-    };
+
+	const addJournalEntry = async () => {
+	    if (content === '') {
+		alert('Please enter some content.');
+		return;
+	    }
+
+	    try {
+		const response = await fetch(`http://localhost:5001/users/${uid}/journals`, {
+		    method: 'POST',
+		    headers: {
+			'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify({
+			content,
+			date: new Date().toISOString().split('T')[0],
+		    }),
+		});
+
+		if (response.ok) {
+		    console.log('Journal entry added successfully.');
+		    fetchJournals();
+		    setContent('');
+		    toggleModal();
+		} else {
+		    const error = await response.json();
+		    alert('Error', error.error);
+		}
+	    } catch (err) {
+		console.error('Error adding journal entry:', err);
+		alert('Error', 'Failed to add journal entry.');
+	    }
+	};
 
     return (
         <ScrollView>
@@ -237,11 +262,56 @@ const JournalNoteForm = ({ toggleModal }) => {
     );
 };
 
-const MedicationNoteForm = ({ toggleModal }) => {    
-    // TODO: Implement medication note form.
-    return(
+const MedicationNoteForm = ({ uid, fetchMedNotes, toggleModal }) => {
+    const [name, setName] = useState('');
+    const [dosage, setDosage] = useState('');
+    const [time, setTime] = useState('');
+
+    const addMedicationNote = async () => {
+        if (!name || !dosage || !time) {
+            alert('All fields are required.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5001/users/${uid}/medications`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, dosage, time, date: new Date().toISOString().split('T')[0]}),
+            });
+
+            if (response.ok) {
+                console.log('Medication note added successfully.');
+                fetchMedNotes();
+                setName('');
+                setDosage('');
+                setTime('');
+                toggleModal();
+            } else {
+                const error = await response.json();
+                alert('Error', error.error);
+            }
+        } catch (err) {
+            console.error('Error adding medication note:', err);
+            alert('Error', 'Failed to add medication note.');
+        }
+    };
+
+    return (
         <ScrollView>
             <Text style={formStyles.modalTitle}>New Medication Note</Text>
+            <Text style={formStyles.label}>Name<Text style={theme.required}>*</Text></Text>
+            <TextInput style={formStyles.journalInput} value={name} onChangeText={setName} placeholder="Enter medication name" />
+            <Text style={formStyles.label}>Dosage<Text style={theme.required}>*</Text></Text>
+            <TextInput style={formStyles.journalInput} value={dosage} onChangeText={setDosage} placeholder="Enter dosage" />
+            <Text style={formStyles.label}>Time<Text style={theme.required}>*</Text></Text>
+            <TextInput style={formStyles.journalInput} value={time} onChangeText={setTime} placeholder="Enter time" />
+
+            <TouchableOpacity style={[formStyles.textButton, formStyles.addButton]} onPress={addMedicationNote}>
+                <Text style={formStyles.textButtonText}>Add Medication Note</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
