@@ -48,7 +48,7 @@ const RecWorkout = () => {
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const RecWorkout = () => {
         if (workoutId !== 'new') {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5001/users/${uid}/workouts/${workoutId}`, {
+                const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${workoutId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const RecWorkout = () => {
     // Fetch exercise details by eid
     const fetchExerciseDetails = async (eid) => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises/${eid}`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises/${eid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const RecWorkout = () => {
 
     // recommend an exercise based on current created workout and user's past pain notes
     const recommendExercise = async () => {
-        const recommend_endpoint = `http://localhost:5001/recommend/${uid}/exercise`;
+        const recommend_endpoint = `https://hassanrizvi14.pythonanywhere.com/recommend/${uid}/exercise`;
         console.log(exercises);
     
         try {
@@ -215,7 +215,7 @@ const RecWorkout = () => {
 //MORGAN : TODO, check this logic doesn't break anything
         try {
             const method = 'POST';
-            const url =`http://localhost:5001/users/${uid}/workouts`
+            const url =`https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts`
 
             const response = await fetch(url, {
                 method,
@@ -250,7 +250,7 @@ const RecWorkout = () => {
         if(workoutId && workoutId != 'new'){
             setLoading(true);
             try{
-                const response = await fetch(`http://localhost:5001/recommend/workout/${workoutId}`,{
+                const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/recommend/workout/${workoutId}`,{
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

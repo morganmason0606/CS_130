@@ -27,7 +27,7 @@ const Notes = () => {
 	const fetchJournals = async () => {
 	    setLoading(true);
 	    try {
-		const response = await fetch(`http://localhost:5001/users/${uid}/journals`, {
+		const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/journals`, {
 		    method: 'GET',
 		    headers: {
 			'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Notes = () => {
 
 	const deleteJournal = async (id) => {
 	    try {
-		const response = await fetch(`http://localhost:5001/users/${uid}/journals/${id}`, {
+		const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/journals/${id}`, {
 		    method: 'DELETE',
 		    headers: {
 			'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Notes = () => {
 	const fetchMedNotes = async () => {
 	    setLoading(true);
 	    try {
-		const response = await fetch(`http://localhost:5001/users/${uid}/medications`, {
+		const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/medications`, {
 		    method: 'GET',
 		    headers: {
 			'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const Notes = () => {
 
 	const deleteMedNote = async (id) => {
 	    try {
-		const response = await fetch(`http://localhost:5001/users/${uid}/medications/${id}`, {
+		const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/medications/${id}`, {
 		    method: 'DELETE',
 		    headers: {
 			'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ const Notes = () => {
     const fetchPainNotes = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:5001/get-all-pain`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/get-all-pain`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ const Notes = () => {
     // Delete a pain note
     const deletePainNote = async (hashId) => {
         try {
-            const response = await fetch(`http://localhost:5001/remove-pain`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/remove-pain`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
