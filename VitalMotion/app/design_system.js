@@ -11,7 +11,7 @@ const theme = {
         white: '#FFFFFF',
         offWhite: '#F2F2F2'
     },
-    links: {    // TODO: Are these the right colors for hover and active?
+    links: {
         dark: {
             default: '#0E0E0E',
             hover: '#0028FF',
@@ -35,18 +35,12 @@ const theme = {
         bold: '700',
         bolder: '900',
     },
-    // paddings: {
-    //     small: 5,
-    //     regular: 10,
-    //     medium: 15,
-    //     large: 20,
-    // },
-    error: {                // TODO: Keep or remove? So far only used in Login page.
+    error: {
         color: 'red',
         marginBottom: 6,
-        fontSize: 14,       // Small font size for error messages
+        fontSize: 14,
     },
-    required: {             // TODO: Keep or remove? So far only used in Login page.
+    required: {
         color: 'red',
     },
 }

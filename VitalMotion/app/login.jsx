@@ -102,7 +102,6 @@ const LoginScreen = () => {
 
 		if (response.ok) {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
-            alert('Login Successful!', `Welcome, User ID: ${data.uid}`);
 		    login(data.uid);
 		    needsToLogin.current = false;
 		    router.push('/workout');

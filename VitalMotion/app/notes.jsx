@@ -178,6 +178,7 @@ const Notes = () => {
         }
     }, [uid]);
 
+    // Convert date from YYYY-MM-DD format to MM/DD/YYYY format
     const convertDate = (date) => {
 	try {
         const [year, month, day] = date.split('-');
@@ -354,6 +355,7 @@ const localStyles = StyleSheet.create({
         display: 'flex',
         flex: 1,
         alignItems: 'center',
+        marginBottom: '1rem',
         padding: '0.5rem',
         borderBottomWidth: 2,
         borderColor: 'transparent',
@@ -379,7 +381,7 @@ const localStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: '1rem',
+        marginBottom: '1rem',
         padding: '1rem',
 
         borderRadius: '0.5rem',
