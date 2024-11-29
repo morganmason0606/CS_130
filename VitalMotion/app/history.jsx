@@ -382,7 +382,7 @@ const History = () => {
 
                     <View style={{flex: 0.5,}}>
                         {combinedHistory.length === 0 ? (
-                            <Text style={styles.emptyMessage}>No history found.</Text>
+                            <Text style={localStyles.emptyMessage}>No history found.</Text>
                         ) : (
                             <FlatList
                                 data={combinedHistory}
@@ -485,6 +485,11 @@ const localStyles = StyleSheet.create({
         marginBottom: '0.5rem',
         fontSize: theme.fontSizes.regular,
         fontWeight: theme.fontWeights.regular,
+    },
+    emptyMessage: {
+        textAlign: 'center',
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
     },
 });
 
