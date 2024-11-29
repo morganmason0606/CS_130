@@ -1,5 +1,7 @@
 # Repository Template
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c440c335-5dc7-4195-98a0-5363ee86a824/deploy-status)](https://app.netlify.com/sites/nimble-starlight-cd143d/deploys)
+
 [![Build Status](https://app.travis-ci.com/melaasar/cs130-template.svg?branch=master)](https://app.travis-ci.com/github/melaasar/cs130-template)
 [![Release](https://img.shields.io/github/v/release/melaasar/cs130-template?label=release)](https://github.com/melaasar/cs130-template/releases/latest)
 
