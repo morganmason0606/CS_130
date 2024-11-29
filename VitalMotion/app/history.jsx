@@ -43,7 +43,7 @@ const History = () => {
         try {
             // Fetch all completed workouts
             const workoutResponse = await fetch(
-                `http://localhost:5001/users/${uid}/workouts/ALL/completed`,
+                `https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/ALL/completed`,
                 {
                     method: 'GET',
                     headers: {
@@ -82,7 +82,7 @@ const History = () => {
             }
 
             // Fetch all pain notes
-            const painResponse = await fetch(`http://localhost:5001/get-all-pain`, {
+            const painResponse = await fetch(`https://hassanrizvi14.pythonanywhere.com/get-all-pain`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const History = () => {
     // Fetch exercise name from eid
     const fetchExerciseName = async (eid) => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises/${eid}`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises/${eid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -90,7 +90,7 @@ const LoginScreen = () => {
 		const idToken = await userCredential.user.getIdToken();
 		
 		//Send the token to your Flask backend
-		const response = await fetch('http://localhost:5001/verify-token', {
+		const response = await fetch('https://hassanrizvi14.pythonanywhere.com/verify-token', {
 		    method: 'POST',
 		    headers: {
 				'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const LoginScreen = () => {
 			console.log('ID Token:', idToken);
 			
 			//Send the token to your Flask backend
-			const response = await fetch('http://localhost:5001/verify-token', {
+			const response = await fetch('https://hassanrizvi14.pythonanywhere.com/verify-token', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const LoginScreen = () => {
 			const data = await response.json();
 
 			if (response.ok) {
-				const setup_response = await fetch('http://localhost:5001/setup-user', {
+				const setup_response = await fetch('https://hassanrizvi14.pythonanywhere.com/setup-user', {
 					method: 'POST',
 			    	headers: {
 						'Content-Type': 'application/json',

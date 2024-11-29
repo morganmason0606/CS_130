@@ -33,7 +33,7 @@ const DoWorkout = () => {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost:5001/users/${uid}/workouts/${templateId}`,
+                `https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${templateId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -75,7 +75,7 @@ const DoWorkout = () => {
     const fetchExerciseName = async (eid) => {
         try {
             const response = await fetch(
-                `http://localhost:5001/users/${uid}/exercises/${eid}`,
+                `https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises/${eid}`,
                 {
                     method: 'GET',
                     headers: {
@@ -152,7 +152,7 @@ const DoWorkout = () => {
             };
 
             const response = await fetch(
-                `http://localhost:5001/users/${uid}/workouts/${templateId}/completed`,
+                `https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${templateId}/completed`,
                 {
                     method: 'POST',
                     headers: {

@@ -140,7 +140,7 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
         }
 
         try {
-            const response = await fetch(`http://localhost:5001/add-pain`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/add-pain`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,7 +214,7 @@ const JournalNoteForm = ({ uid, fetchJournals, toggleModal }) => {
 	    }
 
 	    try {
-		const response = await fetch(`http://localhost:5001/users/${uid}/journals`, {
+		const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/journals`, {
 		    method: 'POST',
 		    headers: {
 			'Content-Type': 'application/json',
@@ -274,7 +274,7 @@ const MedicationNoteForm = ({ uid, fetchMedNotes, toggleModal }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/medications`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/medications`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

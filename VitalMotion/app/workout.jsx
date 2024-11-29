@@ -31,7 +31,7 @@ const Workout = () => {
     const fetchWorkouts = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/workouts`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const Workout = () => {
 
     const fetchExerciseName = async (eid) => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises/${eid}`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises/${eid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const Workout = () => {
 
     const deleteWorkout = async (workoutId) => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/workouts/${workoutId}`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${workoutId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

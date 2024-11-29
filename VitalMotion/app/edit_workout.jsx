@@ -36,7 +36,7 @@ const EditWorkout = () => {
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const EditWorkout = () => {
         if (workoutId !== 'new') {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5001/users/${uid}/workouts/${workoutId}`, {
+                const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${workoutId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const EditWorkout = () => {
     // Fetch exercise details by eid
     const fetchExerciseDetails = async (eid) => {
         try {
-            const response = await fetch(`http://localhost:5001/users/${uid}/exercises/${eid}`, {
+            const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/users/${uid}/exercises/${eid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ const EditWorkout = () => {
 
     // recommend an exercise based on current created workout and user's past pain notes
     const recommendExercise = () =>{
-        const recommend_endpoint = `http://localhost:5001/recommend/${uid}/exercise`
+        const recommend_endpoint = `https://hassanrizvi14.pythonanywhere.com/recommend/${uid}/exercise`
         console.log(exercises) 
            
         fetch(recommend_endpoint, {
@@ -205,8 +205,8 @@ const EditWorkout = () => {
             const method = workoutId === 'new' ? 'POST' : 'PUT';
             const url =
                 workoutId === 'new'
-                    ? `http://localhost:5001/users/${uid}/workouts`
-                    : `http://localhost:5001/users/${uid}/workouts/${workoutId}`;
+                    ? `https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts`
+                    : `https://hassanrizvi14.pythonanywhere.com/users/${uid}/workouts/${workoutId}`;
 
             const response = await fetch(url, {
                 method,
