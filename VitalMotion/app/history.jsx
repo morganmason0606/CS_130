@@ -26,7 +26,6 @@ const History = () => {
     const [combinedHistory, setCombinedHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const [isGraphVisible, setIsGraphVisible] = useState(false);
     const [startDate, setStartDate] = useState('2024-01-01');       // YYYY-MM-DD format; random default values
     const [endDate, setEndDate] = useState('2024-11-28');           // YYYY-MM-DD format; random default values
     const [currentDate, _] = useState(new Date().toISOString().split('T')[0]);
@@ -334,66 +333,65 @@ const History = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity style={graphCalendarStyles.button} onPress={() => setIsGraphVisible(!isGraphVisible)}>
-                    <Text style={graphCalendarStyles.buttonText}>{isGraphVisible ? 'Hide Graphs' : 'View Graphs'}</Text>
-                </TouchableOpacity>
+                <View style={graphCalendarStyles.graphCalendarOuterContainer}>
+                    <View style={graphCalendarStyles.graphCalendarInnerContainer}>
+                        {renderCalendars()}
 
-                {isGraphVisible && <View style={graphCalendarStyles.graphCalendarContainer}>
-                    {renderCalendars()}
+                        {/* Tabs for viewing different graphs. */}
+                        <View style={localStyles.tabContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    localStyles.tab,
+                                    activeTab === 'workouts' && localStyles.tabActive,
+                                ]}
+                                onPress={() => setActiveTab('workouts')}
+                            >
+                                <Text style={localStyles.tabText}>Workout Logs</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[
+                                    localStyles.tab,
+                                    activeTab === 'pain' && localStyles.tabActive,
+                                ]}
+                                onPress={() => setActiveTab('pain')}
+                            >
+                                <Text style={localStyles.tabText}>Pain Notes</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    {/* Tabs for viewing different graphs. */}
-                    <View style={localStyles.tabContainer}>
-                        <TouchableOpacity
-                            style={[
-                                localStyles.tab,
-                                activeTab === 'workouts' && localStyles.tabActive,
-                            ]}
-                            onPress={() => setActiveTab('workouts')}
-                        >
-                            <Text style={localStyles.tabText}>Workout Logs</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                localStyles.tab,
-                                activeTab === 'pain' && localStyles.tabActive,
-                            ]}
-                            onPress={() => setActiveTab('pain')}
-                        >
-                            <Text style={localStyles.tabText}>Pain Notes</Text>
-                        </TouchableOpacity>
+                        {activeTab === 'workouts' && 
+                            <Graph
+                                key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
+                                startDate={startDate}               // Date string in YYYY-MM-DD format
+                                endDate={endDate}                   // Date string in YYYY-MM-DD format
+                                type={'workouts'}                   // Type of data to display (workouts or pain)
+                                data={workouts}
+                            />
+                        }
+
+                        {activeTab === 'pain' && 
+                            <Graph
+                                key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
+                                startDate={startDate}               // Date string in YYYY-MM-DD format
+                                endDate={endDate}                   // Date string in YYYY-MM-DD format
+                                type={'pain'}                       // Type of data to display (workouts or pain)
+                                data={painNotes}
+                            />
+                        }
                     </View>
 
-                    {activeTab === 'workouts' && 
-                        <Graph
-                            key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
-                            startDate={startDate}               // Date string in YYYY-MM-DD format
-                            endDate={endDate}                   // Date string in YYYY-MM-DD format
-                            type={'workouts'}                   // Type of data to display (workouts or pain)
-                            data={workouts}
-                        />
-                    }
-
-                    {activeTab === 'pain' && 
-                        <Graph
-                            key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
-                            startDate={startDate}               // Date string in YYYY-MM-DD format
-                            endDate={endDate}                   // Date string in YYYY-MM-DD format
-                            type={'pain'}                       // Type of data to display (workouts or pain)
-                            data={painNotes}
-                        />
-                    }
-
-                </View>}
-
-                {workouts.length === 0 ? (
-                    <Text style={styles.emptyMessage}>No history found.</Text>
-                ) : (
-                    <FlatList
-                        data={combinedHistory}
-                        keyExtractor={(_, index) => index.toString()}
-                        renderItem={renderHistoryItem}
-                    />
-                )}
+                    <View style={{flex: 0.5,}}>
+                        {combinedHistory.length === 0 ? (
+                            <Text style={styles.emptyMessage}>No history found.</Text>
+                        ) : (
+                            <FlatList
+                                data={combinedHistory}
+                                keyExtractor={(_, index) => index.toString()}
+                                renderItem={renderHistoryItem}
+                            />
+                        )}
+                    </View>
+                </View>
             </ScrollView>
         </ScrollView>
     );
@@ -504,7 +502,14 @@ const graphCalendarStyles = StyleSheet.create({
         fontSize: theme.fontSizes.regular,
         fontWeight: theme.fontWeights.bold,
     },
-    graphCalendarContainer: {
+    graphCalendarOuterContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        columnGap: 20,
+    },
+    graphCalendarInnerContainer: {
+        flex: 1,
         padding: '1rem',
         marginBottom: '1rem',
         borderRadius: '0.5rem',

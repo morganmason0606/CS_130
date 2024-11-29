@@ -4,11 +4,10 @@ import { LineChart } from 'react-native-chart-kit';
 import theme from './design_system.js';
 
 const Graph = ({startDate, endDate, type, data}) => {
-  const screenWidth = Dimensions.get('window').width;
 
   const [dataset, setDataset] = useState({});     // For populating the charts
 
-  // Bar chart configuration
+  // Chart configuration
   const chartConfig = {
     backgroundGradientFrom: theme.colors.white,
     backgroundGradientTo: theme.colors.white,
@@ -210,6 +209,10 @@ const Graph = ({startDate, endDate, type, data}) => {
     }
   }, [type, data, startDate, endDate]);
 
+  const calculateWidth = (dataPoints, pointWidth = 200) => {
+    return dataPoints.length * pointWidth;
+  };
+
   return (
     <View style={graphStyles.container}>
       {Object.entries(dataset).length === 0 && <Text style={graphStyles.emptyMessage}>No data found within selected date range.</Text>}
@@ -223,12 +226,12 @@ const Graph = ({startDate, endDate, type, data}) => {
             {Object.keys(dataset).map((bodyPart) => {
               if (dataset[bodyPart] !== undefined && dataset[bodyPart].labels && dataset[bodyPart].datasets && dataset[bodyPart].datasets[0].data){  // Extra check if dataset is not empty (addresses map error for BarChart)
                 return (
-                  <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
+                  <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset[bodyPart].datasets[0].data)+60}]}>
                     <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
                     <LineChart
                       chartConfig={chartConfig}
                       data={dataset[bodyPart]}
-                      width={screenWidth * 0.4}            // 40% of screen width
+                      width={calculateWidth(dataset[bodyPart].datasets[0].data)}
                       height={220}
                       segments={5}
                       fromZero={true}
@@ -249,11 +252,11 @@ const Graph = ({startDate, endDate, type, data}) => {
           </Text>
 
           {/* Display bar chart for workouts */}
-          <View style={[graphStyles.graphInnerWrapper, {width: screenWidth*0.45}]}>
+          <View style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset.datasets[0].data)+120}]}>
             <LineChart
               chartConfig={chartConfig}
               data={dataset}
-              width={screenWidth * 0.4}            // 40% of screen width
+              width={calculateWidth(dataset.datasets[0].data, 250)}
               height={360}
               segments={5}
               fromZero={true}
@@ -288,6 +291,7 @@ const graphStyles = StyleSheet.create({
     fontWeight: theme.fontWeights.bolder,
   },
   graphInnerWrapper: {
+    alignSelf: 'center',
     alignItems: 'center',
     marginHorizontal: '1rem',
     marginBottom: '1rem',
