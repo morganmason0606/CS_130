@@ -16,6 +16,7 @@ import Navbar from './navbar';
 import CustomButton from './components/custom_button';
 import CustomPicker from './components/custom_picker';
 import CustomTextInput from './components/custom_text_input';
+import CornerNotification from './components/corner_notification';
 import styles from './index_styles';
 import theme from './design_system';
 
@@ -29,6 +30,8 @@ const EditWorkout = () => {
     const [loading, setLoading] = useState(false);
 
     const [recommendation, setRecommendation] = useState(null);
+    const [notificationVisible, setNotificationVisible] = useState(false);
+    const [message, setMessage] = useState('');
 
     // Fetch all user exercises for the dropdown
     const fetchAllExercises = async () => {
@@ -230,6 +233,23 @@ const EditWorkout = () => {
         }
     };
 
+    const toggleNotification = async () => {
+        // Once recommendation is fetched, set the notification message
+        if (recommendation) {
+            setNotificationVisible(true);
+            setMessage(`Based on your previous workouts, you should work your ${recommendation['recommended'].toLowerCase()} at a ${recommendation['intensity']} intensity.`);
+        } else {
+            // Handle case where recommendation is not available
+            setNotificationVisible(false);
+            setMessage('No recommendation available.');
+        }
+        setNotificationVisible(!notificationVisible);
+    };
+
+    useEffect(() => {
+        recommendExercise();
+    }, [toggleNotification]); // run when toggleNotif changes
+
     const handleCancel = () => {
         router.push('/workout');
     }
@@ -287,7 +307,7 @@ const EditWorkout = () => {
                                         data={allExercises}
                                     />
                                     <TouchableOpacity
-                                        style={localStyles.deleteButton}
+                                        style={[localStyles.deleteButton, localStyles.button]}
                                         onPress={() => removeExercise(index)}
                                     >
                                         <Feather name="trash-2" size={26} style={styles.iconButton} />
@@ -337,39 +357,42 @@ const EditWorkout = () => {
                         ))}
                     </View>
                     
-                    {/*MORGAN:TODO FIX ME*/}
-                    {recommendation ? 
-                    <View style={localStyles.row}>
-                        <Text style={styles.pageSubtitle}> Recommendations: </Text>
-                        <Text>{recommendation['intensity']/*there is an muscle they should choose and an intensity they should aim for */}</Text>
-                        <Text>{recommendation['recommended']}</Text>
-                            {/*do not currently have way to give specific reps, weights (honestly would take a week); I could also provide an exercise they could do quickly if wanted */}
+                    {/* MORGAN:TODO FIX ME */}
+                    {/* {recommendation ? 
+                    <View>
+                        <Text style={styles.pageSubtitle}> Recommendation: </Text>
+                        <Text> You should work your {recommendation['recommended'].toLowerCase()} at a {recommendation['intensity']} intensity.</Text>
                     </View>
                     :null
-                    }
+                    } */}
 
                     <CustomButton
                         title="+ Add New Exercise"
                         onPress={addExercise}
-                        style={localStyles.addExerciseButton}
-                    />
-                    <CustomButton
-                        title="Get Exercise Recommendation"
-                        onPress={recommendExercise}
-                        style={localStyles.Button}
+                        style={localStyles.button}
                     />
                     <CustomButton
                         title="Save Workout"
                         onPress={saveWorkout}
-                        style={localStyles.saveButton}
+                        style={localStyles.button}
+                    />
+                    <CustomButton
+                        title="View Exercise Recommendation"
+                        onPress={toggleNotification}
+                        style={[localStyles.button, localStyles.recommendationButton]}
                     />
                     <CustomButton
                         title="Cancel"
                         onPress={handleCancel}
-                        style={localStyles.cancelButton}
+                        style={[localStyles.cancelButton, localStyles.button]}
                     />
                 </View>
             </ScrollView>
+            <CornerNotification
+                message={message}
+                visible={notificationVisible}
+                onDismiss={() => setNotificationVisible(false)}
+            />
         </KeyboardAvoidingView>
     );
 };
@@ -407,17 +430,16 @@ const localStyles = StyleSheet.create({
         width: 120,
     },
     deleteButton: {
-        marginBottom: 10,
         marginLeft: 10,
     },
-    saveButton: {
-        marginBottom: 10,
-    },
-    addExerciseButton: {
+    button: {
         marginBottom: 10,
     },
     cancelButton: {
         backgroundColor: theme.colors.darkGrey,
+    },
+    recommendationButton: {
+        backgroundColor: theme.colors.dustyAqua,
     },
 });
 

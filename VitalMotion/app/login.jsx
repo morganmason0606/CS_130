@@ -104,7 +104,7 @@ const LoginScreen = () => {
 		    console.log('Login Successful!', `Welcome, User ID: ${data.uid}`);
 		    login(data.uid);
 		    needsToLogin.current = false;
-		    router.push('/');
+		    router.push('/workout');
 		} else {
 		    console.log('Login Failed', data.error);
 		}

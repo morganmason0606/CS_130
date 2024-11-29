@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import theme from '../design_system';
 
-const CustomButton = ({ title, onPress, style }) => {
+const CustomButton = ({ title, onPress, style, pointerEvents, isDisabled }) => {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -11,6 +11,8 @@ const CustomButton = ({ title, onPress, style }) => {
             onPress={onPress}
             onPressIn={() => setHovered(true)}
             onPressOut={() => setHovered(false)}
+            pointerEvents={pointerEvents}
+            disabled={isDisabled}
         >
             <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>

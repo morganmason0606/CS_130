@@ -9,12 +9,13 @@ import {
     ScrollView,
     Image,
 } from 'react-native';
-import Navbar from './navbar';
-import styles from './index_styles';
-import CustomButton from './components/custom_button.js';
-import { useAuth } from './auth_context';
+import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'expo-router';
+import { useAuth } from './auth_context';
+import Navbar from './navbar';
+import CustomButton from './components/custom_button.js';
+import styles from './index_styles';
 import theme from './design_system.js';
 import Feather from '@expo/vector-icons/Feather';
 import WeightImage from './images/Weight.png';
@@ -172,41 +173,96 @@ const Workout = () => {
     );
 
     return (
-        <View style={styles.outerWrapper}>
-            <Navbar />
-            <ScrollView style={styles.innerWrapper}>
-                <View style={localStyles.row}>
-                    <View>
-                        <Text style={styles.pageTitle}>Workouts</Text>
-                        <Text style={styles.pageSubtitle}>Your Workouts</Text>
+        <MenuProvider>
+            <View style={styles.outerWrapper}>
+                <Navbar />
+                <ScrollView style={styles.innerWrapper}>
+                    <View style={localStyles.row}>
+                        <View>
+                            <Text style={styles.pageTitle}>Workouts</Text>
+                            <Text style={styles.pageSubtitle}>Your Workouts</Text>
+                        </View>
+                        <View>
+                            {/* Using react-native-popup-menu for the button */}
+                            <Menu style={localStyles.menu}>
+                                <MenuTrigger
+                                    text="+ New Workout"
+                                    customStyles={triggerStyles}
+                                    style={localStyles.menuTrigger}
+                                >
+                                </MenuTrigger>
+                                <MenuOptions customStyles={optionStyles}>
+                                    <MenuOption
+                                        text="Build From Scratch"
+                                        onSelect={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
+                                    >
+                                    </MenuOption>
+                                    <MenuOption
+                                        text="Get Recommended Workout"
+                                        onSelect={() => router.push({ pathname: '/rec_workout' })}
+                                    >
+                                    </MenuOption>
+                                </MenuOptions>
+                            </Menu>
+
+                            {/* <CustomButton
+                                title="+ Create New Workout"
+                                onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
+                            />
+                            <CustomButton
+                                title="+ Get Workout Recommendation"
+                                onPress={() => router.push({ pathname: '/rec_workout'})}
+                            /> */}
+                        </View>
                     </View>
-                    <View style={localStyles.actionButtons}>
-                        <CustomButton
-                            title="+ Create New Workout"
-                            onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    ) : (
+                        <FlatList
+                            data={workouts}
+                            keyExtractor={(item) => item.id}
+                            renderItem={renderExercises}
+                            ListEmptyComponent={
+                                <Text style={styles.emptyMessage}>No workouts found.</Text>
+                            }
                         />
-                        <CustomButton
-                            title="+ Get Workout Recommendation"
-                            onPress={() => router.push({ pathname: '/rec_workout'})}
-                        />
-                    </View>
-                </View>
-                {loading ? (
-                    <ActivityIndicator size="large" color="#0000ff" />
-                ) : (
-                    <FlatList
-                        data={workouts}
-                        keyExtractor={(item) => item.id}
-                        renderItem={renderExercises}
-                        ListEmptyComponent={
-                            <Text style={styles.emptyMessage}>No workouts found.</Text>
-                        }
-                    />
-                )}
-            </ScrollView>
-        </View>
+                    )}
+                </ScrollView>
+            </View>
+        </MenuProvider>
     );
 };
+
+const triggerStyles = {
+    triggerText: {
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    triggerWrapper: {
+        backgroundColor: theme.colors.aqua,
+        padding: 15,
+        borderRadius: 10,
+        height: 50,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    triggerTouchable: {
+        activeOpacity: 70,
+    },
+}
+
+const optionStyles = {
+    optionText: {
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.regular,
+        fontWeight: theme.fontWeights.bold,
+    },
+    optionWrapper: {
+        backgroundColor: theme.colors.aqua,
+        padding: 10,
+    },
+}
 
 const localStyles = StyleSheet.create({
     workoutPage: {
@@ -219,11 +275,16 @@ const localStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    menu: {
+        marginRight: 30,
+        marginTop: 50,
+    },
     card: {
         backgroundColor: theme.colors.grey,
         width: '100%',
         padding: 25,
-        marginTop: 20,
+        marginTop: 15,
+        marginBottom: 10,
         borderRadius: 30,
     },
     cardTitle: {
@@ -258,7 +319,10 @@ const localStyles = StyleSheet.create({
     },
     bold: {
         fontWeight: theme.fontWeights.bold,
-    }
+    },
+    menuTrigger: {
+        top: -50,
+    },
 });
 
 export default Workout;

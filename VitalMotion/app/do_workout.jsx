@@ -370,7 +370,7 @@ const localStyles = StyleSheet.create({
         height: 80,
     },
     cancelButton: {
-        marginTop: 10,
+        marginVertical: 10,
         backgroundColor: theme.colors.darkGrey,
     },
 });
