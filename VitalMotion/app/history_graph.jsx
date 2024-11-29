@@ -196,7 +196,7 @@ const Graph = ({startDate, endDate, type, data}) => {
   useEffect(() => {
     // Pain graph per day per body part.
     if (data.length === 0) {
-      console.log('No data found.');
+      console.log('No data found within date range.');
       setDataset({});
       return;
     }
@@ -215,7 +215,16 @@ const Graph = ({startDate, endDate, type, data}) => {
 
   return (
     <View style={graphStyles.container}>
-      {Object.entries(dataset).length === 0 && <Text style={graphStyles.emptyMessage}>No data found within selected date range.</Text>}
+      {Object.entries(dataset).length === 0 &&
+        <View>
+          <Text style={graphStyles.emptyMessage}>
+            No data found within date range.
+          </Text>
+          <Text style={graphStyles.emptyMessage}>
+            Update the range or add data for dates within the range.
+          </Text>
+        </View>
+      }
 
       {type === 'pain' && Object.keys(dataset).length > 0 &&
         <View>
@@ -308,6 +317,7 @@ const graphStyles = StyleSheet.create({
     borderRadius: '0.5rem',
   },
   emptyMessage: {
+    textAlign: 'center',
     fontSize: theme.fontSizes.regular,
     fontWeight: theme.fontWeights.bold,
   },
