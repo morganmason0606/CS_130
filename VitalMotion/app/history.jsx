@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import { Calendar } from 'react-native-calendars';
 import Navbar from './navbar';
 import Graph from './history_graph';
+
 import styles from './index_styles';
 import theme from './design_system';
 
@@ -25,7 +26,7 @@ const History = () => {
     const [combinedHistory, setCombinedHistory] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const [viewGraphs, setViewGraphs] = useState(false);
+    const [isGraphVisible, setIsGraphVisible] = useState(false);
     const [startDate, setStartDate] = useState('2024-01-01');       // YYYY-MM-DD format; random default values
     const [endDate, setEndDate] = useState('2024-11-28');           // YYYY-MM-DD format; random default values
     const [currentDate, _] = useState(new Date().toISOString().split('T')[0]);
@@ -333,13 +334,13 @@ const History = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity style={graphCalendarStyles.button} onPress={() => setViewGraphs(!viewGraphs)}>
-                    <Text style={graphCalendarStyles.buttonText}>View Graphs</Text>
+                <TouchableOpacity style={graphCalendarStyles.button} onPress={() => setIsGraphVisible(!isGraphVisible)}>
+                    <Text style={graphCalendarStyles.buttonText}>{isGraphVisible ? 'Hide Graphs' : 'View Graphs'}</Text>
                 </TouchableOpacity>
 
-                {viewGraphs && <View style={graphCalendarStyles.graphCalendarContainer}>
+                {isGraphVisible && <View style={graphCalendarStyles.graphCalendarContainer}>
                     {renderCalendars()}
-                    
+
                     {/* Tabs for viewing different graphs. */}
                     <View style={localStyles.tabContainer}>
                         <TouchableOpacity
