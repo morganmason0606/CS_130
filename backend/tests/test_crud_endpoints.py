@@ -246,3 +246,25 @@ def test_edit_pain(client):
     updated_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
     assert updated_pain is not None
     assert updated_pain["pain_level"] == 5
+
+def test_remove_pain(client):
+    # First, add a pain entry
+    add_response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    hash_id = add_response.json["hash_id"]
+
+    # Then, remove the pain entry
+    response = client.post('/remove-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "hash_id": hash_id
+    })
+    assert response.status_code == 200
+
+    # Verify the removal
+    get_response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    removed_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
+    assert removed_pain is None
