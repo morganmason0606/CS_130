@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module data_helper</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>data_helper</strong></big></big></font></td
+></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="https://pypi.org/project/firebase/">firebase_admin.credentials</a><br>
+</td><td width="25%" valign=top><a href="https://pypi.org/project/firebase/">firebase_admin.firestore</a><br>
+</td><td width="25%" valign=top><a href="https://pypi.org/project/google/">google</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-copy_collection_recursive"><strong>copy_collection_recursive</strong></a>(source_collection_ref, destination_collection_ref, db)</dt><dd><tt>helper&nbsp;for&nbsp;copying&nbsp;collection&nbsp;(and&nbsp;recursively&nbsp;sub&nbsp;collections)<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;source_collection_ref&nbsp;(firebase&nbsp;collection):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;destination_collection_ref&nbsp;(firebase&nbsp;collection):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(firestore&nbsp;client):</tt></dd></dl>
+ <dl><dt><a name="-create_completed_workout"><strong>create_completed_workout</strong></a>(uid: str, template_id: str, completed_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Create&nbsp;new&nbsp;completed&nbsp;workout&nbsp;associated&nbsp;with&nbsp;template<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;tempalte&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_data&nbsp;(dict):&nbsp;completed&nbsp;workout&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;id&nbsp;of&nbsp;new&nbsp;completed&nbsp;workout</tt></dd></dl>
+ <dl><dt><a name="-create_document"><strong>create_document</strong></a>(collection_name: str, doc_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>create&nbsp;document<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;collection_name&nbsp;(str):&nbsp;destination<br>
+&nbsp;&nbsp;&nbsp;&nbsp;doc_data&nbsp;(dict):&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;id&nbsp;of&nbsp;document&nbsp;(0&nbsp;if&nbsp;not&nbsp;created)</tt></dd></dl>
+ <dl><dt><a name="-create_journal"><strong>create_journal</strong></a>(uid: str, journal_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Create&nbsp;new&nbsp;journal&nbsp;entry<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;journal_data&nbsp;(dict):&nbsp;dictionary&nbsp;represented&nbsp;the&nbsp;note&nbsp;we&nbsp;want&nbsp;to&nbsp;add<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;id&nbsp;of&nbsp;created&nbsp;note</tt></dd></dl>
+ <dl><dt><a name="-create_medication"><strong>create_medication</strong></a>(uid: str, medication_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>create&nbsp;new&nbsp;medication&nbsp;note<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;medication_data&nbsp;(dict):&nbsp;dictionary&nbsp;representing&nbsp;note&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;id&nbsp;of&nbsp;new&nbsp;note</tt></dd></dl>
+ <dl><dt><a name="-create_template_workout"><strong>create_template_workout</strong></a>(uid: str, template_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;template&nbsp;workout.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):User&nbsp;ID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_data&nbsp;(dict):&nbsp;&nbsp;Template&nbsp;workout&nbsp;data&nbsp;(e.g.,&nbsp;list&nbsp;of&nbsp;exercises)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):Firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string:&nbsp;ID&nbsp;of&nbsp;template</tt></dd></dl>
+ <dl><dt><a name="-create_user_document"><strong>create_user_document</strong></a>(uid: str, firstName: str, lastName: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Generates&nbsp;the&nbsp;User&nbsp;document&nbsp;on&nbsp;the&nbsp;backend<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;firstName&nbsp;(str):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lastName&nbsp;(str):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):</tt></dd></dl>
+ <dl><dt><a name="-create_user_exercise"><strong>create_user_exercise</strong></a>(uid: str, exercise_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;exercise&nbsp;for&nbsp;a&nbsp;specific&nbsp;user<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;user<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_data&nbsp;(dict):&nbsp;A&nbsp;dictionary&nbsp;containing&nbsp;the&nbsp;details&nbsp;of&nbsp;the&nbsp;exercise&nbsp;to&nbsp;be&nbsp;added&nbsp;(e.g.,&nbsp;name,&nbsp;muscle&nbsp;group).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;Firestore&nbsp;client&nbsp;instance<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;The&nbsp;ID&nbsp;of&nbsp;the&nbsp;newly&nbsp;created&nbsp;exercise&nbsp;document.</tt></dd></dl>
+ <dl><dt><a name="-delete_completed_workout"><strong>delete_completed_workout</strong></a>(uid: str, template_id: str, completed_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Delete&nbsp;specific&nbsp;completed&nbsp;workout<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;tid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;cid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-delete_journal"><strong>delete_journal</strong></a>(uid: str, journal_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Delete&nbsp;specific&nbsp;journal&nbsp;entry<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;journal_id&nbsp;(str):&nbsp;Journal&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firetore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-delete_medication"><strong>delete_medication</strong></a>(uid: str, medication_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Delete&nbsp;a&nbsp;specific&nbsp;medication&nbsp;entry.<br>
+&nbsp;<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;UID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;medication_id&nbsp;(str):&nbsp;medication&nbsp;entry&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-delete_template_workout"><strong>delete_template_workout</strong></a>(uid: str, template_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>delete&nbsp;template&nbsp;workout&nbsp;and&nbsp;completed&nbsp;workout<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-delete_user_exercise"><strong>delete_user_exercise</strong></a>(uid: str, exercise_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Delete&nbsp;a&nbsp;specific&nbsp;exercise&nbsp;for&nbsp;a&nbsp;user.<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;user.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;exercise&nbsp;to&nbsp;delete.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;Firestore&nbsp;client&nbsp;instance.</tt></dd></dl>
+ <dl><dt><a name="-edit_document"><strong>edit_document</strong></a>(collection_name: str, doc_id: str, doc_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Edit&nbsp;a&nbsp;document<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;collection_name&nbsp;(str):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;doc_id&nbsp;(str):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;doc_data&nbsp;(dict):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):</tt></dd></dl>
+ <dl><dt><a name="-get_all_completed_workouts"><strong>get_all_completed_workouts</strong></a>(uid: str, template_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Get&nbsp;all&nbsp;completed&nbsp;workouts&nbsp;associated&nbsp;with&nbsp;template&nbsp;id<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;tempalte&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;lcient<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List[dict]:&nbsp;list&nbsp;of&nbsp;all&nbsp;associated&nbsp;completed&nbsp;workout</tt></dd></dl>
+ <dl><dt><a name="-get_all_completed_workouts_all"><strong>get_all_completed_workouts_all</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;all&nbsp;completed&nbsp;workouts&nbsp;for&nbsp;all&nbsp;templates<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;list[dict]:&nbsp;list&nbsp;of&nbsp;all&nbsp;completed&nbsp;workouts,&nbsp;represented&nbsp;with&nbsp;a&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-get_all_journals"><strong>get_all_journals</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>get&nbsp;all&nbsp;journal&nbsp;entries&nbsp;for&nbsp;a&nbsp;user<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;list[dict]:&nbsp;list&nbsp;of&nbsp;all&nbsp;journal&nbsp;entries,&nbsp;each&nbsp;represented&nbsp;as&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-get_all_medications"><strong>get_all_medications</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;all&nbsp;medication&nbsp;entries&nbsp;for&nbsp;user<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;UID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;list[dict]:&nbsp;list&nbsp;of&nbsp;all&nbsp;medication&nbsp;entries,&nbsp;each&nbsp;represented&nbsp;as&nbsp;a&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-get_all_template_workouts"><strong>get_all_template_workouts</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;all&nbsp;of&nbsp;users&nbsp;workout&nbsp;templates<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;list[dict]:&nbsp;list&nbsp;of&nbsp;templates</tt></dd></dl>
+ <dl><dt><a name="-get_all_user_exercises"><strong>get_all_user_exercises</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;all&nbsp;exercises&nbsp;for&nbsp;a&nbsp;user.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;user.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;Firestore&nbsp;client&nbsp;instance.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List[Dict]:&nbsp;A&nbsp;list&nbsp;of&nbsp;dictionaries&nbsp;containing&nbsp;the&nbsp;details&nbsp;of&nbsp;all&nbsp;exercises&nbsp;for&nbsp;the&nbsp;user.</tt></dd></dl>
+ <dl><dt><a name="-get_completed_workout"><strong>get_completed_workout</strong></a>(uid: str, template_id: str, completed_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>get&nbsp;specific&nbsp;completed&nbsp;workout<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;completed&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Optional[Dict]:&nbsp;dict&nbsp;representing&nbsp;the&nbsp;workout,&nbsp;None&nbsp;if&nbsp;failed</tt></dd></dl>
+ <dl><dt><a name="-get_template_workout"><strong>get_template_workout</strong></a>(uid: str, template_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;a&nbsp;specific&nbsp;template&nbsp;workout.<br>
+&nbsp;<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;Userid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):firestore&nbsp;client<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Optional[dict]:&nbsp;the&nbsp;dict&nbsp;representing&nbsp;the&nbsp;workout,&nbsp;or&nbsp;none&nbsp;if&nbsp;not&nbsp;found</tt></dd></dl>
+ <dl><dt><a name="-get_user_document"><strong>get_user_document</strong></a>(uid: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Get&nbsp;User&nbsp;document<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict:&nbsp;user&nbsp;doc&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-get_user_exercise"><strong>get_user_exercise</strong></a>(uid: str, exercise_id: str, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Retrieve&nbsp;details&nbsp;of&nbsp;a&nbsp;specific&nbsp;exercise&nbsp;for&nbsp;a&nbsp;user.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;user.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;exercise&nbsp;to&nbsp;retrieve.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;Firestore&nbsp;client&nbsp;instance<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Optional[Dict]:A&nbsp;dictionary&nbsp;containing&nbsp;the&nbsp;exercise&nbsp;details&nbsp;if&nbsp;found,&nbsp;otherwise&nbsp;None.</tt></dd></dl>
+ <dl><dt><a name="-update_completed_workout"><strong>update_completed_workout</strong></a>(uid: str, template_id: str, completed_id: str, completed_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Update&nbsp;completed&nbsp;workout<br>
+usually&nbsp;for&nbsp;when&nbsp;you&nbsp;want&nbsp;to&nbsp;add&nbsp;pain<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;tid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;cid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_data&nbsp;(dict):&nbsp;the&nbsp;new&nbsp;completed&nbsp;workout&nbsp;data&nbsp;to&nbsp;be&nbsp;added<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-update_template_workout"><strong>update_template_workout</strong></a>(uid: str, template_id: str, template_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Update&nbsp;workout&nbsp;template<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_data&nbsp;(dict):&nbsp;new&nbsp;data&nbsp;to&nbsp;add<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):&nbsp;firestore&nbsp;client</tt></dd></dl>
+ <dl><dt><a name="-update_user_exercise"><strong>update_user_exercise</strong></a>(uid: str, exercise_id: str, exercise_data: dict, db: google.cloud.firestore_v1.client.Client)</dt><dd><tt>Update&nbsp;the&nbsp;details&nbsp;of&nbsp;an&nbsp;existing&nbsp;exercise&nbsp;for&nbsp;a&nbsp;specific&nbsp;user.<br>
+&nbsp;<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;user.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;The&nbsp;unique&nbsp;identifier&nbsp;of&nbsp;the&nbsp;exercise&nbsp;to&nbsp;update.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_data&nbsp;(dict):&nbsp;A&nbsp;dictionary&nbsp;containing&nbsp;the&nbsp;updated&nbsp;exercise&nbsp;details<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;(google.cloud.firestore.Client):Firestore&nbsp;client&nbsp;instance.</tt></dd></dl>
+</td></tr></table>
+</body></html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module app</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>app</strong></big></big></font></td
+></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="https://pypi.org/project/firebase/">firebase_admin.auth</a><br>
+<a href="https://pypi.org/project/firebase/">firebase_admin.credentials</a><br>
+</td><td width="25%" valign=top><a href="data_helper.html">data_helper</a><br>
+<a href="https://pypi.org/project/firebase/">firebase_admin</a><br>
+</td><td width="25%" valign=top><a href="https://pypi.org/project/firebase/">firebase_admin.firestore</a><br>
+<a href="recommender.html">recommender</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-add_pain"><strong>add_pain</strong></a>()</dt><dd><tt>add&nbsp;pain&nbsp;note<br>
+/add-pain;&nbsp;post;&nbsp;body&nbsp;must&nbsp;include&nbsp;uid,&nbsp;date(YYYY-MM-DD),&nbsp;pain_level(1-10),&nbsp;body_part&nbsp;(see&nbsp;recommender&nbsp;ENUM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;doc_id;&nbsp;400&nbsp;or&nbsp;401</tt></dd></dl>
+ <dl><dt><a name="-create_completed"><strong>create_completed</strong></a>(uid, template_id)</dt><dd><tt>Create&nbsp;completed&nbsp;instance&nbsp;of&nbsp;workout<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;/completed;&nbsp;POST;&nbsp;expect&nbsp;completed&nbsp;data&nbsp;in&nbsp;body<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;workout_id<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;resonse:&nbsp;201,&nbsp;completed&nbsp;id;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-create_journal"><strong>create_journal</strong></a>(uid)</dt><dd><tt>create&nbsp;journal&nbsp;id<br>
+/users/&lt;uid&gt;/journals;&nbsp;POST;&nbsp;expect&nbsp;body&nbsp;to&nbsp;be&nbsp;journal&nbsp;note&nbsp;data<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;201,&nbsp;journal&nbsp;id;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-create_medication"><strong>create_medication</strong></a>(uid)</dt><dd><tt>create&nbsp;medicine&nbsp;note<br>
+/users/&lt;uid&gt;/medications;&nbsp;POST:&nbsp;expect&nbsp;body&nbsp;to&nbsp;have&nbsp;all&nbsp;data<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;reponse:&nbsp;201,&nbsp;note&nbsp;id;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-create_template"><strong>create_template</strong></a>(uid)</dt><dd><tt>Create&nbsp;workout&nbsp;template<br>
+/users/&lt;uid&gt;/workouts;&nbsp;POST;&nbsp;expect&nbsp;request&nbsp;body&nbsp;to&nbsp;be&nbsp;workout&nbsp;template&nbsp;data<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;reposnse:&nbsp;201&nbsp;with&nbsp;emplate&nbsp;id;&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-create_user_exercise"><strong>create_user_exercise</strong></a>(uid)</dt><dd><tt>create&nbsp;exercise<br>
+/users/&lt;uid&gt;/exercises;&nbsp;POST;&nbsp;expect&nbsp;exercise&nbsp;data&nbsp;in&nbsp;json<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;uid<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;201&nbsp;with&nbsp;id&nbsp;field&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-delete_completed"><strong>delete_completed</strong></a>(uid, template_id, completed_id)</dt><dd><tt>delete&nbsp;a&nbsp;complteded&nbsp;workout<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;/completed/&lt;completed_id&gt;;&nbsp;DELETE<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;completed&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-delete_journal"><strong>delete_journal</strong></a>(uid, journal_id)</dt><dd><tt>delete&nbsp;journal<br>
+/users/&lt;uid&gt;/journals/&lt;journal_id&gt;;&nbsp;DELETE<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;journal_id&nbsp;(str):&nbsp;note&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-delete_medication"><strong>delete_medication</strong></a>(uid, medication_id)</dt><dd><tt>delete&nbsp;medication&nbsp;note<br>
+/users/&lt;uid&gt;/medications/&lt;medication_id&gt;;&nbsp;DELETE<br>
+&nbsp;<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;medication_id&nbsp;(str):&nbsp;note&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-delete_template"><strong>delete_template</strong></a>(uid, template_id)</dt><dd><tt>delete&nbsp;workout&nbsp;template<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;;&nbsp;DELETE<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-delete_user_exercise"><strong>delete_user_exercise</strong></a>(uid, exercise_id)</dt><dd><tt>delete&nbsp;user&nbsp;exercise<br>
+/users/&lt;uid&gt;/exercises/&lt;exercise_id&gt;;&nbsp;DELETE<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;exercise_id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-edit_pain"><strong>edit_pain</strong></a>()</dt><dd><tt>edit&nbsp;pain&nbsp;note<br>
+/edit-pain;&nbsp;POST;&nbsp;uid,&nbsp;hash_id,&nbsp;date(YYYY-MM-DD),&nbsp;pain_level(1-10),&nbsp;body_part(see&nbsp;Recomender&nbsp;ENUM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:200;&nbsp;400,&nbsp;401,&nbsp;or&nbsp;404</tt></dd></dl>
+ <dl><dt><a name="-get_all_pain"><strong>get_all_pain</strong></a>()</dt><dd><tt>get&nbsp;all&nbsp;pain&nbsp;notes<br>
+/get-all-pain;&nbsp;POST;&nbsp;expects&nbsp;UID<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;painlist;&nbsp;401</tt></dd></dl>
+ <dl><dt><a name="-get_recommended_exercise"><strong>get_recommended_exercise</strong></a>(uid)</dt><dd><tt>get&nbsp;recommended&nbsp;exercise<br>
+/recommend/&lt;uid&gt;/exercise;&nbsp;POST;&nbsp;body&nbsp;expects&nbsp;the&nbsp;list&nbsp;of&nbsp;exercises&nbsp;currently&nbsp;working&nbsp;on<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;:&nbsp;200&nbsp;with&nbsp;recommended&nbsp;focus,&nbsp;intenstiy;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-get_recommended_workout"><strong>get_recommended_workout</strong></a>(part)</dt><dd><tt>get&nbsp;recommended&nbsp;workout<br>
+/recommend/workout/&lt;part&gt;;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;part&nbsp;(str):&nbsp;'arms,&nbsp;upper&nbsp;body,&nbsp;mid&nbsp;body,&nbsp;legs'<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;recommended_workout;&nbsp;400&nbsp;or&nbsp;404</tt></dd></dl>
+ <dl><dt><a name="-read_all_completed"><strong>read_all_completed</strong></a>(uid, template_id)</dt><dd><tt>read&nbsp;all&nbsp;completed&nbsp;workouts&nbsp;of&nbsp;sepcific&nbsp;template<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;/completed;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;completed&nbsp;workouts;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_all_completed_all"><strong>read_all_completed_all</strong></a>(uid)</dt><dd><tt>read&nbsp;all&nbsp;completed&nbsp;workouts<br>
+/users/&lt;uid&gt;/workouts/ALL/completed;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;reponse:200,&nbsp;list&nbsp;of&nbsp;all&nbsp;completed&nbsp;workouts;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_all_journals"><strong>read_all_journals</strong></a>(uid)</dt><dd><tt>get&nbsp;all&nbsp;journals<br>
+/users/&lt;uid&gt;/journals;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200,&nbsp;journal;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_all_medications"><strong>read_all_medications</strong></a>(uid)</dt><dd><tt>read&nbsp;all&nbsp;medicine&nbsp;notes<br>
+/users/&lt;uid&gt;/medications;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;respones:&nbsp;200,&nbsp;medication&nbsp;notes;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_all_templates"><strong>read_all_templates</strong></a>(uid)</dt><dd><tt>get&nbsp;all&nbsp;workouts<br>
+/users/&lt;uid&gt;/workouts;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200,&nbsp;templates;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_all_user_exercises"><strong>read_all_user_exercises</strong></a>(uid)</dt><dd><tt>reads&nbsp;all&nbsp;user&nbsp;exercises<br>
+/users/&lt;uid&gt;/exercises,&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200,&nbsp;exercises;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-read_completed"><strong>read_completed</strong></a>(uid, template_id, completed_id)</dt><dd><tt>read&nbsp;specific&nbsp;completed&nbsp;workout&nbsp;id<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;/completed/&lt;completed_id&gt;;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;completed&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200,&nbsp;copmleted;&nbsp;400,&nbsp;404</tt></dd></dl>
+ <dl><dt><a name="-read_template"><strong>read_template</strong></a>(uid, template_id)</dt><dd><tt>read&nbsp;a&nbsp;specific&nbsp;template<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;;&nbsp;GET<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200,&nbsp;remplate;&nbsp;400&nbsp;or&nbsp;404</tt></dd></dl>
+ <dl><dt><a name="-read_user_exercise"><strong>read_user_exercise</strong></a>(uid, exercise_id)</dt><dd><tt>route&nbsp;for&nbsp;getting&nbsp;a&nbsp;specific&nbsp;exercise<br>
+/users/&lt;uid&gt;/exercises/&lt;exercise_id&gt;;&nbsp;GET<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;exercise&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;resposne:&nbsp;either&nbsp;200,&nbsp;exercise&nbsp;response;&nbsp;or&nbsp;404&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-remove_pain"><strong>remove_pain</strong></a>()</dt><dd><tt>remove&nbsp;pain&nbsp;note<br>
+/remove-pain;&nbsp;POST;&nbsp;expect&nbsp;uid,&nbsp;hashid<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;404&nbsp;or&nbsp;401</tt></dd></dl>
+ <dl><dt><a name="-setup_user"><strong>setup_user</strong></a>()</dt><dd><tt>helper&nbsp;function&nbsp;to&nbsp;set&nbsp;up&nbsp;user<br>
+/setup-user,&nbsp;post,&nbsp;expect&nbsp;uid,firstName,&nbsp;lastName&nbsp;fields<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:200&nbsp;Success,&nbsp;401&nbsp;Unauthorized</tt></dd></dl>
+ <dl><dt><a name="-update_completed"><strong>update_completed</strong></a>(uid, template_id, completed_id)</dt><dd><tt>update&nbsp;a&nbsp;completed&nbsp;workout<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;/completed/&lt;completed_id&gt;;&nbsp;PUT;&nbsp;expects&nbsp;body&nbsp;to&nbsp;have&nbsp;all&nbsp;of&nbsp;workout&nbsp;data<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;completed_id&nbsp;(str):&nbsp;completed&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200;&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-update_template"><strong>update_template</strong></a>(uid, template_id)</dt><dd><tt>update&nbsp;workout&nbsp;template<br>
+/users/&lt;uid&gt;/workouts/&lt;template_id&gt;;&nbsp;PUT:&nbsp;expect&nbsp;workout&nbsp;data&nbsp;as&nbsp;body<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template_id&nbsp;(str):&nbsp;template&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;reponse:&nbsp;200&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-update_user_exercise"><strong>update_user_exercise</strong></a>(uid, exercise_id)</dt><dd><tt>updating&nbsp;a&nbsp;user's&nbsp;exercise&nbsp;data<br>
+/users/&lt;uid&gt;/exercises/&lt;exercise_id&gt;;&nbsp;PUT;&nbsp;experct&nbsp;exercise&nbsp;data&nbsp;in&nbsp;json<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exercise_id&nbsp;(str):&nbsp;user&nbsp;id<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;response:&nbsp;200&nbsp;or&nbsp;400</tt></dd></dl>
+ <dl><dt><a name="-verify_token"><strong>verify_token</strong></a>()</dt><dd><tt>Verifies&nbsp;request&nbsp;token<br>
+/verify-tokens&nbsp;,&nbsp;POST&nbsp;with&nbsp;'token'&nbsp;in&nbsp;request<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;repsonse:&nbsp;either&nbsp;has&nbsp;uid,200&nbsp;or&nbsp;401</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>app</strong> = &lt;Flask 'app'&gt;<br>
+<strong>cred</strong> = &lt;firebase_admin.credentials.Certificate object&gt;<br>
+<strong>db</strong> = &lt;google.cloud.firestore_v1.client.Client object&gt;<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
+</body></html>
