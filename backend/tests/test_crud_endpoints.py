@@ -196,3 +196,7 @@ def test_create_journal(client):
     response = client.post(f"/users/{USER_DOCUMENT_NAME}/journals", json={"title": "My Journal", "content": "Daily log"})
     assert response.status_code == 201
     assert "id" in response.json
+
+def test_read_all_journals(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/journals")
+    assert response.status_code == 200
