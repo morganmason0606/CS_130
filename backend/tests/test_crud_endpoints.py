@@ -268,3 +268,45 @@ def test_remove_pain(client):
     get_response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
     removed_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
     assert removed_pain is None
+
+def test_read_all_completed_all(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/ALL/completed")
+    assert response.status_code == 200
+
+### Journal API Tests
+def test_create_journal(client):
+    response = client.post(f"/users/{USER_DOCUMENT_NAME}/journals", json={"title": "My Journal", "content": "Daily log"})
+    assert response.status_code == 201
+    assert "id" in response.json
+
+def test_read_all_journals(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/journals")
+    assert response.status_code == 200
+
+def test_delete_journal(client):
+    # First, create the journal
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/journals", json={"title": "My Journal", "content": "Daily log"})
+    journal_id = create_response.json["id"]
+    
+    # Then, delete the journal
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/journals/{journal_id}")
+    assert response.status_code == 200
+
+### Medication API Tests
+def test_create_medication(client):
+    response = client.post(f"/users/{USER_DOCUMENT_NAME}/medications", json={"name": "Ibuprofen", "dosage": "200mg", "time": "morning"})
+    assert response.status_code == 201
+    assert "id" in response.json
+
+def test_read_all_medications(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/medications")
+    assert response.status_code == 200
+
+def test_delete_medication(client):
+    # First, create the medication
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/medications", json={"name": "Ibuprofen", "dosage": "200mg", "time": "morning"})
+    medication_id = create_response.json["id"]
+    
+    # Then, delete the medication
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/medications/{medication_id}")
+    assert response.status_code == 200
