@@ -23,7 +23,7 @@ jobs:
                     file: credentials.js
                     content: ${{secrets.CREDENTIALS_JS}}
 
-            -   name: run test
+            -   name: run tests
                 run: |
                     cd VitalMotion
                     npm run test-once

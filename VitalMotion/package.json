@@ -16,6 +16,9 @@
     "preset": "jest-expo",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|@firebase/app|firebase/app|firebase|@firebase)"
+    ],
+    "testPathIgnorePatterns": [
+      "/__tests__/utils.js"
     ]
   },
   "dependencies": {
@@ -24,6 +27,7 @@
     "@react-native-community/slider": "^4.5.5",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
+    "@testing-library/react": "^16.0.1",
     "expo": "~51.0.28",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.9",
