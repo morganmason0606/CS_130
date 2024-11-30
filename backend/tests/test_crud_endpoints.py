@@ -240,3 +240,9 @@ def test_edit_pain(client):
         "pain_level": 5
     })
     assert response.status_code == 200
+
+    # Verify the update
+    get_response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    updated_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
+    assert updated_pain is not None
+    assert updated_pain["pain_level"] == 5
