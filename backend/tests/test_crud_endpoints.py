@@ -207,3 +207,18 @@ def test_add_pain_invalid_level(client):
     })
     assert response.status_code == 400
     assert "error" in response.json
+
+def test_get_all_pain(client):
+    # First, add a pain entry
+    client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+
+    # Then, retrieve all pain entries
+    response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    assert response.status_code == 200
+    assert "pain" in response.json
+    assert len(response.json["pain"]) > 0
