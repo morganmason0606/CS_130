@@ -219,3 +219,12 @@ def test_create_medication(client):
 def test_read_all_medications(client):
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/medications")
     assert response.status_code == 200
+
+def test_delete_medication(client):
+    # First, create the medication
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/medications", json={"name": "Ibuprofen", "dosage": "200mg", "time": "morning"})
+    medication_id = create_response.json["id"]
+    
+    # Then, delete the medication
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/medications/{medication_id}")
+    assert response.status_code == 200
