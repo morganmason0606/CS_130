@@ -215,3 +215,7 @@ def test_create_medication(client):
     response = client.post(f"/users/{USER_DOCUMENT_NAME}/medications", json={"name": "Ibuprofen", "dosage": "200mg", "time": "morning"})
     assert response.status_code == 201
     assert "id" in response.json
+
+def test_read_all_medications(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/medications")
+    assert response.status_code == 200
