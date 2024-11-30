@@ -4,7 +4,6 @@ from firebase_admin import firestore
 import google.cloud.firestore
 
 from datetime import datetime, timedelta
-import heapq
 
 ABS = "Abs"
 BACK = "Back"
@@ -33,7 +32,18 @@ muscles = [
 
 
 def get_intensity(recent_pain, to_recommend):
-    note = next((n for n in recent_pain if n["body_part"] == to_recommend), None)
+    """this looks for the most recent note relating to pain in an area. 
+    if there is high pain it recommends low intesnity. If there is low pain it recommend 
+    high intensity. if there is medium pain / no notes it recommends of a similar intensity
+
+    Args:
+        recent_pain (list of notes): list of previous pain notes
+        to_recommend (Muscle Enum): the muscle being recommended
+
+    Returns:
+        string: string of recommended intenstiy
+    """
+    note = next((n for n in recent_pain if n["body_part"] == to_recommend), None)# python for get first match
     if note:
         if note["pain_level"] <= 3:
             return "higher"
@@ -46,6 +56,19 @@ def get_intensity(recent_pain, to_recommend):
 
 
 def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client):
+    """taking a current workout (and user id), recommends an exercise type to user and intensity
+    looks at the current workouts, tries to infer the type of workout being done, and picks a muslce to work out
+    then for that recommendation, it looks at previous pain notes and recommends the intensity the user should shoot for
+
+
+    Args:
+        uid (str): user id
+        curr_workout (workout: list of exercises): the workout as described elsewhere
+        db (google.cloud.firestore.Client): firebase db
+
+    Returns:
+        dict[str,str]: dict with fields 'recommendation' and 'intensity' 
+    """
     # curworkout: list({eid, name, sets, reps, weight})
 
     # get information about exercises in current workout
@@ -56,12 +79,11 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
         if not('eid' in exer and exer['eid']):
             continue
         doc = collection_ref.document(exer["eid"]).get()
+        # print(collection_ref.document(BICEPS).get().__dict__)
         if doc.exists:
             exercise_info[exer["eid"]] = doc.to_dict()
         else:
             print(f"Document {exer['eid']} not found", flush=True)
-
-    # print(exercise_info, flush=True)
 
     # get information about pain in past week
     date_format = "%Y-%m-%d"
@@ -73,6 +95,7 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     recent_pain = []
     for pain_doc in docs:
         doc_dict = pain_doc.to_dict()
+        # check if invalid note
         if not (
             "date" in doc_dict and "body_part" in doc_dict and "pain_level" in doc_dict
         ):
@@ -81,8 +104,9 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
             converted_date = datetime.strptime(doc_dict["date"], date_format)
             if converted_date >= one_week_ago:
                 recent_pain.append(doc_dict)
-    recent_pain.sort(key=lambda e: e["date"])
-    print(recent_pain, flush=True)
+    recent_pain.sort(key=lambda e: e["date"], reverse=True)
+    print(recent_pain)
+    # by this point, we should have a sorted list of pain notes
 
     # get exercise recommendation
     # we will look at the types of exercises they are doing to predict the workout
@@ -108,9 +132,8 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
     legs = worked[GLUTES] + worked[HAMSTRINGS] + worked[QUADRICEPS]
 
     maj_needed = len(curr_workout) // 2 + 1
-
     to_recommend = ""
-    intensity = ""
+
     if arms >= maj_needed:
         # to_recommend = "arms"
         arm_muscles = [BICEPS, TRICEPS, SHOULDERS, FOREARMS]
@@ -150,6 +173,17 @@ def recommend_exercise(uid: str, curr_workout, db: google.cloud.firestore.Client
 
 
 def recommend_workout(workout_id: str, db: google.cloud.firestore.Client):
+    """our recommend workout gives the user a workout based on the 
+    area of focus. To ensure there are no errors when a user deletes an exercise, we get 
+    it from the globals collection
+
+    Args:
+        workout_id (str): workout id
+        db (google.cloud.firestore.Client):firestore db
+
+    Returns:
+        Optional[exercises]: the requested exercise (or none if there was an error)
+    """
     doc_ref = db.collection('globals').document('workouts').collection('premades').document(workout_id)
     doc = doc_ref.get()
     if doc.exists:
