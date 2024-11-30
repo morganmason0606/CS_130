@@ -187,6 +187,88 @@ def test_delete_completed_workout(client):
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
     assert response.status_code == 404
 
+### Pain API Tests
+def test_add_pain(client):
+    response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    assert response.status_code == 200
+    assert "hash_id" in response.json
+
+def test_add_pain_invalid_level(client):
+    response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 15,  # Invalid pain level
+        "body_part": "lower back"
+    })
+    assert response.status_code == 400
+    assert "error" in response.json
+
+def test_get_all_pain(client):
+    # First, add a pain entry
+    client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+
+    # Then, retrieve all pain entries
+    response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    assert response.status_code == 200
+    assert "pain" in response.json
+    assert len(response.json["pain"]) > 0
+
+def test_edit_pain(client):
+    # First, add a pain entry
+    add_response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    hash_id = add_response.json["hash_id"]
+
+    # Then, edit the pain entry
+    response = client.post('/edit-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "hash_id": hash_id,
+        "pain_level": 5
+    })
+    assert response.status_code == 200
+
+    # Verify the update
+    get_response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    updated_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
+    assert updated_pain is not None
+    assert updated_pain["pain_level"] == 5
+
+def test_remove_pain(client):
+    # First, add a pain entry
+    add_response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    hash_id = add_response.json["hash_id"]
+
+    # Then, remove the pain entry
+    response = client.post('/remove-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "hash_id": hash_id
+    })
+    assert response.status_code == 200
+
+    # Verify the removal
+    get_response = client.post('/get-all-pain', json={"uid": USER_DOCUMENT_NAME})
+    removed_pain = next((p for p in get_response.json["pain"] if p["hash_id"] == hash_id), None)
+    assert removed_pain is None
+
 def test_read_all_completed_all(client):
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/ALL/completed")
     assert response.status_code == 200
