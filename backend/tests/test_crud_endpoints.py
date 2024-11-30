@@ -186,3 +186,7 @@ def test_delete_completed_workout(client):
     # Verify the deletion
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
     assert response.status_code == 404
+
+def test_read_all_completed_all(client):
+    response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/ALL/completed")
+    assert response.status_code == 200
