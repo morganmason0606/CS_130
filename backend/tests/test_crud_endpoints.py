@@ -190,3 +190,9 @@ def test_delete_completed_workout(client):
 def test_read_all_completed_all(client):
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/ALL/completed")
     assert response.status_code == 200
+
+### Journal API Tests
+def test_create_journal(client):
+    response = client.post(f"/users/{USER_DOCUMENT_NAME}/journals", json={"title": "My Journal", "content": "Daily log"})
+    assert response.status_code == 201
+    assert "id" in response.json
