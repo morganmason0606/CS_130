@@ -200,3 +200,12 @@ def test_create_journal(client):
 def test_read_all_journals(client):
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/journals")
     assert response.status_code == 200
+
+def test_delete_journal(client):
+    # First, create the journal
+    create_response = client.post(f"/users/{USER_DOCUMENT_NAME}/journals", json={"title": "My Journal", "content": "Daily log"})
+    journal_id = create_response.json["id"]
+    
+    # Then, delete the journal
+    response = client.delete(f"/users/{USER_DOCUMENT_NAME}/journals/{journal_id}")
+    assert response.status_code == 200
