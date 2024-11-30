@@ -186,3 +186,14 @@ def test_delete_completed_workout(client):
     # Verify the deletion
     response = client.get(f"/users/{USER_DOCUMENT_NAME}/workouts/{template_id}/completed/{completed_id}")
     assert response.status_code == 404
+
+### Pain API Tests
+def test_add_pain(client):
+    response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    assert response.status_code == 200
+    assert "hash_id" in response.json
