@@ -222,3 +222,21 @@ def test_get_all_pain(client):
     assert response.status_code == 200
     assert "pain" in response.json
     assert len(response.json["pain"]) > 0
+
+def test_edit_pain(client):
+    # First, add a pain entry
+    add_response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 7,
+        "body_part": "lower back"
+    })
+    hash_id = add_response.json["hash_id"]
+
+    # Then, edit the pain entry
+    response = client.post('/edit-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "hash_id": hash_id,
+        "pain_level": 5
+    })
+    assert response.status_code == 200
