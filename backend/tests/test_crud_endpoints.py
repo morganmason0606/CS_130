@@ -209,3 +209,9 @@ def test_delete_journal(client):
     # Then, delete the journal
     response = client.delete(f"/users/{USER_DOCUMENT_NAME}/journals/{journal_id}")
     assert response.status_code == 200
+
+### Medication API Tests
+def test_create_medication(client):
+    response = client.post(f"/users/{USER_DOCUMENT_NAME}/medications", json={"name": "Ibuprofen", "dosage": "200mg", "time": "morning"})
+    assert response.status_code == 201
+    assert "id" in response.json
