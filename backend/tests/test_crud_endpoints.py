@@ -197,3 +197,13 @@ def test_add_pain(client):
     })
     assert response.status_code == 200
     assert "hash_id" in response.json
+
+def test_add_pain_invalid_level(client):
+    response = client.post('/add-pain', json={
+        "uid": USER_DOCUMENT_NAME,
+        "date": "2024-11-30",
+        "pain_level": 15,  # Invalid pain level
+        "body_part": "lower back"
+    })
+    assert response.status_code == 400
+    assert "error" in response.json
