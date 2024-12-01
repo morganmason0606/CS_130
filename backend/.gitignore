@@ -11,3 +11,4 @@ docs/_build/
 admin_credentials.json
 log.txt
 err.txt
+.pytest_cache
