@@ -74,7 +74,12 @@ export default function Navbar() {
   return (
     <View style={styles.navbar}>
       <View style={styles.logoContainer}>
-        <Image alt="VitalMotion logo with running man" source={Logo} style={styles.logo} />
+        <Image
+          alt="VitalMotion logo with running man"
+          source={Logo}
+          style={styles.logo}
+          href="/"
+        />
       </View>
       <View style={styles.navLinks}>
         <Link
