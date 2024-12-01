@@ -39,7 +39,6 @@ const LoginScreen = () => {
 		Dimensions.addEventListener('change', onChange);
 
 		return () => {
-			Dimensions.removeEventListener('change', onChange);
 		};
 	}, []);
 	
@@ -254,6 +253,7 @@ const LoginScreen = () => {
 
             {isSignUp ? (
 				<Text
+					testID='registerSubmitButton'
 					style={[styles.submitButton, isDisabled && styles.disabledButton]}
 					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleSignUp}
@@ -262,6 +262,7 @@ const LoginScreen = () => {
 				</Text>
             ) : (
                 <Text
+				testID='loginSubmitButton'
 					style={[styles.submitButton, isDisabled && styles.disabledButton]}
 					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleLogin}
@@ -271,6 +272,7 @@ const LoginScreen = () => {
             )}
 
 			<Text
+				testID='signUpToggle'
 				style={[
 					styles.pageSwapText,
 					isHovered && styles.pageSwapTextHovered,

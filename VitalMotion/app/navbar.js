@@ -81,7 +81,7 @@ export default function Navbar() {
           href="/"
         />
       </View>
-      <View style={styles.navLinks}>
+      <View testID='navlinks' style={styles.navLinks}>
         <Link
             href="/workout"
             style={[styles.pageLink, isHoveredWorkout && styles.pageLinkHovered]}
