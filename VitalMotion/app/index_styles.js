@@ -11,13 +11,30 @@ const styles = StyleSheet.create({
       paddingHorizontal: 70,
       paddingTop: 50,
     },
-    navbar: {                      // TODO: Make navbar sticky.
+    navbar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingVertical: 3,
+      paddingHorizontal: 40,
+      backgroundColor: theme.colors.aqua,
+    },
+    logoContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+    },
+    logo: {
+      resizeMode: 'contain',
+      width: 200,
+    },
+    navLinks: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-end',
       gap: 50,
       padding: 30,
-  
       backgroundColor: theme.colors.aqua,
     },
     pageLink: {

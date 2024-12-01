@@ -24,7 +24,12 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "manifest": {
+        "name": "VitalMotion",
+        "short_name": "VitalMotion",
+        "description": "Physical therapy exercise and pain tracker"
+      }
     },
     "plugins": [
       "expo-router"
