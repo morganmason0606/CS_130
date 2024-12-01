@@ -13,7 +13,7 @@ jest.mock('firebase/auth', () => ({
     signInWithEmailAndPassword: jest.fn(),
 }));
 
-// Manually mock the `useAuth` hook
+// Manually mock the 'useAuth' hook
 jest.mock('../app/auth_context', () => ({
     useAuth: jest.fn(),  // Mock useAuth explicitly
 }));
@@ -67,7 +67,9 @@ describe("Login Screen - Form Validation", () => {
         const { getByTestId, getByText } = render(<LoginScreen />);
         
         const loginSubmitButton = getByTestId("loginSubmitButton");
-        loginSubmitButton.props.onPress();
+        act(() => {
+            loginSubmitButton.props.onPress();
+        });
         
         expect(getByText("Please fill in all fields.")).toBeTruthy();
     });
@@ -95,10 +97,12 @@ describe("Login Screen - Authentication & Redirection", () => {
         const passwordInput = getByTestId("password");
     
         // Mock entering the sign-up details
-        firstNameInput.props.onChangeText("John");
-        lastNameInput.props.onChangeText("Doe");
-        emailInput.props.onChangeText("test@example.com");
-        passwordInput.props.onChangeText("password123");
+        act(() => {
+            firstNameInput.props.onChangeText("John");
+            lastNameInput.props.onChangeText("Doe");
+            emailInput.props.onChangeText("test@example.com");
+            passwordInput.props.onChangeText("password123");
+        });
         
         const signUpButton = getByTestId("registerSubmitButton");
         act(() => {
@@ -135,8 +139,11 @@ describe("Login Screen - Authentication & Redirection", () => {
         const passwordInput = getByTestId("password");
     
         // Mock entering login details
-        emailInput.props.onChangeText("test@example.com");
-        passwordInput.props.onChangeText("password123");
+        
+        act(() => {
+            emailInput.props.onChangeText("test@example.com");
+            passwordInput.props.onChangeText("password123");
+        });
     
         const loginButton = getByTestId("loginSubmitButton");
         await act(async () => {
@@ -144,7 +151,6 @@ describe("Login Screen - Authentication & Redirection", () => {
         });
     
         // Wait for the router to push
-        //await Promise.resolve();
         await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/workout"));
       });
 });

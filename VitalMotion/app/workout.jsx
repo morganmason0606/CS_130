@@ -125,7 +125,7 @@ const Workout = () => {
     const renderExercises = ({ item, index }) => (
         <View style={localStyles.card}>
             <View style={localStyles.row}>
-                <Text style={localStyles.cardTitle}>Workout #{index + 1}</Text>
+                <Text testID='workoutName' style={localStyles.cardTitle}>Workout #{index + 1}</Text>
                 <View style={localStyles.actionButtons}>
                     <TouchableOpacity
                         onPress={() =>
@@ -135,6 +135,7 @@ const Workout = () => {
                         <Feather name="edit" size={26} style={styles.iconButton} />
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID='deleteButton'
                         onPress={() => {
                                     alert(
                                         'Delete Workout',
@@ -186,6 +187,7 @@ const Workout = () => {
                             {/* Using react-native-popup-menu for the button */}
                             <Menu style={localStyles.menu}>
                                 <MenuTrigger
+                                    testID="newWorkoutButton"
                                     text="+ New Workout"
                                     customStyles={triggerStyles}
                                     style={localStyles.menuTrigger}
@@ -198,6 +200,7 @@ const Workout = () => {
                                     >
                                     </MenuOption>
                                     <MenuOption
+                                        testID="recommendWorkoutButton"
                                         text="Get Recommended Workout"
                                         onSelect={() => router.push({ pathname: '/rec_workout' })}
                                     >

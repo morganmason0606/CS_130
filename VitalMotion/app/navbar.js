@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import { useAuth } from './auth_context';
 import styles from './index_styles.js';
+import Logo from './images/Logo.png';
 
 export default function Navbar() {
   const [isHoveredWorkout, setIsHoveredWorkout] = useState(false);
@@ -72,53 +73,57 @@ export default function Navbar() {
 
   return (
     <View style={styles.navbar}>
-    <Link
-        href="/workout"
-        style={[styles.pageLink, isHoveredWorkout && styles.pageLinkHovered]}
-        onMouseEnter={()=>{handleMouseEnter('Workout')}}
-        onMouseLeave={()=>{handleMouseLeave('Workout')}}
-    >
-        Workout
-    </Link>
+      <View style={styles.logoContainer}>
+        <Image alt="VitalMotion logo with running man" source={Logo} style={styles.logo} />
+      </View>
+      <View testID='navlinks' style={styles.navLinks}>
+        <Link
+            href="/workout"
+            style={[styles.pageLink, isHoveredWorkout && styles.pageLinkHovered]}
+            onMouseEnter={()=>{handleMouseEnter('Workout')}}
+            onMouseLeave={()=>{handleMouseLeave('Workout')}}
+        >
+            Workout
+        </Link>
 
-    <Link
-        href="/history"
-        style={[styles.pageLink, isHoveredHistory && styles.pageLinkHovered]}
-        onMouseEnter={()=>{handleMouseEnter('History')}}
-        onMouseLeave={()=>{handleMouseLeave('History')}}
-    >
-        History
-    </Link>
+        <Link
+            href="/history"
+            style={[styles.pageLink, isHoveredHistory && styles.pageLinkHovered]}
+            onMouseEnter={()=>{handleMouseEnter('History')}}
+            onMouseLeave={()=>{handleMouseLeave('History')}}
+        >
+            History
+        </Link>
 
-    <Link
-        href="/notes"
-        style={[styles.pageLink, isHoveredNotes && styles.pageLinkHovered]}
-        onMouseEnter={()=>{handleMouseEnter('Notes')}}
-        onMouseLeave={()=>{handleMouseLeave('Notes')}}
-    >
-        Notes 
-    </Link>
+        <Link
+            href="/notes"
+            style={[styles.pageLink, isHoveredNotes && styles.pageLinkHovered]}
+            onMouseEnter={()=>{handleMouseEnter('Notes')}}
+            onMouseLeave={()=>{handleMouseLeave('Notes')}}
+        >
+            Notes 
+        </Link>
 
-    {/* Login/Logout option based on if user is signed in */}
-    {user ? (
-      <Pressable
-                onMouseEnter={() => { handleMouseEnter('Login') }}
-        onMouseLeave={() => { handleMouseLeave('Login') }}
-        onPress={handleLogout}
-      >
-        <Text style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
->Logout</Text>
-      </Pressable>
-    ) : (
-      <Link
-          href="/login"
-          style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
-          onMouseEnter={()=>{handleMouseEnter('Login')}}
-          onMouseLeave={()=>{handleMouseLeave('Login')}}
-      >
-          Login
-      </Link>
-    )}
+        {/* Login/Logout option based on if user is signed in */}
+        {user ? (
+          <Pressable
+                    onMouseEnter={() => { handleMouseEnter('Login') }}
+            onMouseLeave={() => { handleMouseLeave('Login') }}
+            onPress={handleLogout}
+          >
+            <Text style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}>Logout</Text>
+          </Pressable>
+        ) : (
+          <Link
+              href="/login"
+              style={[styles.pageLink, isHoveredLogin && styles.pageLinkHovered]}
+              onMouseEnter={()=>{handleMouseEnter('Login')}}
+              onMouseLeave={()=>{handleMouseLeave('Login')}}
+          >
+              Login
+          </Link>
+        )}
+      </View>
     </View>
   );
 }
