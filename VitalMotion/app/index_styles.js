@@ -45,6 +45,26 @@ const styles = StyleSheet.create({
     pageLinkHovered:{
       color: theme.links.light.hover,
     },
+    home: {
+      justifyContent: 'center',
+    }, 
+    homeLogoContainer: {
+      backgroundColor: theme.colors.dustyAqua,
+      paddingHorizontal: 30,
+      paddingTop: 300,
+      paddingBottom: 30,
+      width: '100%',
+      bottom: 0,
+    },
+    homeLogo: {
+      resizeMode: 'contain',
+    },
+    homeTextContainer: {
+      padding: 30,
+    },
+    homeText: {
+      fontSize: theme.fontSizes.large,
+    },
     pageTitle: {
       fontSize: theme.fontSizes.larger,
       fontWeight: theme.fontWeights.bold,
