@@ -18,6 +18,10 @@ export default function Index() {
       }
     }, [uid]); // Runs whenever uid changes
 
+    useEffect(() => { // set title in browser
+      document.title = 'VitalMotion';
+    }, []);
+
   return (
       <View style={styles.outerWrapper}>
         <Navbar />
