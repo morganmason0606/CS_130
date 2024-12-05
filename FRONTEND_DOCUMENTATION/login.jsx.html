@@ -1,4 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: login.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: login.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Dimensions } from 'react-native';
 import { auth } from './firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -73,7 +101,7 @@ const LoginScreen = () => {
 	}, [email, password, firstName, lastName, isSignUp]);
 
 	useEffect(() => {
-		if ((uid !== null)  && !needsToLogin && !isSignUp && !isLoading) {
+		if ((uid !== null)  &amp;&amp; !needsToLogin &amp;&amp; !isSignUp &amp;&amp; !isLoading) {
 		    setTimeout(() => {router.push('/');}, 800);
 		}
 	}, [uid, needsToLogin, isSignUp]);
@@ -192,7 +220,7 @@ const LoginScreen = () => {
 	  };
 	
     return (
-        <View
+        &lt;View
 			style={[
 				styles.container,
 				{
@@ -201,93 +229,116 @@ const LoginScreen = () => {
 				}
 			]}
 		>
-			{isSignUp ? <Text style={styles.title}>Register</Text> : <Text style={styles.title}>{isLoading ? 'Loading...' : 'Login'}</Text>}
-			{isSignUp && (
-				<>
-					<Text style={styles.label}>
+			{isSignUp ? &lt;Text style={styles.title}>Register&lt;/Text> : &lt;Text style={styles.title}>{isLoading ? 'Loading...' : 'Login'}&lt;/Text>}
+			{isSignUp &amp;&amp; (
+				&lt;>
+					&lt;Text style={styles.label}>
 						First Name
-						<Text style={theme.required}>*</Text>
-					</Text>
-					<TextInput
+						&lt;Text style={theme.required}>*&lt;/Text>
+					&lt;/Text>
+					&lt;TextInput
 						style={styles.input}
 						testID="firstName"
 						value={firstName}
 						onChangeText={setFirstName}
 					/>
-					<Text style={styles.label}>
+					&lt;Text style={styles.label}>
 						Last Name
-						<Text style={theme.required}>*</Text>
-					</Text>
-					<TextInput
+						&lt;Text style={theme.required}>*&lt;/Text>
+					&lt;/Text>
+					&lt;TextInput
 						style={styles.input}
 						testID="lastName"
 						value={lastName}
 						onChangeText={setLastName}
 					/>
-				</>
+				&lt;/>
 			)}
 			
-			<Text style={styles.label}>
+			&lt;Text style={styles.label}>
 				Email
-				<Text style={theme.required}>*</Text>
-			</Text>
-            <TextInput
+				&lt;Text style={theme.required}>*&lt;/Text>
+			&lt;/Text>
+            &lt;TextInput
 				style={styles.input}
 				testID="email"
 				value={email}
 				onChangeText={setEmail}
 			/>
-			{(emailError !== '') && <Text style={theme.error}>{emailError}</Text>}
+			{(emailError !== '') &amp;&amp; &lt;Text style={theme.error}>{emailError}&lt;/Text>}
 
-			<Text style={styles.label}>
+			&lt;Text style={styles.label}>
 				Password
-				<Text style={theme.required}>*</Text>
-			</Text>
-            <TextInput
+				&lt;Text style={theme.required}>*&lt;/Text>
+			&lt;/Text>
+            &lt;TextInput
 				style={styles.input}
 				testID="password"
 				secureTextEntry
 				value={password}
 				onChangeText={setPassword}
 			/>
-			{(passwordError !== '') && <Text style={theme.error}>{passwordError}</Text>}
+			{(passwordError !== '') &amp;&amp; &lt;Text style={theme.error}>{passwordError}&lt;/Text>}
 
-			{(error !== '') && <Text style={[theme.error, {textAlign: 'center', marginTop: '1rem'}]}>{error}</Text>}
+			{(error !== '') &amp;&amp; &lt;Text style={[theme.error, {textAlign: 'center', marginTop: '1rem'}]}>{error}&lt;/Text>}
 
             {isSignUp ? (
-				<Text
+				&lt;Text
 					testID='registerSubmitButton'
-					style={[styles.submitButton, isDisabled && styles.disabledButton]}
+					style={[styles.submitButton, isDisabled &amp;&amp; styles.disabledButton]}
 					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleSignUp}
 				>
 					{isLoading ? 'Loading...' : 'Register'}
-				</Text>
+				&lt;/Text>
             ) : (
-                <Text
+                &lt;Text
 				testID='loginSubmitButton'
-					style={[styles.submitButton, isDisabled && styles.disabledButton]}
+					style={[styles.submitButton, isDisabled &amp;&amp; styles.disabledButton]}
 					pointerEvents={isDisabled ? 'none' : 'auto'}
 					onPress={handleLogin}
 				>
 					Login
-				</Text>
+				&lt;/Text>
             )}
 
-			<Text
+			&lt;Text
 				testID='signUpToggle'
 				style={[
 					styles.pageSwapText,
-					isHovered && styles.pageSwapTextHovered,
+					isHovered &amp;&amp; styles.pageSwapTextHovered,
 				]}
 				onClick={() => setIsSignUp(!isSignUp)} 
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>
 				{isSignUp ? "Already have an account? Log in here!" : "Don't have an account? Register for one here!"}
-			</Text>
-        </View>
+			&lt;/Text>
+        &lt;/View>
     );
 };
 
 export default LoginScreen;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

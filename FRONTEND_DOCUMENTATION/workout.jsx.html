@@ -1,4 +1,32 @@
-import {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: workout.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: workout.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
     View,
     Text,
     FlatList,
@@ -127,18 +155,18 @@ const Workout = () => {
     };
 
     const renderExercises = ({ item, index }) => (
-        <View style={localStyles.card}>
-            <View style={localStyles.row}>
-                <Text testID='workoutName' style={localStyles.cardTitle}>Workout #{index + 1}</Text>
-                <View style={localStyles.actionButtons}>
-                    <TouchableOpacity
+        &lt;View style={localStyles.card}>
+            &lt;View style={localStyles.row}>
+                &lt;Text testID='workoutName' style={localStyles.cardTitle}>Workout #{index + 1}&lt;/Text>
+                &lt;View style={localStyles.actionButtons}>
+                    &lt;TouchableOpacity
                         onPress={() =>
                             router.push({ pathname: '/edit_workout', params: { workoutId: item.id } })
                         }
                     >
-                        <Feather name="edit" size={26} style={styles.iconButton} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        &lt;Feather name="edit" size={26} style={styles.iconButton} />
+                    &lt;/TouchableOpacity>
+                    &lt;TouchableOpacity
                         testID='deleteButton'
                         onPress={() => {
                                     alert(
@@ -147,96 +175,96 @@ const Workout = () => {
                         deleteWorkout(item.id);
                                 }}
                     >
-                        <Feather name="trash-2" size={26} style={styles.iconButton} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={localStyles.row}>
-                <Image alt="Image of barbell" source={WeightImage} style={localStyles.cardImage} />
-                <View style={localStyles.exerciseContainer}>
-                    <FlatList
+                        &lt;Feather name="trash-2" size={26} style={styles.iconButton} />
+                    &lt;/TouchableOpacity>
+                &lt;/View>
+            &lt;/View>
+            &lt;View style={localStyles.row}>
+                &lt;Image alt="Image of barbell" source={WeightImage} style={localStyles.cardImage} />
+                &lt;View style={localStyles.exerciseContainer}>
+                    &lt;FlatList
                         data={item.exercises}
                         keyExtractor={(exercise) => exercise.eid}
                         renderItem={({ item: exercise }) => (
-                            <View>
-                                <Text style={localStyles.cardDetail}>
-                                    <Text style={localStyles.bold}> {`\u2022 ${exercise.name}`}</Text>: {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
-                                </Text>
-                            </View>
+                            &lt;View>
+                                &lt;Text style={localStyles.cardDetail}>
+                                    &lt;Text style={localStyles.bold}> {`\u2022 ${exercise.name}`}&lt;/Text>: {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
+                                &lt;/Text>
+                            &lt;/View>
                         )}
                         style={localStyles.exerciseInfo}
                     />
-                    <CustomButton
+                    &lt;CustomButton
                         title="Start Workout"
                         onPress={() =>
                             router.push({ pathname: '/do_workout', params: { templateId: item.id } })
                         }
                     />
-                </View>
-            </View>
-        </View>
+                &lt;/View>
+            &lt;/View>
+        &lt;/View>
     );
 
     return (
-        <MenuProvider>
-            <View style={styles.outerWrapper}>
-                <Navbar />
-                <ScrollView style={styles.innerWrapper}>
-                    <View style={localStyles.row}>
-                        <View>
-                            <Text style={styles.pageTitle}>Workouts</Text>
-                            <Text style={styles.pageSubtitle}>Your Workouts</Text>
-                        </View>
-                        <View>
+        &lt;MenuProvider>
+            &lt;View style={styles.outerWrapper}>
+                &lt;Navbar />
+                &lt;ScrollView style={styles.innerWrapper}>
+                    &lt;View style={localStyles.row}>
+                        &lt;View>
+                            &lt;Text style={styles.pageTitle}>Workouts&lt;/Text>
+                            &lt;Text style={styles.pageSubtitle}>Your Workouts&lt;/Text>
+                        &lt;/View>
+                        &lt;View>
                             {/* Using react-native-popup-menu for the button */}
-                            <Menu style={localStyles.menu}>
-                                <MenuTrigger
+                            &lt;Menu style={localStyles.menu}>
+                                &lt;MenuTrigger
                                     testID="newWorkoutButton"
                                     text="+ New Workout"
                                     customStyles={triggerStyles}
                                     style={localStyles.menuTrigger}
                                 >
-                                </MenuTrigger>
-                                <MenuOptions customStyles={optionStyles}>
-                                    <MenuOption
+                                &lt;/MenuTrigger>
+                                &lt;MenuOptions customStyles={optionStyles}>
+                                    &lt;MenuOption
                                         text="Build From Scratch"
                                         onSelect={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' } })}
                                     >
-                                    </MenuOption>
-                                    <MenuOption
+                                    &lt;/MenuOption>
+                                    &lt;MenuOption
                                         testID="recommendWorkoutButton"
                                         text="Get Recommended Workout"
                                         onSelect={() => router.push({ pathname: '/rec_workout' })}
                                     >
-                                    </MenuOption>
-                                </MenuOptions>
-                            </Menu>
+                                    &lt;/MenuOption>
+                                &lt;/MenuOptions>
+                            &lt;/Menu>
 
-                            {/* <CustomButton
+                            {/* &lt;CustomButton
                                 title="+ Create New Workout"
                                 onPress={() => router.push({ pathname: '/edit_workout', params: { workoutId: 'new' }})}
                             />
-                            <CustomButton
+                            &lt;CustomButton
                                 title="+ Get Workout Recommendation"
                                 onPress={() => router.push({ pathname: '/rec_workout'})}
                             /> */}
-                        </View>
-                    </View>
+                        &lt;/View>
+                    &lt;/View>
                     {loading ? (
-                        <ActivityIndicator size="large" color="#0000ff" />
+                        &lt;ActivityIndicator size="large" color="#0000ff" />
                     ) : (
-                        <FlatList
+                        &lt;FlatList
                             data={workouts}
                             keyExtractor={(item) => item.id}
                             renderItem={renderExercises}
                             ListEmptyComponent={
-                                <Text style={styles.emptyMessage}>No workouts found.</Text>
+                                &lt;Text style={styles.emptyMessage}>No workouts found.&lt;/Text>
                             }
                         />
                     )}
-                </ScrollView>
-            </View>
-        </MenuProvider>
+                &lt;/ScrollView>
+            &lt;/View>
+        &lt;/MenuProvider>
     );
 };
 
@@ -333,3 +361,26 @@ const localStyles = StyleSheet.create({
 });
 
 export default Workout;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

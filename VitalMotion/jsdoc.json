@@ -1,0 +1,13 @@
+{
+    "source": {
+      "include": ["app", "app/components"],
+      "exclude": ["node_modules"],
+      "includePattern": ".+\\.js(doc|x)?$",
+      "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "opts": {
+      "destination": "../FRONTEND_DOCUMENTATION",
+      "recurse": true
+    }
+  }
+  

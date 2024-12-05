@@ -2,6 +2,12 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import theme from '../design_system';
 
+
+/**
+ * custom component for creating buttons
+ * @param {Object} - {title: string, onPress: function, style: json of css, pointerEvents: onHover function, isDisabled: bool } 
+ * @returns {JSX.Element} 
+ */
 const CustomButton = ({ title, onPress, style, pointerEvents, isDisabled }) => {
     const [hovered, setHovered] = useState(false);
 

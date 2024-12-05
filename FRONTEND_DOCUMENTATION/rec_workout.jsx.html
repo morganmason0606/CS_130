@@ -1,4 +1,32 @@
-import React, { useState, useEffect } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: rec_workout.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: rec_workout.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -203,7 +231,7 @@ const RecWorkout = () => {
                 alert('Exercise, sets, reps, and weight must not be empty.');
                 return;
             }
-            if (isNaN(sets) || isNaN(reps) || isNaN(weight) || sets <= 0 || reps <= 0 || weight < 0) {
+            if (isNaN(sets) || isNaN(reps) || isNaN(weight) || sets &lt;= 0 || reps &lt;= 0 || weight &lt; 0) {
                 alert('Sets, reps, and weight must be non-negative numbers.');
                 return;
             }
@@ -251,7 +279,7 @@ const RecWorkout = () => {
     }
 
     const retrieveRec = async () =>{
-        if(workoutId && workoutId != 'new'){
+        if(workoutId &amp;&amp; workoutId != 'new'){
             setLoading(true);
             try{
                 const response = await fetch(`https://hassanrizvi14.pythonanywhere.com/recommend/workout/${workoutId}`,{
@@ -308,37 +336,37 @@ const RecWorkout = () => {
 
     if (loading) {
         return (
-            <View style={styles.outerWrapper}>
-                <Navbar />
-                <View style={styles.innerWrapper}>
-                    <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-            </View>
+            &lt;View style={styles.outerWrapper}>
+                &lt;Navbar />
+                &lt;View style={styles.innerWrapper}>
+                    &lt;ActivityIndicator size="large" color="#0000ff" />
+                &lt;/View>
+            &lt;/View>
         );
     }
     
 
     return (
-        <KeyboardAvoidingView
+        &lt;KeyboardAvoidingView
         style={styles.outerWrapper}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-            <Navbar />
-            <ScrollView style={styles.innerWrapper}>
-                <View style={localStyles.row}>
-                    <View>  
-                        <Text style={styles.pageTitle}> Workout Generator </Text>
-                        <Text style={styles.pageSubtitle}> Exercises: </Text>
-                    </View>
+            &lt;Navbar />
+            &lt;ScrollView style={styles.innerWrapper}>
+                &lt;View style={localStyles.row}>
+                    &lt;View>  
+                        &lt;Text style={styles.pageTitle}> Workout Generator &lt;/Text>
+                        &lt;Text style={styles.pageSubtitle}> Exercises: &lt;/Text>
+                    &lt;/View>
 
 
                     {/*MORGAN:TODO FIX ME*/}
-                    <View style={[localStyles.focusRow]}>
-                        <View>
-                            <Text style={localStyles.label}>Choose a Focus Area:</Text>
-                        </View>
-                        <View>
-                        <Picker
+                    &lt;View style={[localStyles.focusRow]}>
+                        &lt;View>
+                            &lt;Text style={localStyles.label}>Choose a Focus Area:&lt;/Text>
+                        &lt;/View>
+                        &lt;View>
+                        &lt;Picker
                             selectedValue={workoutId}
                             onValueChange={(itemValue) => {
                                 console.log(itemValue); 
@@ -346,24 +374,24 @@ const RecWorkout = () => {
                             placeholder={"Select a focus"}
                             style={localStyles.picker}
                         >
-                            <Picker.Item key={"Random"} label={'Random'} value={'Random'}/>
+                            &lt;Picker.Item key={"Random"} label={'Random'} value={'Random'}/>
                             {Object.entries(default_workouts).map(([part, wid], ind) => {
-                                return <Picker.Item key={ind} label={part} value={wid}/>
+                                return &lt;Picker.Item key={ind} label={part} value={wid}/>
                             })}
-                        </Picker>
-                        </View>
-                        <CustomButton 
+                        &lt;/Picker>
+                        &lt;/View>
+                        &lt;CustomButton 
                             title = "Generate from Focus Area"
                             onPress={retrieveRec}
                         />
-                    </View>
+                    &lt;/View>
 
-                </View>
-                <View style={localStyles.exerciseCardsContainer}>
+                &lt;/View>
+                &lt;View style={localStyles.exerciseCardsContainer}>
                     {exercises.map((item, index) => (
-                        <View key={index} style={localStyles.exerciseCard}>
-                            <View style={localStyles.row}>
-                                <CustomPicker
+                        &lt;View key={index} style={localStyles.exerciseCard}>
+                            &lt;View style={localStyles.row}>
+                                &lt;CustomPicker
                                     selectedValue={item.eid}
                                     style={localStyles.picker}
                                     onValueChange={(value) => {
@@ -378,16 +406,16 @@ const RecWorkout = () => {
                                     placeholder="Select Exercise"
                                     data={allExercises}
                                 />
-                                <TouchableOpacity
+                                &lt;TouchableOpacity
                                     style={[localStyles.deleteButton, localStyles.button]}
                                     onPress={() => removeExercise(index)}
                                 >
-                                    <Feather name="trash-2" size={26} style={styles.iconButton} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> # of Sets: </Text>
-                                <CustomTextInput
+                                    &lt;Feather name="trash-2" size={26} style={styles.iconButton} />
+                                &lt;/TouchableOpacity>
+                            &lt;/View>
+                            &lt;View style={localStyles.row}>
+                                &lt;Text style={localStyles.textInputLabel}> # of Sets: &lt;/Text>
+                                &lt;CustomTextInput
                                     placeholder="Sets"
                                     keyboardType="numeric"
                                     value={item.sets}
@@ -397,10 +425,10 @@ const RecWorkout = () => {
                                         setExercises(updatedExercises);
                                     }}
                                 />
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> # of Reps: </Text>
-                                <CustomTextInput
+                            &lt;/View>
+                            &lt;View style={localStyles.row}>
+                                &lt;Text style={localStyles.textInputLabel}> # of Reps: &lt;/Text>
+                                &lt;CustomTextInput
                                 
                                     placeholder="Reps"
                                     keyboardType="numeric"
@@ -411,10 +439,10 @@ const RecWorkout = () => {
                                         setExercises(updatedExercises);
                                     }}
                                 />
-                            </View>
-                            <View style={localStyles.row}>
-                                <Text style={localStyles.textInputLabel}> Weight (lb): </Text>
-                                <CustomTextInput
+                            &lt;/View>
+                            &lt;View style={localStyles.row}>
+                                &lt;Text style={localStyles.textInputLabel}> Weight (lb): &lt;/Text>
+                                &lt;CustomTextInput
                                     placeholder="Weight"
                                     keyboardType="numeric"
                                     value={item.weight}
@@ -424,51 +452,51 @@ const RecWorkout = () => {
                                         setExercises(updatedExercises);
                                     }}
                                 />
-                            </View>
-                        </View>
+                            &lt;/View>
+                        &lt;/View>
                     ))}
-                </View>
+                &lt;/View>
 
 {/*MORGAN:TODO FIX ME*/}
-<View>
+&lt;View>
 
                 {/*MORGAN:TODO FIX ME*/}
                 {/* {recommendation ? 
-                <View>
-                    <Text style={styles.pageSubtitle}> Recommendation: </Text>
-                    <Text> You should work your {recommendation['recommended'].toLowerCase()} at a {recommendation['intensity']} intensity.</Text>
-                </View>
+                &lt;View>
+                    &lt;Text style={styles.pageSubtitle}> Recommendation: &lt;/Text>
+                    &lt;Text> You should work your {recommendation['recommended'].toLowerCase()} at a {recommendation['intensity']} intensity.&lt;/Text>
+                &lt;/View>
                 :null
                 } */}
-</View>
-                <CustomButton
+&lt;/View>
+                &lt;CustomButton
                     title="+ Add New Exercise"
                     onPress={addExercise}
                     style={localStyles.button}
                 />
-                <CustomButton
+                &lt;CustomButton
                     title="Save Workout"
                     onPress={saveWorkout}
                     style={localStyles.button}
                 />
-                <CustomButton
+                &lt;CustomButton
                     title="View Exercise Recommendation"
                     onPress={toggleNotification}
                     disabled={isDisabled}
-                    style={[localStyles.button, localStyles.recommendationButton, isDisabled && styles.disabledButton]}
+                    style={[localStyles.button, localStyles.recommendationButton, isDisabled &amp;&amp; styles.disabledButton]}
                 />
-                <CustomButton
+                &lt;CustomButton
                     title="Cancel"
                     onPress={handleCancel}
                     style={[localStyles.cancelButton, localStyles.button]}
                 />
-            </ScrollView>
-            <CornerNotification
+            &lt;/ScrollView>
+            &lt;CornerNotification
                 message={message}
                 visible={notificationVisible}
                 onDismiss={() => setNotificationVisible(false)}
             />
-        </KeyboardAvoidingView>
+        &lt;/KeyboardAvoidingView>
     );
 };
 
@@ -539,3 +567,26 @@ const localStyles = StyleSheet.create({
 });
 
 export default RecWorkout;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

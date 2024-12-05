@@ -1,4 +1,32 @@
-import React, { useState, useEffect } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: history.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: history.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -156,7 +184,7 @@ const History = () => {
         ];
         return getRandomMessage(messages);
         }
-        if (numWorkouts <= 5) {
+        if (numWorkouts &lt;= 5) {
         const messages = [
             "Keep it up!",
             "You're doing great!",
@@ -164,7 +192,7 @@ const History = () => {
         ];
         return getRandomMessage(messages);
         }
-        if (numWorkouts <= 10) {
+        if (numWorkouts &lt;= 10) {
         const messages = [
             "Nice job!",
             "You're crushing it!",
@@ -192,10 +220,10 @@ const History = () => {
 
     if (loading) {
         return (
-            <View style={styles.outerWrapper}>
-                <Navbar />
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
+            &lt;View style={styles.outerWrapper}>
+                &lt;Navbar />
+                &lt;ActivityIndicator size="large" color="#0000ff" />
+            &lt;/View>
         );
     }
 
@@ -208,67 +236,67 @@ const History = () => {
     const renderHistoryItem = ({ item }) => {
         if (item.type === 'workout') {
             return (
-                <View>
-                    <Text style={[localStyles.historyType, localStyles.workoutType]}>Workout</Text>
+                &lt;View>
+                    &lt;Text style={[localStyles.historyType, localStyles.workoutType]}>Workout&lt;/Text>
 
-                    <View style={localStyles.historyContainer}>
-                        <Text style={localStyles.label}>Date:
-                            <Text style={localStyles.value}> {convertDate(item.date)}</Text>
-                        </Text>
-                        <Text style={localStyles.label}>Notes:
-                            <Text style={localStyles.value}> {item.notes || 'None'}</Text>
-                        </Text>
-                        <Text style={localStyles.label}>Difficulty:
-                            <Text style={localStyles.value}> {item.difficulty}/10</Text>
-                        </Text>
+                    &lt;View style={localStyles.historyContainer}>
+                        &lt;Text style={localStyles.label}>Date:
+                            &lt;Text style={localStyles.value}> {convertDate(item.date)}&lt;/Text>
+                        &lt;/Text>
+                        &lt;Text style={localStyles.label}>Notes:
+                            &lt;Text style={localStyles.value}> {item.notes || 'None'}&lt;/Text>
+                        &lt;/Text>
+                        &lt;Text style={localStyles.label}>Difficulty:
+                            &lt;Text style={localStyles.value}> {item.difficulty}/10&lt;/Text>
+                        &lt;/Text>
 
-                        <Text style={localStyles.label}>Exercises:</Text>
+                        &lt;Text style={localStyles.label}>Exercises:&lt;/Text>
                         {item.exercises.map((exercise, index) => (
-                            <View key={index} style={localStyles.label}>
-                                <Text style={localStyles.sublabel}>{exercise.name}</Text>
-                                <Text style={localStyles.value}>
+                            &lt;View key={index} style={localStyles.label}>
+                                &lt;Text style={localStyles.sublabel}>{exercise.name}&lt;/Text>
+                                &lt;Text style={localStyles.value}>
                                     {exercise.sets} sets x {exercise.reps} reps @ {exercise.weight} lbs
-                                </Text>
-                            </View>
+                                &lt;/Text>
+                            &lt;/View>
                         ))}
-                    </View>
-                </View>
+                    &lt;/View>
+                &lt;/View>
             );
         } else if (item.type === 'pain') {
             return (
-                <View>
-                    <Text style={[localStyles.historyType, localStyles.painType]}>Pain</Text>
+                &lt;View>
+                    &lt;Text style={[localStyles.historyType, localStyles.painType]}>Pain&lt;/Text>
 
-                    <View style={localStyles.historyContainer}>
-                        <Text style={localStyles.label}>Date:
-                            <Text style={localStyles.value}> {convertDate(item.date)}</Text>
-                        </Text>
-                        <Text style={localStyles.label}>Pain Level:
-                            <Text style={localStyles.value}> {item.pain_level}/10</Text>
-                        </Text>
-                        <Text style={localStyles.label}>Body Part:
-                            <Text style={localStyles.value}> {item.body_part}</Text>
-                        </Text>
-                    </View>
-                </View>
+                    &lt;View style={localStyles.historyContainer}>
+                        &lt;Text style={localStyles.label}>Date:
+                            &lt;Text style={localStyles.value}> {convertDate(item.date)}&lt;/Text>
+                        &lt;/Text>
+                        &lt;Text style={localStyles.label}>Pain Level:
+                            &lt;Text style={localStyles.value}> {item.pain_level}/10&lt;/Text>
+                        &lt;/Text>
+                        &lt;Text style={localStyles.label}>Body Part:
+                            &lt;Text style={localStyles.value}> {item.body_part}&lt;/Text>
+                        &lt;/Text>
+                    &lt;/View>
+                &lt;/View>
             );
         }
     };
 
     const renderCalendars = () => {
         return(
-            <View style={graphCalendarStyles.calendarContainer}>
+            &lt;View style={graphCalendarStyles.calendarContainer}>
                 {/* Start Date Calendar */}
-                <View style={graphCalendarStyles.calendarSubcontainer}>
-                    <Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
-                        <Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}</Text>
-                    </Text>
-                    <Calendar
+                &lt;View style={graphCalendarStyles.calendarSubcontainer}>
+                    &lt;Text style={graphCalendarStyles.dateLabel}>Selected Start Date:
+                        &lt;Text style={graphCalendarStyles.dateValue}> {convertDate(startDate)}&lt;/Text>
+                    &lt;/Text>
+                    &lt;Calendar
                         onDayPress={(newDate) => {
-                            if (newDate.month < 10) {
+                            if (newDate.month &lt; 10) {
                                 newDate.month = `0${newDate.month}`;
                             }
-                            if (newDate.day < 10) {
+                            if (newDate.day &lt; 10) {
                                 newDate.day = `0${newDate.day}`;
                             }
                             const newStartDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
@@ -284,19 +312,19 @@ const History = () => {
                         style={graphCalendarStyles.calendar}
                         theme={calendarTheme}
                     />
-                </View>
+                &lt;/View>
 
                 {/* End Date Calendar */}
-                <View style={graphCalendarStyles.calendarSubcontainer}>
-                    <Text style={graphCalendarStyles.dateLabel}>Selected End Date:
-                        <Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}</Text>
-                    </Text>
-                    <Calendar
+                &lt;View style={graphCalendarStyles.calendarSubcontainer}>
+                    &lt;Text style={graphCalendarStyles.dateLabel}>Selected End Date:
+                        &lt;Text style={graphCalendarStyles.dateValue}> {convertDate(endDate)}&lt;/Text>
+                    &lt;/Text>
+                    &lt;Calendar
                         onDayPress={(newDate) => {
-                            if (newDate.month < 10) {
+                            if (newDate.month &lt; 10) {
                                 newDate.month = `0${newDate.month}`;
                             }
-                            if (newDate.day < 10) {
+                            if (newDate.day &lt; 10) {
                                 newDate.day = `0${newDate.day}`;
                             }
                             const newEndDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
@@ -313,58 +341,58 @@ const History = () => {
                         style={graphCalendarStyles.calendar}
                         theme={calendarTheme}
                     />
-                </View>
-            </View>
+                &lt;/View>
+            &lt;/View>
         )
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-            <Navbar />
-            <ScrollView style={styles.innerWrapper}>
-                <View style={localStyles.row}>
-                    <View>
-                        <Text style={styles.pageTitle}>History</Text>
-                        <Text style={styles.pageSubtitle}>Your Completed Workouts:</Text>  {/** TODO: Make subheading more general since we display non-workout info. */}
-                    </View>
-                    <View style={localStyles.workoutsCompletedContainer}>
-                        <Text style={localStyles.workoutsCompletedText}>
+        &lt;ScrollView contentContainerStyle={styles.scrollContent}>
+            &lt;Navbar />
+            &lt;ScrollView style={styles.innerWrapper}>
+                &lt;View style={localStyles.row}>
+                    &lt;View>
+                        &lt;Text style={styles.pageTitle}>History&lt;/Text>
+                        &lt;Text style={styles.pageSubtitle}>Your Completed Workouts:&lt;/Text>  {/** TODO: Make subheading more general since we display non-workout info. */}
+                    &lt;/View>
+                    &lt;View style={localStyles.workoutsCompletedContainer}>
+                        &lt;Text style={localStyles.workoutsCompletedText}>
                             Workouts Completed: {workouts.length}
-                        </Text>
-                        <Text style={localStyles.motivationText}>
+                        &lt;/Text>
+                        &lt;Text style={localStyles.motivationText}>
                             {getWorkoutMessage(workouts.length)}
-                        </Text>
-                    </View>
-                </View>
+                        &lt;/Text>
+                    &lt;/View>
+                &lt;/View>
 
-                <View style={graphCalendarStyles.graphCalendarOuterContainer}>
-                    <View style={graphCalendarStyles.graphCalendarInnerContainer}>
+                &lt;View style={graphCalendarStyles.graphCalendarOuterContainer}>
+                    &lt;View style={graphCalendarStyles.graphCalendarInnerContainer}>
                         {renderCalendars()}
 
                         {/* Tabs for viewing different graphs. */}
-                        <View style={localStyles.tabContainer}>
-                            <TouchableOpacity
+                        &lt;View style={localStyles.tabContainer}>
+                            &lt;TouchableOpacity
                                 style={[
                                     localStyles.tab,
-                                    activeTab === 'workouts' && localStyles.tabActive,
+                                    activeTab === 'workouts' &amp;&amp; localStyles.tabActive,
                                 ]}
                                 onPress={() => setActiveTab('workouts')}
                             >
-                                <Text style={localStyles.tabText}>Workout Logs</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
+                                &lt;Text style={localStyles.tabText}>Workout Logs&lt;/Text>
+                            &lt;/TouchableOpacity>
+                            &lt;TouchableOpacity
                                 style={[
                                     localStyles.tab,
-                                    activeTab === 'pain' && localStyles.tabActive,
+                                    activeTab === 'pain' &amp;&amp; localStyles.tabActive,
                                 ]}
                                 onPress={() => setActiveTab('pain')}
                             >
-                                <Text style={localStyles.tabText}>Pain Notes</Text>
-                            </TouchableOpacity>
-                        </View>
+                                &lt;Text style={localStyles.tabText}>Pain Notes&lt;/Text>
+                            &lt;/TouchableOpacity>
+                        &lt;/View>
 
-                        {activeTab === 'workouts' && 
-                            <Graph
+                        {activeTab === 'workouts' &amp;&amp; 
+                            &lt;Graph
                                 key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
                                 startDate={startDate}               // Date string in YYYY-MM-DD format
                                 endDate={endDate}                   // Date string in YYYY-MM-DD format
@@ -373,8 +401,8 @@ const History = () => {
                             />
                         }
 
-                        {activeTab === 'pain' && 
-                            <Graph
+                        {activeTab === 'pain' &amp;&amp; 
+                            &lt;Graph
                                 key={`${startDate}-${endDate}`}     // Re-render graph when date range changes
                                 startDate={startDate}               // Date string in YYYY-MM-DD format
                                 endDate={endDate}                   // Date string in YYYY-MM-DD format
@@ -382,22 +410,22 @@ const History = () => {
                                 data={painNotes}
                             />
                         }
-                    </View>
+                    &lt;/View>
 
-                    <View style={{flex: 0.5,}}>
+                    &lt;View style={{flex: 0.5,}}>
                         {combinedHistory.length === 0 ? (
-                            <Text style={localStyles.emptyMessage}>No history found.</Text>
+                            &lt;Text style={localStyles.emptyMessage}>No history found.&lt;/Text>
                         ) : (
-                            <FlatList
+                            &lt;FlatList
                                 data={combinedHistory}
                                 keyExtractor={(_, index) => index.toString()}
                                 renderItem={renderHistoryItem}
                             />
                         )}
-                    </View>
-                </View>
-            </ScrollView>
-        </ScrollView>
+                    &lt;/View>
+                &lt;/View>
+            &lt;/ScrollView>
+        &lt;/ScrollView>
     );
 };
 
@@ -576,3 +604,26 @@ const calendarTheme = {
 };
 
 export default History;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

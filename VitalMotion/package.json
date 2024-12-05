@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "test-once": "jest",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "jest": {
     "preset": "jest-expo",
@@ -65,6 +66,7 @@
     "jest": "^29.7.0",
     "jest-expo": "~51.0.3",
     "jest-fetch-mock": "^3.0.3",
+    "jsdoc": "^4.0.4",
     "react-test-renderer": "^18.2.0",
     "typescript": "~5.3.3"
   },

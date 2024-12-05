@@ -1,4 +1,32 @@
-import React, { useState, useEffect} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: notes.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: notes.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect} from 'react';
 import {
     View,
     Text,
@@ -194,153 +222,153 @@ const Notes = () => {
     }
 
     return (
-        <ScrollView style={styles.outerWrapper}>
-            <Navbar />
+        &lt;ScrollView style={styles.outerWrapper}>
+            &lt;Navbar />
 
-            <View style={styles.innerWrapper}>
-                <View style={localStyles.headerContainer}>
-                    <Text style={styles.pageTitle}>Notes</Text>
-                    {activeTab === 'Pain' && <ModalForm type="Pain Note" form={<PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
-                    {activeTab === 'Medication' && <ModalForm type="Medication Note" form={<MedicationNoteForm uid={uid} fetchMedNotes={fetchMedNotes} />}/>}
-                    {activeTab === 'Journal' && <ModalForm type="Journal Entry" form={<JournalNoteForm uid={uid} fetchJournals={fetchJournals}/>}/>}
-                </View>
+            &lt;View style={styles.innerWrapper}>
+                &lt;View style={localStyles.headerContainer}>
+                    &lt;Text style={styles.pageTitle}>Notes&lt;/Text>
+                    {activeTab === 'Pain' &amp;&amp; &lt;ModalForm type="Pain Note" form={&lt;PainNoteForm uid={uid} fetchPainNotes={fetchPainNotes} />} />}
+                    {activeTab === 'Medication' &amp;&amp; &lt;ModalForm type="Medication Note" form={&lt;MedicationNoteForm uid={uid} fetchMedNotes={fetchMedNotes} />}/>}
+                    {activeTab === 'Journal' &amp;&amp; &lt;ModalForm type="Journal Entry" form={&lt;JournalNoteForm uid={uid} fetchJournals={fetchJournals}/>}/>}
+                &lt;/View>
                 
-                <View style={localStyles.tabContainer}>
-                    <TouchableOpacity
+                &lt;View style={localStyles.tabContainer}>
+                    &lt;TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Pain' && localStyles.tabActive,
+                            activeTab === 'Pain' &amp;&amp; localStyles.tabActive,
                         ]}
                         onPress={() => setActiveTab('Pain')}
                     >
-                        <Text style={localStyles.tabText}>Pain</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        &lt;Text style={localStyles.tabText}>Pain&lt;/Text>
+                    &lt;/TouchableOpacity>
+                    &lt;TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Medication' && localStyles.tabActive,
+                            activeTab === 'Medication' &amp;&amp; localStyles.tabActive,
                         ]}
                         onPress={() => setActiveTab('Medication')}
                     >
-                        <Text style={localStyles.tabText}>Medication</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        &lt;Text style={localStyles.tabText}>Medication&lt;/Text>
+                    &lt;/TouchableOpacity>
+                    &lt;TouchableOpacity
                         style={[
                             localStyles.tab,
-                            activeTab === 'Journal' && localStyles.tabActive,
+                            activeTab === 'Journal' &amp;&amp; localStyles.tabActive,
                         ]}
                         onPress={() => setActiveTab('Journal')}
                     >
-                        <Text style={localStyles.tabText}>Journal</Text>
-                    </TouchableOpacity>
-                </View>
+                        &lt;Text style={localStyles.tabText}>Journal&lt;/Text>
+                    &lt;/TouchableOpacity>
+                &lt;/View>
 
-                {activeTab === 'Pain' && (
-                    <ScrollView>
+                {activeTab === 'Pain' &amp;&amp; (
+                    &lt;ScrollView>
                         {loading ? (
-                            <Text style={localStyles.loading}>Loading...</Text>
+                            &lt;Text style={localStyles.loading}>Loading...&lt;/Text>
                         ) : (
-                            painNotes && painNotes.length === 0 ?
+                            painNotes &amp;&amp; painNotes.length === 0 ?
                             (
-                                <Text style={localStyles.noContent}>No pain notes to display.</Text>
+                                &lt;Text style={localStyles.noContent}>No pain notes to display.&lt;/Text>
                             ) : (
-                                <FlatList
+                                &lt;FlatList
                                     data={painNotes}
                                     keyExtractor={(item) => item.hash_id}
                                     renderItem={({ item }) => (
-                                        <View style={localStyles.noteContainer}>
-                                            <View>
-                                                <Text style={localStyles.noteLabel}>Date:
-                                                    <Text style={localStyles.noteValue}> {convertDate(item.date.split('T')[0])}</Text>
-                                                </Text>
-                                                <Text style={localStyles.noteLabel}>Body Part:
-                                                    <Text style={localStyles.noteValue}> {item.body_part}</Text>
-                                                </Text>
-                                                <Text style={localStyles.noteLabel}>Pain Level:
-                                                    <Text style={localStyles.noteValue}> {item.pain_level}/10</Text>
-                                                </Text>
-                                            </View>
-                                            <TouchableOpacity
+                                        &lt;View style={localStyles.noteContainer}>
+                                            &lt;View>
+                                                &lt;Text style={localStyles.noteLabel}>Date:
+                                                    &lt;Text style={localStyles.noteValue}> {convertDate(item.date.split('T')[0])}&lt;/Text>
+                                                &lt;/Text>
+                                                &lt;Text style={localStyles.noteLabel}>Body Part:
+                                                    &lt;Text style={localStyles.noteValue}> {item.body_part}&lt;/Text>
+                                                &lt;/Text>
+                                                &lt;Text style={localStyles.noteLabel}>Pain Level:
+                                                    &lt;Text style={localStyles.noteValue}> {item.pain_level}/10&lt;/Text>
+                                                &lt;/Text>
+                                            &lt;/View>
+                                            &lt;TouchableOpacity
                                                 style={localStyles.deleteButton}
                                                 onPress={() => deletePainNote(item.hash_id)}
                                             >
-                                                <Feather name="trash-2" size={26} style={styles.iconButton} />
-                                            </TouchableOpacity>
-                                        </View>
+                                                &lt;Feather name="trash-2" size={26} style={styles.iconButton} />
+                                            &lt;/TouchableOpacity>
+                                        &lt;/View>
                                     )}
                                 />
                             )
                         )}
-                    </ScrollView>
+                    &lt;/ScrollView>
                 )}
 
-                {activeTab === 'Medication' && (
-                    <ScrollView>
+                {activeTab === 'Medication' &amp;&amp; (
+                    &lt;ScrollView>
                         {loading ? (
-                            <Text style={localStyles.loading}>Loading...</Text>
+                            &lt;Text style={localStyles.loading}>Loading...&lt;/Text>
                         ) : (
-                            medNotes && medNotes.length === 0 ? (
-                                <Text style={localStyles.noContent}>No medication notes to display.</Text>
+                            medNotes &amp;&amp; medNotes.length === 0 ? (
+                                &lt;Text style={localStyles.noContent}>No medication notes to display.&lt;/Text>
                             ) : (
                                 medNotes.map((medNote) => (
-                                    <View key={medNote.id} style={localStyles.noteContainer}>
-                                        <View>
-                                            <Text style={localStyles.noteLabel}>Date:
-                                                <Text style={localStyles.noteValue}> {convertDate(medNote.date)}</Text>
-					    </Text>
-					    <Text style={localStyles.noteLabel}>Medication: 
-						<Text style={localStyles.noteValue}> {medNote.name}</Text>
-					    </Text>
-					    <Text style={localStyles.noteLabel}>Dosage:
-						<Text style={localStyles.noteValue}> {medNote.dosage}</Text>
-					    </Text>
-					    <Text style={localStyles.noteLabel}>Time: 
-						<Text style={localStyles.noteValue}> {medNote.time}</Text>
-					    </Text>
-                                        </View>
-                                        <TouchableOpacity
+                                    &lt;View key={medNote.id} style={localStyles.noteContainer}>
+                                        &lt;View>
+                                            &lt;Text style={localStyles.noteLabel}>Date:
+                                                &lt;Text style={localStyles.noteValue}> {convertDate(medNote.date)}&lt;/Text>
+					    &lt;/Text>
+					    &lt;Text style={localStyles.noteLabel}>Medication: 
+						&lt;Text style={localStyles.noteValue}> {medNote.name}&lt;/Text>
+					    &lt;/Text>
+					    &lt;Text style={localStyles.noteLabel}>Dosage:
+						&lt;Text style={localStyles.noteValue}> {medNote.dosage}&lt;/Text>
+					    &lt;/Text>
+					    &lt;Text style={localStyles.noteLabel}>Time: 
+						&lt;Text style={localStyles.noteValue}> {medNote.time}&lt;/Text>
+					    &lt;/Text>
+                                        &lt;/View>
+                                        &lt;TouchableOpacity
                                             style={localStyles.deleteButton}
                                             onPress={() => deleteMedNote(medNote.id)}
                                         >
-                                            <Feather name="trash-2" size={26} style={styles.iconButton} />
-                                        </TouchableOpacity>
-                                    </View>
+                                            &lt;Feather name="trash-2" size={26} style={styles.iconButton} />
+                                        &lt;/TouchableOpacity>
+                                    &lt;/View>
                                 ))
                             )
                         )}
-                    </ScrollView>
+                    &lt;/ScrollView>
                 )}
 
-                {activeTab === 'Journal' && (
-                    <ScrollView>
+                {activeTab === 'Journal' &amp;&amp; (
+                    &lt;ScrollView>
                         {loading ? (
-                            <Text style={localStyles.loading}>Loading...</Text>
+                            &lt;Text style={localStyles.loading}>Loading...&lt;/Text>
                         ) : (
-                            journals && journals.length === 0 ? (
-                                <Text style={localStyles.noContent}>No journals to display.</Text>
+                            journals &amp;&amp; journals.length === 0 ? (
+                                &lt;Text style={localStyles.noContent}>No journals to display.&lt;/Text>
                             ) : (
                                 journals.map((journal) => (
-                                    <View key={journal.id} style={localStyles.noteContainer}>
-                                        <View>
-                                            <Text style={localStyles.noteLabel}>Date:
-                                                <Text style={localStyles.noteValue}> {convertDate(journal.date)} {`\n\n`}</Text>
-                                            </Text>
-                                            <Text style={localStyles.noteValue}>{journal.content}</Text>
-                                        </View>
-                                        <TouchableOpacity
+                                    &lt;View key={journal.id} style={localStyles.noteContainer}>
+                                        &lt;View>
+                                            &lt;Text style={localStyles.noteLabel}>Date:
+                                                &lt;Text style={localStyles.noteValue}> {convertDate(journal.date)} {`\n\n`}&lt;/Text>
+                                            &lt;/Text>
+                                            &lt;Text style={localStyles.noteValue}>{journal.content}&lt;/Text>
+                                        &lt;/View>
+                                        &lt;TouchableOpacity
                                             style={localStyles.deleteButton}
                                             onPress={() => deleteJournal(journal.id)}
                                         >
-                                            <Feather name="trash-2" size={26} style={styles.iconButton} />
-                                        </TouchableOpacity>
-                                    </View>
+                                            &lt;Feather name="trash-2" size={26} style={styles.iconButton} />
+                                        &lt;/TouchableOpacity>
+                                    &lt;/View>
                                 ))
                             )
                         )}
-                    </ScrollView>
+                    &lt;/ScrollView>
                 )}
-            </View>
-        </ScrollView>
+            &lt;/View>
+        &lt;/ScrollView>
     );
 };
 
@@ -403,3 +431,26 @@ const localStyles = StyleSheet.create({
 });
 
 export default Notes;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

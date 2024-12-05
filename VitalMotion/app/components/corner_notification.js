@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import theme from '../design_system';
 
+/**
+ * 
+ * @param {Object} props - {message: string - message to display, visible: bool - if message is visible, onDismiss: function - function to run when pop-up is dismissed}
+ * @returns {JSX.Element}
+ */
 const CornerNotification = ({ message, visible, onDismiss }) => {
   const [animation] = useState(new Animated.Value(0));
 
