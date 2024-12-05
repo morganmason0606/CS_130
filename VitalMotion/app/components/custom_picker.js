@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet, Picker } from 'react-native';
 import theme from '../design_system';
 
+/**
+ * custom component for dropdown menu
+ * @param {object} - props {data: list of values, selected value: the currently selected value, onValueChange; function for on value change, style: json for component css}
+ * @returns {JSX.Element}
+ */
 const CustomPicker = ({ data, selectedValue, onValueChange, placeholder, style }) => {
   return (
     <Picker

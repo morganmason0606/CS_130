@@ -3,12 +3,31 @@ import { useRouter } from 'expo-router';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 
+
+/**
+ * Authentication context to manage and provide user authentication state and actions.
+ * @typedef {Object} AuthContextType
+ * @property {int} uid - user id, will be === undefined if not logged in
+ * @property {Function} setUid - sets user id; done on Login page
+ * @property {boolean} loading - If page is loading
+ * @property {Function} setLoading - sets if page is loading
+ * @property {Function} login - login function
+ * @property {Function} logout - logout function
+ */
+
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+/**
+ * Provides Authentication state and actions to children 
+ * @param {Object} child - child element 
+ * @returns AuthContext
+ * 
+ */
 export const AuthProvider = ({ children }) => {
   const [uid, setUid] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state

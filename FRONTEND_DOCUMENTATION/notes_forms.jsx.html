@@ -1,4 +1,32 @@
-import React, { useState, useRef } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: notes_forms.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: notes_forms.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useRef } from 'react';
 import { Animated, Modal, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import CustomPicker from './components/custom_picker.js';
@@ -36,38 +64,38 @@ const ModalForm = ({ type, form }) => {
     };
     
     return (
-        <View style={formStyles.container}>
+        &lt;View style={formStyles.container}>
             {/* Open Button */}
-            <TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
-                <Text style={formStyles.textButtonText}>+ New {type}</Text>
-            </TouchableOpacity>
+            &lt;TouchableOpacity style={formStyles.openButton} onPress={toggleModal}>
+                &lt;Text style={formStyles.textButtonText}>+ New {type}&lt;/Text>
+            &lt;/TouchableOpacity>
 
             {/* Modal Popup */}
-            <Modal
+            &lt;Modal
                 transparent={true}
                 animationType="none"
                 visible={isModalVisible}
             >
-                <View style={formStyles.modalOverlay}>
+                &lt;View style={formStyles.modalOverlay}>
                     {/* Animated Modal Content */}
-                    <Animated.View
+                    &lt;Animated.View
                         style={[
                             formStyles.modalContent,
                             { transform: [{ translateY: slideValue }] }, // Slide animation
                         ]}
                     >
-                        <View style={{width: '100%'}}>
+                        &lt;View style={{width: '100%'}}>
                             {React.cloneElement(form, { toggleModal })}
-                        </View>
+                        &lt;/View>
 
                         {/* Cancel Button */}
-                        <TouchableOpacity style={[formStyles.textButton, formStyles.cancelButton]} onPress={toggleModal}>
-                            <Text style={formStyles.textButtonText}>Cancel</Text>
-                        </TouchableOpacity>
-                    </Animated.View>
-                </View>
-            </Modal>
-        </View>
+                        &lt;TouchableOpacity style={[formStyles.textButton, formStyles.cancelButton]} onPress={toggleModal}>
+                            &lt;Text style={formStyles.textButtonText}>Cancel&lt;/Text>
+                        &lt;/TouchableOpacity>
+                    &lt;/Animated.View>
+                &lt;/View>
+            &lt;/Modal>
+        &lt;/View>
     );
 };
 
@@ -104,36 +132,36 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
     const musclesMap = muscles.map((muscle, i) => ({ id: i+1, name: muscle }));    
 
     const renderPainLevelRadio = () => (
-        <View>
-            <View style={formStyles.radioLabelWrapper}>
-                <Text style={formStyles.radioLabel}>Not Painful</Text>
-                <Text style={formStyles.radioLabel}>Extremely Painful</Text>
-            </View>
-            <View style={formStyles.radioContainer}>
+        &lt;View>
+            &lt;View style={formStyles.radioLabelWrapper}>
+                &lt;Text style={formStyles.radioLabel}>Not Painful&lt;/Text>
+                &lt;Text style={formStyles.radioLabel}>Extremely Painful&lt;/Text>
+            &lt;/View>
+            &lt;View style={formStyles.radioContainer}>
                 {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                        <TouchableOpacity
+                        &lt;TouchableOpacity
                             key={level}
                             style={[
                                 formStyles.radioButton,
-                                newPainLevel === level && formStyles.radioButtonSelected,
-                                newPainLevel !== level && hoveredPainLevel === level && formStyles.radioButtonHovered,
+                                newPainLevel === level &amp;&amp; formStyles.radioButtonSelected,
+                                newPainLevel !== level &amp;&amp; hoveredPainLevel === level &amp;&amp; formStyles.radioButtonHovered,
                             ]}
                             onPress={() => {console.log(`Set new pain level to ${level}.`); setNewPainLevel(level);}}
                             onMouseEnter={() => {setHoveredPainLevel(level)}}
                             onMouseLeave={() => {setHoveredPainLevel(0)}}
                         >
-                            <Text
+                            &lt;Text
                                 style={[
                                     formStyles.radioText,
-                                    newPainLevel === level && formStyles.radioTextSelected,
+                                    newPainLevel === level &amp;&amp; formStyles.radioTextSelected,
                                 ]}
                             >
                                 {level}
-                            </Text>
-                        </TouchableOpacity>
+                            &lt;/Text>
+                        &lt;/TouchableOpacity>
                 ))}
-            </View>
-        </View>
+            &lt;/View>
+        &lt;/View>
     );
 
     // Add a new pain note
@@ -180,12 +208,12 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
     }
 
     return (
-        <ScrollView>
-            <Text style={formStyles.modalTitle}>New Pain Note</Text>
+        &lt;ScrollView>
+            &lt;Text style={formStyles.modalTitle}>New Pain Note&lt;/Text>
 
-            <Text style={formStyles.label}>Body Part<Text style={theme.required}>*</Text></Text>
+            &lt;Text style={formStyles.label}>Body Part&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
 
-            <CustomPicker
+            &lt;CustomPicker
                 data={musclesMap}
                 style={formStyles.picker}
                 value={newBodyPart}
@@ -193,18 +221,18 @@ const PainNoteForm = ({ uid, fetchPainNotes, toggleModal}) =>  {
                 placeholder="Select body part"
             />
 
-            <Text style={formStyles.label}>Pain Level<Text style={theme.required}>*</Text></Text>
+            &lt;Text style={formStyles.label}>Pain Level&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
             {renderPainLevelRadio()}
 
             {/* Add Button */}
-            <TouchableOpacity
+            &lt;TouchableOpacity
                 style={[formStyles.textButton, formStyles.addButton]}
                 onPress={addPainNote}
             >
-                <Text style={formStyles.textButtonText}>Add Pain Note</Text>
-            </TouchableOpacity>
+                &lt;Text style={formStyles.textButtonText}>Add Pain Note&lt;/Text>
+            &lt;/TouchableOpacity>
 
-        </ScrollView>
+        &lt;/ScrollView>
     );
 };
 
@@ -246,10 +274,10 @@ const JournalNoteForm = ({ uid, fetchJournals, toggleModal }) => {
 	};
 
     return (
-        <ScrollView>
-            <Text style={formStyles.modalTitle}>Journal Entry</Text>
-            <Text style={formStyles.label}>Content<Text style={theme.required}>*</Text></Text>
-            <TextInput
+        &lt;ScrollView>
+            &lt;Text style={formStyles.modalTitle}>Journal Entry&lt;/Text>
+            &lt;Text style={formStyles.label}>Content&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
+            &lt;TextInput
                 style={formStyles.journalInput}
                 multiline={true}
                 numberOfLines={4}
@@ -257,13 +285,13 @@ const JournalNoteForm = ({ uid, fetchJournals, toggleModal }) => {
                 value={content}
                 placeholder="Enter your text here..."
             />
-            <TouchableOpacity
+            &lt;TouchableOpacity
                 style={[formStyles.textButton, formStyles.addButton]}
                 onPress={addJournalEntry}
             >
-                <Text style={formStyles.textButtonText}>Add Journal Entry</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                &lt;Text style={formStyles.textButtonText}>Add Journal Entry&lt;/Text>
+            &lt;/TouchableOpacity>
+        &lt;/ScrollView>
     );
 };
 
@@ -305,19 +333,19 @@ const MedicationNoteForm = ({ uid, fetchMedNotes, toggleModal }) => {
     };
 
     return (
-        <ScrollView>
-            <Text style={formStyles.modalTitle}>New Medication Note</Text>
-            <Text style={formStyles.label}>Name<Text style={theme.required}>*</Text></Text>
-            <TextInput style={formStyles.journalInput} value={name} onChangeText={setName} placeholder="Enter medication name" />
-            <Text style={formStyles.label}>Dosage<Text style={theme.required}>*</Text></Text>
-            <TextInput style={formStyles.journalInput} value={dosage} onChangeText={setDosage} placeholder="Enter dosage" />
-            <Text style={formStyles.label}>Time<Text style={theme.required}>*</Text></Text>
-            <TextInput style={formStyles.journalInput} value={time} onChangeText={setTime} placeholder="Enter time" />
+        &lt;ScrollView>
+            &lt;Text style={formStyles.modalTitle}>New Medication Note&lt;/Text>
+            &lt;Text style={formStyles.label}>Name&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
+            &lt;TextInput style={formStyles.journalInput} value={name} onChangeText={setName} placeholder="Enter medication name" />
+            &lt;Text style={formStyles.label}>Dosage&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
+            &lt;TextInput style={formStyles.journalInput} value={dosage} onChangeText={setDosage} placeholder="Enter dosage" />
+            &lt;Text style={formStyles.label}>Time&lt;Text style={theme.required}>*&lt;/Text>&lt;/Text>
+            &lt;TextInput style={formStyles.journalInput} value={time} onChangeText={setTime} placeholder="Enter time" />
 
-            <TouchableOpacity style={[formStyles.textButton, formStyles.addButton]} onPress={addMedicationNote}>
-                <Text style={formStyles.textButtonText}>Add Medication Note</Text>
-            </TouchableOpacity>
-        </ScrollView>
+            &lt;TouchableOpacity style={[formStyles.textButton, formStyles.addButton]} onPress={addMedicationNote}>
+                &lt;Text style={formStyles.textButtonText}>Add Medication Note&lt;/Text>
+            &lt;/TouchableOpacity>
+        &lt;/ScrollView>
     );
 };
 
@@ -441,3 +469,26 @@ const formStyles = StyleSheet.create({
 
 export default ModalForm;
 export { PainNoteForm, MedicationNoteForm, JournalNoteForm };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

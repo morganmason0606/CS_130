@@ -2,6 +2,13 @@ import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import theme from '../design_system';
 
+
+/**
+ * for creating custom text input 
+ * @param {Object} props - {style: json of css, placeholder: place hodler placehodler text; keyboardType: text, value: string- inputed value, 
+ * onChangeText:function - on change function, label: form label: rest: any other information needed}
+ * @returns {JSX.Element}
+ */
 const CustomTextInput = ({ style, placeholder, keyboardType, value, onChangeText, label, ...rest }) => {
   return (
     <TextInput

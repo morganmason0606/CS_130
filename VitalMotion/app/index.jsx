@@ -6,6 +6,10 @@ import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import Logo from './images/Logo.png';
 
+/**
+ * Starting page- this page should not be seen by users as authcontex should immediately push to either /login or /workouts
+ * @returns {JSX.Element}
+ */
 export default function Index() {
     const { uid } = useAuth();
     const router = useRouter();

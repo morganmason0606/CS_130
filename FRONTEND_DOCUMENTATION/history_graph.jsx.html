@@ -1,4 +1,32 @@
-import React, { useState, useEffect } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: history_graph.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: history_graph.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import theme from './design_system.js';
@@ -34,7 +62,7 @@ const Graph = ({startDate, endDate, type, data}) => {
   const setupPainDataset = () => {
     // Filter pain notes based on date range
     const filteredPainData = data.filter((entry) => {
-      return entry.date >= startDate && entry.date <= endDate;
+      return entry.date >= startDate &amp;&amp; entry.date &lt;= endDate;
     });
 
     if (!filteredPainData || filteredPainData.length === 0) {
@@ -111,7 +139,7 @@ const Graph = ({startDate, endDate, type, data}) => {
   const setupWorkoutsDataset = () => {
     // Filter workout notes based on date range
     const filteredWorkoutData = data.filter((entry) => {
-      return entry.date >= startDate && entry.date <= endDate;
+      return entry.date >= startDate &amp;&amp; entry.date &lt;= endDate;
     });
 
     console.log('filteredWorkoutData:', filteredWorkoutData);
@@ -158,7 +186,7 @@ const Graph = ({startDate, endDate, type, data}) => {
         const lastDateObj = new Date(lastDateParts[2] + '/' + lastDateParts[0] + '/' + lastDateParts[1]);
 
         // Check if dateObj is within 6 days of lastDateObj
-        if ((dateObj - lastDateObj) / (1000 * 60 * 60 * 24) <= 6) {
+        if ((dateObj - lastDateObj) / (1000 * 60 * 60 * 24) &lt;= 6) {
           weekToWorkouts[lastDate]++;
         }
         else {
@@ -219,30 +247,30 @@ const Graph = ({startDate, endDate, type, data}) => {
   };
 
   return (
-    <View style={graphStyles.container}>
-      {Object.entries(dataset).length === 0 &&
-        <View>
-          <Text style={graphStyles.emptyMessage}>
+    &lt;View style={graphStyles.container}>
+      {Object.entries(dataset).length === 0 &amp;&amp;
+        &lt;View>
+          &lt;Text style={graphStyles.emptyMessage}>
             No data found within date range.
-          </Text>
-          <Text style={graphStyles.emptyMessage}>
+          &lt;/Text>
+          &lt;Text style={graphStyles.emptyMessage}>
             Update the range or add data for dates within the range.
-          </Text>
-        </View>
+          &lt;/Text>
+        &lt;/View>
       }
 
-      {type === 'pain' && Object.keys(dataset).length > 0 &&
-        <View>
-          <Text style={graphStyles.graphTitle}>Pain Level Per Day</Text>
+      {type === 'pain' &amp;&amp; Object.keys(dataset).length > 0 &amp;&amp;
+        &lt;View>
+          &lt;Text style={graphStyles.graphTitle}>Pain Level Per Day&lt;/Text>
 
           {/* Display bar chart for each body part */}
-          <View style={graphStyles.graphOuterWrapper}>
+          &lt;View style={graphStyles.graphOuterWrapper}>
             {Object.keys(dataset).map((bodyPart) => {
-              if (dataset[bodyPart] !== undefined && dataset[bodyPart].labels && dataset[bodyPart].datasets && dataset[bodyPart].datasets[0].data){  // Extra check if dataset is not empty (addresses map error for BarChart)
+              if (dataset[bodyPart] !== undefined &amp;&amp; dataset[bodyPart].labels &amp;&amp; dataset[bodyPart].datasets &amp;&amp; dataset[bodyPart].datasets[0].data){  // Extra check if dataset is not empty (addresses map error for BarChart)
                 return (
-                  <View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset[bodyPart].datasets[0].data)+60}]}>
-                    <Text style={graphStyles.graphSubtitle}>{bodyPart}</Text>
-                    <LineChart
+                  &lt;View key={bodyPart} style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset[bodyPart].datasets[0].data)+60}]}>
+                    &lt;Text style={graphStyles.graphSubtitle}>{bodyPart}&lt;/Text>
+                    &lt;LineChart
                       chartConfig={chartConfig}
                       data={dataset[bodyPart]}
                       width={calculateWidth(dataset[bodyPart].datasets[0].data)}
@@ -251,23 +279,23 @@ const Graph = ({startDate, endDate, type, data}) => {
                       fromZero={true}
                       style={graphStyles.chart}
                     />
-                  </View>
+                  &lt;/View>
                 );
               }
             })}
-          </View>
-        </View>
+          &lt;/View>
+        &lt;/View>
       }
       
-      {type === 'workouts' && dataset.labels && dataset.datasets && dataset.datasets[0].data &&  // Extra check if dataset is not empty (addresses map error for BarChart)
-        <View>
-          <Text style={graphStyles.graphTitle}>
+      {type === 'workouts' &amp;&amp; dataset.labels &amp;&amp; dataset.datasets &amp;&amp; dataset.datasets[0].data &amp;&amp;  // Extra check if dataset is not empty (addresses map error for BarChart)
+        &lt;View>
+          &lt;Text style={graphStyles.graphTitle}>
             Workouts Completed Per Week From {convertDate(startDate)} to {convertDate(endDate)}
-          </Text>
+          &lt;/Text>
 
           {/* Display bar chart for workouts */}
-          <View style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset.datasets[0].data)+120}]}>
-            <LineChart
+          &lt;View style={[graphStyles.graphInnerWrapper, {width: calculateWidth(dataset.datasets[0].data)+120}]}>
+            &lt;LineChart
               chartConfig={chartConfig}
               data={dataset}
               width={calculateWidth(dataset.datasets[0].data, 250)}
@@ -277,10 +305,10 @@ const Graph = ({startDate, endDate, type, data}) => {
               verticalLabelRotation={20}
               style={graphStyles.chart}
             />
-          </View>
-        </View>
+          &lt;/View>
+        &lt;/View>
       }
-    </View>
+    &lt;/View>
   );
 };
 
@@ -329,3 +357,26 @@ const graphStyles = StyleSheet.create({
 });
 
 export default Graph;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#CornerNotification">CornerNotification</a></li><li><a href="global.html#CustomButton">CustomButton</a></li><li><a href="global.html#CustomPicker">CustomPicker</a></li><li><a href="global.html#CustomTextInput">CustomTextInput</a></li><li><a href="global.html#DoWorkout">DoWorkout</a></li><li><a href="global.html#EditWorkout">EditWorkout</a></li><li><a href="global.html#Graph">Graph</a></li><li><a href="global.html#History">History</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#ModalForm">ModalForm</a></li><li><a href="global.html#Notes">Notes</a></li><li><a href="global.html#RecWorkout">RecWorkout</a></li><li><a href="global.html#Workout">Workout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Dec 05 2024 13:26:55 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
