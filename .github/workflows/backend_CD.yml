@@ -16,5 +16,5 @@ jobs:
         with:
           host: 'www.pythonanywhere.com'
           username: hassanrizvi14
-          api-token: {{ secrets.PYTHON_API_KEY }}
+          api-token: ${{ secrets.PYTHON_API_KEY }}
           domain-name: 'hassanrizvi14.pythonanywhere.com'
